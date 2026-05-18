@@ -2,25 +2,28 @@ let tabuleiroJogador = document.querySelector(".tabuleiro-jogador");
 let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
 
 function criarTabuleiro(tabuleiro) {
-  // Limpa o tabuleiro antes de criar novamente
   tabuleiro.innerHTML = "";
 
   for (let linha = 0; linha < 10; linha++) {
-    for (let coluna = 0; coluna < 10; coluna++) {
+        for (let coluna = 0; coluna < 10; coluna++) {
 
-      const celula = document.createElement("div");
+            const celula = document.createElement("div");
 
-      celula.classList.add("celula");
+            celula.classList.add("celula");
 
-      // Guarda posição da célula
-      celula.dataset.linha = linha;
-      celula.dataset.coluna = coluna;
+            celula.dataset.linha = linha;
+            celula.dataset.coluna = coluna;
 
-      celula.textContent = "X";
-
-      tabuleiro.appendChild(celula);
+            // 0: não revelado
+            // 1: água
+            // 2: contém navio
+            // 3: navio atingido
+            // 4: navio afundado
+            celula.textContent = "0";
+            
+            tabuleiro.appendChild(celula);
+        }
     }
-  }
 }
 
 criarTabuleiro(tabuleiroJogador);
