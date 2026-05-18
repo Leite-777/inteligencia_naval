@@ -28,29 +28,35 @@
         </ul>
     </nav> <!-- nav -->
     
-    <header>
+    <header id="header">
         <div class="titulo">
             <h1 class="bruno-ace-regular">Inteligência Naval</h1>
         </div>
         
-        <h2>Participe de um jogo de Batalha Naval contra a IA do Gemini, desenvolvida pelo Google.</h2>
-        <div class="botao">Começar</div>
-        
-        <p>Projeto desenvolvido pela turma de TSI, 2026</p>
+        <div class="titulo-2">
+            <h2>Participe de um jogo de Batalha Naval contra a IA do Gemini, desenvolvida pelo Google.</h2>
+            <button class="botao-header">Começar</button>
+            
+            <p>Projeto desenvolvido pela turma de TSI, 2026</p>
+        </div>
         
     </header> <!-- header -->
 
     <section id="chave-api">
-        
+        <h3>Chave API</h3>
+
         <p>Antes de começar, insira uma chave API do Gemini para a IA poder participar do jogo:</p>
 
-        <label for="api-key">Chave API:</label>
-        <input id="api-key" type="text" placeholder="Cole a chave API aqui:">
+        <div class="caixa-input">
+            <label for="api-key">Chave API:</label>
+            <input id="api-key" type="text" placeholder="Cole sua chave API aqui: AIzaSyC4SKnWv..." class="input-api-key">
+        </div>
 
     </section> <!-- chave-api -->
 
     <section id="guia-do-usuario">
-
+        <h3>Guia do Usuário</h3>
+        <p>Possui dúvidas? Clique nos botões abaixo pra ver as explicações que precisa para participar de um jogo:</p>
         <div class="colapsavel">
             <button class="colapsavel-expandir">O que é uma chave API?</button>
             <div class="colapsavel-conteudo">
@@ -70,23 +76,24 @@
                     </li>
                     <li>Faça login com sua conta do Google, no topo da página. Pode ser necessário
                         <a href="https://support.google.com/accounts/answer/10071085?hl=pt-br" target="_blank" rel="noopener noreferrer">
-                            verificar sua idade
+                            verificar sua idade.
                         </a>
                     </li>
-                    <li>No topo da página, vá para <strong>Conferir a chave de API</strong></li>
-                    <li>Na nova página, no canto superior direito clique em <strong>Criar chave de API</strong>, e então em <strong>Criar Chave</strong>.</li>
+                    <li>No topo da página, vá para <u>Conferir a chave de API</u></li>
+                    <li>Na nova página, no canto superior direito clique em <u>Criar chave de API</u>, e então em <u>Criar Chave</u>.</li>
                     <li>Na nova janela copie a chave de API, que se parece com uma sequência de caracteres aleatórios.</li>
                 </ul>
             </div>
         </div>
 
         <div class="colapsavel">
-            <button class="colapsavel-expandir">Como jogar Batalha Naval?</button>
+            <button class="colapsavel-expandir">Como funciona um jogo de Batalha Naval?</button>
             <div class="colapsavel-conteudo">
                 <ul>
                     <li>Cada jogador começa arrastando 5 navios para posições estratégicas da sua grelha.</li>
-                    <li>Na vez de cada jogador, ele deve escolher uma posição para atacar.</li>
+                    <li>Na vez de cada jogador, ele deve escolher uma posição para atacar a grade do inimigo.</li>
                     <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições até errar uma.</li>
+                    <li>Quando todas as partes de um navio são acertadas, ele é afundado.</li>
                     <li>Vence quem afundar os 5 navios do oponente.</li>
                 </ul>
             </div>
@@ -95,37 +102,80 @@
     </section> <!-- guia-do-usuario -->
 
     <section id="jogo">
-        <div class="tabuleiro-container jogador">
-            <h2 class="status status-jogador">Seu Tabuleiro</h2>
+        <h3>Jogo da Batalha Naval</h3>
+        
+        <button class="botao-iniciar-jogo">Iniciar Jogo!</button>
+        
+        <div id="jogo-batalha-naval">
+            <div class="tabuleiro-container jogador">
+                <h2 class="status status-jogador">Seu Tabuleiro</h2>
 
-            <div class="tabuleiro tabuleiro-jogador">
+                <div class="tabuleiro tabuleiro-jogador">
 
-            </div>
-
-        </div>
-
-        <!-- Grade do inimigo -->
-        <div class="tabuleiro-container inimigo">
-            <h2 class="status status-inimigo">Tabuleiro Inimigo</h2>
-
-            <div class="tabuleiro tabuleiro-inimigo">
+                </div>
 
             </div>
 
+            <!-- Navios arrastáveis -->
+            <div class="navios-arrastaveis">
+
+            </div>
+
+            <!-- Grade do inimigo -->
+            <div class="tabuleiro-container inimigo">
+                <h2 class="status status-inimigo">Tabuleiro Inimigo</h2>
+
+                <div class="tabuleiro tabuleiro-inimigo">
+
+                </div>
+
+            </div>
         </div>
+
+        <div class="colapsavel">
+            <button class="colapsavel-expandir">Visualizar Raciocínio da IA</button>
+            <div class="colapsavel-conteudo">
+                <p>Aqui você verá a linha de raciocínio escrita pela IA, como as justificativas para a posição escolhida em suas jogadas.</p>
+            </div>
+        </div>
+
 
     </section> <!-- jogo -->
 
     <section id="sobre">
-        <p>Sobre</p>
+        <h3>Sobre</h3>
+        <br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis maximus ligula. Morbi vel turpis tellus. Ut lacus tellus, hendrerit vel erat a, varius gravida ante. Cras lobortis vulputate nunc, et suscipit elit varius vel.</p>
+        <p>Cras porttitor tellus purus, vel rhoncus sem congue hendrerit. Aliquam feugiat in est fermentum ultricies. Mauris odio mauris, tincidunt vitae lorem at, convallis aliquet tellus. Mauris eu vestibulum neque, at interdum mauris. Donec bibendum urna ut odio semper lobortis.</p>
+        <p>Phasellus rutrum mi eu eros pharetra scelerisque. In commodo ipsum purus, a gravida tortor aliquam eget. Donec dapibus sapien nisl, ac laoreet dolor interdum ac. Proin lacinia, risus id tincidunt efficitur, erat elit vestibulum arcu, vel condimentum est ex non dolor.</p>
+        <p>Nam risus nulla, porta id tincidunt sed, feugiat sed augue. Phasellus volutpat tristique bibendum. Mauris sit amet ultricies lectus. </p>
     </section> <!-- sobre -->
 
     <footer>
-        <p>Rodapé</p>
+        <div>
+            <h2>Desenvolvedores</h2>
+            <ul>
+                <li>Gabriel Álvaro</li>
+                <li>Matheus Sales</li>
+                <li>Breno Emanuel</li>
+                <li>Pâmela de Andrade</li>
+                <li>Matheus José</li>
+                <li>Evandro Rodrigues</li>
+            </ul>
+        </div>
+        
+        <div>
+            <p>2026 Inteligência Naval. Todos os direitos reservados.</p>
+        </div>
+
+        <div>
+            <p>Link do repositório:</p>
+            <ul>
+                <li><a href="https://github.com/Leite-777/Batalha_naval_Tsi">https://github.com/Leite-777/Batalha_naval_Tsi</a></li>
+            </ul>
+        </div>
     </footer> <!-- footer -->
 
     <script src="script.js"></script>
-    <script src="prompt.js"></script>
-
 </body>
 </html>
