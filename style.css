@@ -37,9 +37,6 @@ p{
     margin-bottom: 10px;
     padding-left: 10px;
 
-    border-left: 2px solid #014177;
-    border-radius: 5px;
-
     line-height: 1.8;
 }
 
@@ -139,6 +136,10 @@ header{
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+}
+
+.titulo-2 h2{
+    margin-top: 15px;
 }
 
 .botao-header{
@@ -268,6 +269,19 @@ header{
     border-radius: 10px;
 }
 
+.jogo-colapsaveis{
+    display: flex;
+    align-items: flex-start;
+}
+
+.jogo-colapsaveis > div{
+    flex: 1;
+}
+
+.jogo-colapsaveis > div > .colapsavel-conteudo{
+    width: 50%;
+}
+
 .tabuleiro-container {
     display: flex;
     flex-direction: column;
@@ -298,6 +312,11 @@ header{
   
   align-items: center;
   justify-content: center;
+}
+
+.tabuleiro-transparente {
+    opacity: 0.2;
+    transition: opacity 1s ease;
 }
 
 /* Sobre */
