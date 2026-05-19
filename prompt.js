@@ -152,7 +152,10 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
     "debug": "string",
     "linha": número,
     "coluna": número
-}`;
+}
+Responda APENAS em JSON válido.
+Não use markdown.
+`;
     let respostaFunc = await chamadaApi(prompt);
     //console.log(respostaFunc);
     // Debug temporário da resposta da chamada API, contendo:
