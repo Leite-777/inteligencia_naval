@@ -3,6 +3,28 @@ let chaveApi = chaveHtml.value;
 
 const apiKey = chaveApi;//para não travar a chava api
 
+//matriz vazia todos os elemntos com a posição 0 para representar o estado inicial do jogo essa matriz será enviada para a ia
+//e a medida que ela da a resposta compararemos com a matriz do jogador para ver se a ia acertou ou não o navio e completaremos
+//a posição de acordo com a matriz do jogador de modo que essa matriz se torne uma versão espelhada da do jogador
+let matrizParaOPrompt : number[][] = [
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0]
+    ];
+
+//lembrar de excluir isso mais tarde
+let matrizTeste : number[][] = [
+                                [0,0,0],
+                                [0,0,0],   
+                                [0,0,0]
+                               ];
 
 //formato do json
 interface respostaApi{
@@ -88,19 +110,7 @@ async function chamadaApi(prompt : string): Promise<resultadoApi>{
 }
 
 //função responsavel pelo prompt e tratar/avisar os erros da chamadaApi
-async function chamarApi(){
-    let matriz : number[][] = [
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0]
-    ];
+async function chamarApi(matrizIa : number[][],matrizJogador : number[][]){
     let prompt : string = `
         Você está jogando batalha naval contra um oponente humano as regras são as seguintes:
         Você receberá uma matriz[10][10] onde:
@@ -124,7 +134,7 @@ async function chamarApi(){
     console.log(respostaFunc);
 }
 
-chamarApi();
+chamarApi(matrizParaOprompt,matrizTeste);
 
 
 //Tipos de erro
