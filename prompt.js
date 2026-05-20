@@ -1,7 +1,6 @@
 "use strict";
 let chaveHtml = document.getElementById('api-key');
-let chaveApi = chaveHtml.value;
-const apiKey = chaveApi; //para não travar a chava api
+//para não travar a chava api
 //matriz vazia todos os elemntos com a posição 0 para representar o estado inicial do jogo essa matriz será enviada para a ia
 //e a medida que ela da a resposta compararemos com a matriz do jogador para ver se a ia acertou ou não o navio e completaremos
 //a posição de acordo com a matriz do jogador de modo que essa matriz se torne uma versão espelhada da do jogador
@@ -32,11 +31,11 @@ let matrizTeste = [
 ];
 //                              Função principal para a Chamada de API, com o retorno dos dados
 async function chamadaApi(prompt) {
-    let resposta = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
+    const apiKey = document.getElementById('api-key').value;
+    let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "x-goog-api-key": apiKey
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             contents: [
@@ -152,10 +151,10 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
     "debug": "string",
     "linha": número,
     "coluna": número
-}
-Responda APENAS em JSON válido.
-Não use markdown.
-`;
+
+    Responda APENAS em JSON válido.
+    Não use markdown.
+}`;
     let respostaFunc = await chamadaApi(prompt);
     //console.log(respostaFunc);
     // Debug temporário da resposta da chamada API, contendo:
