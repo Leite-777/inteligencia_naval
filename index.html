@@ -7,7 +7,9 @@
     <meta name="keywords" content="batalha, naval, ia, gemini, ai, naval, battle">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-static.css">
+    <link rel="stylesheet" href="style-external.css">
+    <link rel="stylesheet" href="style-animated.css">
     <!-- Fonte Montserrat-->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Fonte Bruno Ace-->
@@ -80,7 +82,7 @@
                             verificar sua idade.
                         </a>
                     </li>
-                    <li>No topo da página, vá para <u>Conferir a chave de API</u></li>
+                    <li>No canto inferior esquerdo da página, vá para <u>Conferir a chave de API</u></li>
                     <li>Na nova página, no canto superior direito clique em <u>Criar chave de API</u>, e então em <u>Criar Chave</u>.</li>
                     <li>Na nova janela copie a chave de API, que se parece com uma sequência de caracteres aleatórios.</li>
                 </ul>
@@ -148,10 +150,23 @@
     <section id="sobre">
         <h3>Sobre</h3>
         <br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse quis maximus ligula. Morbi vel turpis tellus. Ut lacus tellus, hendrerit vel erat a, varius gravida ante. Cras lobortis vulputate nunc, et suscipit elit varius vel.</p>
-        <p>Cras porttitor tellus purus, vel rhoncus sem congue hendrerit. Aliquam feugiat in est fermentum ultricies. Mauris odio mauris, tincidunt vitae lorem at, convallis aliquet tellus. Mauris eu vestibulum neque, at interdum mauris. Donec bibendum urna ut odio semper lobortis.</p>
-        <p>Phasellus rutrum mi eu eros pharetra scelerisque. In commodo ipsum purus, a gravida tortor aliquam eget. Donec dapibus sapien nisl, ac laoreet dolor interdum ac. Proin lacinia, risus id tincidunt efficitur, erat elit vestibulum arcu, vel condimentum est ex non dolor.</p>
-        <p>Nam risus nulla, porta id tincidunt sed, feugiat sed augue. Phasellus volutpat tristique bibendum. Mauris sit amet ultricies lectus. </p>
+        <p>A Inteligência Naval possui como objetivo demonstrar como a API gratuita do Gemini pode ser utilizada para permitir que uma inteligência artificial participe de um jogo complexo, do ponto de vista técnico, como a Batalha Naval.</p>
+        <p>No entanto, Inteligências artificiais (mais especificamente LLMs) como o ChatGPT ou o Gemini não conseguem acessar e interagir com o site diretamente, pois o funcionamento deles se baseiam apenas em receber e escrever mensagens de texto.</p>
+        <p>Para a proposta do site funcionar, nós utilizamos a Chave API do Gemini pra conseguirmos enviar mensagens automatizadas sobre o jogo.</p>
+        <p>Em cada rodada do jogo, transformamos a grade dos tabuleiros em uma estrutura de texto chamada JSON que o Gemini consegue ler, e damos instruções detalhadas sobre como agir, contendo:</p>
+        <ul>
+            <li>As regras sobre como funciona a batalha naval</li>
+            <li>Números representando o que pode estar em cada posição do tabuleiro (água, navio intacto, etc.)</li>
+            <li>Instruções pra iniciar o jogo escolhendo posições aleatórias desconhecidas, até descobrir algum navio</li>
+            <li>Regras pra ignorar posições descobertas com água, e continuar atacando posições com navios não afundados</li>
+        </ul>
+        <p>Depois da análise, o Gemini deve responder realizando as seguintes ações:</p>
+        <ul>
+            <li>Enviar a posição que a IA escolheu atacar</li>
+            <li>Escrever um raciocínio sobre porquê ela decidiu escolher esse lugar, baseado no que ela já conhece</li>
+            <li>Formatar sua resposta numa estrutura JSON, pra conseguirmos utilizar sua resposta e mostrar sua ação visualmente no site</li>
+        </ul>
+        <p>Como podem ocorrer erros na utilização da Chave API fora do controle do usuário, também foi pensado um algoritmo para realizar jogadas automáticas durante o jogo caso o Gemini esteja indisponível.</p>
     </section> <!-- sobre -->
 
     <footer>
