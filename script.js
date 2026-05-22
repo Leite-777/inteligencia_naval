@@ -69,14 +69,19 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                     
                     celula.appendChild(navioSendoArrastado);
                 });
+
+                // Adiciona os Gifs de Ondas aos campos do jogador.
+                addGifOndas(celula);
+            }
+            else{
+                // Adiciona os Gifs de Nuvens aos campos da IA.
+                addGifNuvens(celula);
             }
 
-            // 0: não revelado
-            // 1: água
-            // 2: contém navio
-            // 3: navio atingido
-            // 4: navio afundado
-            celula.textContent = "0";
+            // 0: contém navio
+            // 1: navio atingido
+            // 2: navio afundado
+            celula.dataset.status = "0"; // Modificado para apenas o código saber o estado do campo.
             celula.id = `${coluna}x${linha}`;
             tabuleiro.appendChild(celula);
         }
@@ -167,3 +172,64 @@ botaoIniciar.addEventListener("click", () =>{
     //alternarTransparenciaTabuleiro("jogador");
     //alternarTransparenciaTabuleiro("inimigo");
 });
+
+// Funções para utilização de gifs
+
+/**
+ *  Função responsável por adicionar o gif de ondas em uma celula.
+ * 
+ * @param celula referente ao campo a receber o gif de ondas.
+ */
+function addGifOndas(celula){
+    const gifOnda = document.createElement('img');
+    gifOnda.style.width = '40px';
+    gifOnda.style.height = '40px';
+    gifOnda.style.borderRadius = '5px';
+    gifOnda.src = 'assets/gifs/ondas.gif';
+    gifOnda.alt = 'Gif de Ondas';
+    celula.appendChild(gifOnda);
+}
+
+/**
+ *  Função responsável por adicionar o gif de nuvens em uma celula.
+ * 
+ * @param celula referente ao campo a receber o gif de nuvens.
+ */
+function addGifNuvens(celula){
+    const gifNuvens = document.createElement('img');
+    gifNuvens.style.width = '40px';
+    gifNuvens.style.height = '40px';
+    gifNuvens.style.borderRadius = '5px';
+    gifNuvens.src = 'assets/gifs/nuvens.gif';
+    gifNuvens.alt = 'Gif de Nuvens';
+    celula.appendChild(gifNuvens);
+}
+
+/**
+ *  Função responsável por adicionar um gif específico ao campo de acordo com o status da celula.
+ *  Status disponíveis: 
+ *      0: navio atingido;  (Gif de Explosão)
+ *      1: navio afundado.  (Gif de Navio Afundado);
+ * 
+ * @param celula referente ao campo a receber o gif específico.
+ */
+function estadoCampo(celula){
+    const gifEstado = document.createElement('img');
+    gifEstado.style.width = '40px';
+    gifEstado.style.height = '40px';
+    gifEstado.style.borderRadius = '5px';
+
+    // 0: navio atingido
+    if(celula.dataset.status === '0'){
+        // gifNuvens.src = 'assets/gifs/nuvens.gif';
+        celula.style.backgroundColor = 'red';
+        gifNuvens.alt = 'Gif de Explosão';
+    }
+    // 1: navio afundado
+    else{
+        // gifNuvens.src = 'assets/gifs/nuvens.gif';
+        celula.style.backgroundColor = 'gray';
+        gifNuvens.alt = 'Gif de Navio Afundado';
+    }
+    celula.appendChild(gifEstado);
+}
