@@ -2,11 +2,11 @@
 let tabuleiroJogador = document.querySelector(".tabuleiro-jogador");
 let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
 let campoDosNavios = document.querySelector(".navios-arrastaveis");
-let btnIniciarJogo = document.querySelector("#iniciarJogo");
+let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
 
 // Para os botões de conteúdo colapsáveis
 const botoes = document.querySelectorAll(".colapsavel-expandir");
-const conteudo = document.querySelectorAll(".colapsavel-conteudo");
+const conteudos = document.querySelectorAll(".colapsavel-conteudo");
 
 //Constantes para serem passadas no parametro da função "criarTabuleiro()".
 const MATRIZ_JOGADOR = 1;
@@ -23,17 +23,16 @@ const botaoIniciar = document.querySelector(".botao-iniciar-jogo");
 let transparenciaJogador = false;
 let transparenciaInimigo = false;
 
-criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
-criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
-criaNavios();
-
 /**
  * Ao clicar inicializa a matriz pronta para iniciazar o jogo, cada div da matriz será um botão para ler aonde o ataque foi dado.
  * OBS: A matriz so deve ser inicializada quando todos os navios forem colocados na matriz.
  */
 btnIniciarJogo.addEventListener("click", () => {
     //Criar um if para compara se todos os navios foram adicionados na matriz.
-    criarTabuleiroParaJogar(tabuleiroJogador, 2);
+    criaNavios();
+    criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
+    criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
+    alternarTransparenciaTabuleiro("inimigo");
 });
 
 /**
@@ -133,7 +132,7 @@ botoes.forEach(botao => {
     });
 });
 
-conteudo.forEach(cont => {
+conteudos.forEach(cont => {
     cont.style.display = "none";
 })
 
@@ -161,10 +160,10 @@ function alternarTransparenciaTabuleiro(tipo) {
 }
 
 // Executa uma vez ao abrir o site
-alternarTransparenciaTabuleiro("jogador");
+//alternarTransparenciaTabuleiro("jogador");
 //alternarTransparenciaTabuleiro("inimigo");
 
 botaoIniciar.addEventListener("click", () =>{
-    alternarTransparenciaTabuleiro("jogador");
-    alternarTransparenciaTabuleiro("inimigo");
+    //alternarTransparenciaTabuleiro("jogador");
+    //alternarTransparenciaTabuleiro("inimigo");
 });
