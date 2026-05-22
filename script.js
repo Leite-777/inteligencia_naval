@@ -78,9 +78,8 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 addGifNuvens(celula);
             }
 
-            // 0: contém navio
-            // 1: navio atingido
-            // 2: navio afundado
+            // 0: navio atingido
+            // 1: navio afundado
             celula.dataset.status = "0"; // Modificado para apenas o código saber o estado do campo.
             celula.id = `${coluna}x${linha}`;
             tabuleiro.appendChild(celula);
@@ -220,7 +219,7 @@ function estadoCampo(celula){
     gifEstado.style.borderRadius = '5px';
 
     // 0: navio atingido
-    if(celula.dataset.status === '0'){
+    if(celula.dataset.status === "0"){
         // gifNuvens.src = 'assets/gifs/nuvens.gif';
         celula.style.backgroundColor = 'red';
         gifNuvens.alt = 'Gif de Explosão';
