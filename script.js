@@ -30,7 +30,7 @@ let transparenciaInimigo = false;
  * @param vetor: Irá guardar quais partes do navio foram atingidas(vetor inicializado com 0).
  * @param direcao: Guarda a informação se o navio esta na horizontal ou vertical.
  */
-class navio{
+class Navios{
     /** 
      * @param diracaoNavio: Passe @param HORIZONTAL ou @param VERTICAL
      * @param tamanho: Tamanho que o navio ocupará(Passe um numero maior ou igual a 1).
