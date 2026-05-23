@@ -1,5 +1,4 @@
 "use strict";
-//import { matrizParaOJogador } from "./script.js";
 let chaveHtml = document.getElementById('api-key');
 //para não travar a chava api
 //matriz vazia todos os elemntos com a posição 0 para representar o estado inicial do jogo essa matriz será enviada para a ia

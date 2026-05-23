@@ -1,4 +1,3 @@
-//import { matrizParaOJogador } from "./script.js";
 let chaveHtml = document.getElementById('api-key') as HTMLInputElement;
 //para não travar a chava api
 
