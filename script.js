@@ -11,6 +11,7 @@ const conteudos = document.querySelectorAll(".colapsavel-conteudo");
 //Constantes para serem passadas no parametro da função "criarTabuleiro()".
 const MATRIZ_JOGADOR = 1; //Cria a matriz com as opções disponinveis de arrastar navios para o jogador.
 const MATRIZ_INIMIGO = -1; //Desabilita a opção de arrastar, criando apenas uma matriz visual.
+const TAMANHO_MATRIZ = 10;
 
 //Constantes para definir a direção do navio.
 const HORIZONTAL = 1;
@@ -19,10 +20,26 @@ const VERTICAL = -1;
 //Guarda o ID do navio sendo arrastado em tempo de execução.
 let navioSendoArrastado = null; 
 
+//Cria o vetor da classe Navios com base no total de navios criados no jogo.
+let naviosCriados;
+
 // Para a ocultação/exibição dos tabuleiros
 const botaoIniciar = document.querySelector(".botao-iniciar-jogo");
 let transparenciaJogador = false;
 let transparenciaInimigo = false;
+
+let matrizParaOJogador = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
 
 /**
  * Classe do navio, criada para guardar as informações dos navios
@@ -50,6 +67,7 @@ class Navios{
             return false;
         }
     }
+
 }
 
 /**
@@ -62,7 +80,12 @@ btnIniciarJogo.addEventListener("click", () => {
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
     criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
     alternarTransparenciaTabuleiro("inimigo");
+    mostraMatriz();
 });
+
+function mostraMatriz(){
+    console.table(matrizParaOJogador);
+}
 
 /**
  * Função para preencher os tabuleiros da batalha naval com uma grade de 10x10 divs
@@ -72,8 +95,8 @@ btnIniciarJogo.addEventListener("click", () => {
 function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
   tabuleiro.innerHTML = "";
 
-  for (let linha = 0; linha < 10; linha++) {
-        for (let coluna = 0; coluna < 10; coluna++) {
+  for (let linha = 0; linha < TAMANHO_MATRIZ; linha++) {
+        for (let coluna = 0; coluna < TAMANHO_MATRIZ; coluna++) {
 
             const celula = document.createElement("div");
 
@@ -81,6 +104,11 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
 
             celula.dataset.linha = linha;
             celula.dataset.coluna = coluna;
+
+            // 0: navio atingido
+            // 1: navio afundado
+            celula.dataset.status = "0"; // Modificado para apenas o código saber o estado do campo.
+            celula.id = `${coluna}x${linha}`;
 
             //Cria tabuleiro pra o Jogador poder colocar os seus navios.
             if(tipoDoTabuleiro == 1){
@@ -95,8 +123,12 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                  */
                 celula.addEventListener("drop", (e) =>{
                     e.preventDefault();
-                    
-                    celula.appendChild(navioSendoArrastado);
+                    const navio = verificaEspacoMatriz(navioSendoArrastado, celula.id);
+                    if(navio !== false && navio !== null){
+                        celula.appendChild(navioSendoArrastado);
+                    }else{
+                        campoDosNavios.appendChild(navioSendoArrastado);
+                    }
                 });
 
                 // Adiciona os Gifs de Ondas aos campos do jogador.
@@ -107,10 +139,6 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 addGifNuvens(celula);
             }
 
-            // 0: navio atingido
-            // 1: navio afundado
-            celula.dataset.status = "0"; // Modificado para apenas o código saber o estado do campo.
-            celula.id = `${coluna}x${linha}`;
             tabuleiro.appendChild(celula);
         }
     }
@@ -124,20 +152,32 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
  */
 function criaNavios(){
     numeroDeNavios = 3;
+    naviosCriados = new Array(numeroDeNavios);
 
     //Navios de tamanho 1
     for(let index=0; index < numeroDeNavios; index++){
         const navio = document.createElement("div");
         if(index == 0){
-            navio.classList.add("navioTamanho1"); 
+            navio.classList.add("navioTamanho1");
+            naviosCriados[index] = new Navios(1, HORIZONTAL);
         }else{
             if(index == 1){
-                navio.classList.add("navioTamanho2")
+                navio.classList.add("navioTamanho2");
+                naviosCriados[index] = new Navios(2, HORIZONTAL);
             }else{
                 if(index == 2){
-                    navio.classList.add("navioTamanho3")
+                    navio.classList.add("navioTamanho2-vertical");
+                    naviosCriados[index] = new Navios(2, VERTICAL);
                 }
             }
+            /*
+            else{
+                if(index == 2){
+                    navio.classList.add("navioTamanho3-vertical");
+                    naviosCriados[index] = new Navios(3, HORIZONTAL);
+                }
+            }
+            */
         }
         navio.textContent="a";
         //Cria um ID para o navio
@@ -152,20 +192,6 @@ function criaNavios(){
         });
         campoDosNavios.appendChild(navio);
     }
-
-    //Navios de tamanho 2.
-    /*
-    numeroDeNavios = criaNumeroDeNavios(2);
-    for(let index=0; index < numeroDeNavios; index++){}
-
-    //Navios de tamanho 3.
-    numeroDeNavios = criaNumeroDeNavios(3);
-    for(let index=0; index < numeroDeNavios; index++){}
-
-    //Navios de tamanho 4.
-    numeroDeNavios = criaNumeroDeNavios(4);
-    for(let index=0; index < numeroDeNavios; index++){}
-    */
 }
 
 /**
@@ -178,6 +204,50 @@ campoDosNavios.addEventListener("drop", (e) =>{
     e.preventDefault();
     campoDosNavios.appendChild(navioSendoArrastado);
 });
+
+//Procura o navio no vetor de Navios.
+function buscaNavioVetor(tamanho) {
+    return naviosCriados.find(n => n.tamanho === tamanho) ?? null;
+}
+
+/**
+ * Verifica se o navio que estão sendo arrastado possui espaço para ser inserido na posição que foi colocado na tabela.
+ * @returns Retorna True se for possivel, se não retorna false.
+ * 
+ * @param navioSendoArrastado: Recebe o elemento sendo arrastado no momento.
+ * @param idCelula: ID da celula para poder ter acesso a sua Linha e Coluna.
+ */
+function verificaEspacoMatriz(navioSendoArrastado, idCelula) {
+    const [colunaStr, linhaStr] = idCelula.split('x');
+    const coluna = Number(colunaStr);
+    const linha  = Number(linhaStr);
+
+    // MUDANÇA 2: tamanho1 também precisa retornar o objeto navio, não "true"
+    // pois o drop handler compara "navio != false" e espera o objeto para removeNavioVetor()
+    if (navioSendoArrastado.className === "navioTamanho1"){
+        return buscaNavioVetor(1);
+    }
+
+    const navio = buscaNavioVetor(2);
+    if (navio === null) return false;
+
+    if (navioSendoArrastado.className === "navioTamanho2") {
+        if((coluna + navio.tamanho) <= TAMANHO_MATRIZ){
+            return navio;
+        }else{
+            return false;
+        }
+    }
+    if (navioSendoArrastado.className === "navioTamanho2-vertical") {
+        if((linha + navio.tamanho) <= TAMANHO_MATRIZ){
+            return navio;
+        }else{
+            return false;
+        }
+    }
+
+    return false;
+}
 
 // Função para ocultar/exibir conteúdos colapsáveis
 botoes.forEach(botao => {
@@ -199,7 +269,6 @@ conteudos.forEach(cont => {
 })
 
 // Função para ativar/desativar transparência de um tabuleiro
-
 function alternarTransparenciaTabuleiro(tipo) {
 
     if (tipo === "jogador") {
