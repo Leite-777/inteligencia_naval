@@ -28,29 +28,28 @@ let tamanhoNavios = [5, 4, 3, 3, 2];
 /* Quantia de cada navio referente a posição:
  * carrierQuant, battleshipQuant, destroyerQuant, submarineQuant, patrolBoatQuant
 */
-let quantiaNavios = [1, 2, 3, 4, 5];
+let quantiaNavios = [1, 1, 1, 1, 1];
 
 //Cria o vetor da classe Navios com base no total de navios criados no jogo.
 let naviosCriados;
 let contNaviosCriados=0;//Contador para saber quantos navios ja foram criados em tempo de execução.
 
-// Para a ocultação/exibição dos tabuleiros
-const botaoIniciar = document.querySelector(".botao-iniciar-jogo");
-let transparenciaJogador = false;
-let transparenciaInimigo = false;
+/**
+ * Ao clicar inicializa a matriz pronta para iniciazar o jogo, cada div da matriz será um botão para ler aonde o ataque foi dado.
+ * OBS: A matriz so deve ser inicializada quando todos os navios forem colocados na matriz.
+ */
+btnIniciarJogo.addEventListener("click", () => {
+    //Criar um if para compara se todos os navios foram adicionados na matriz.
+    criaNavios();
+    criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
+    criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
+    alternarTransparenciaTabuleiro("inimigo");
+    mostraMatriz();
+});
 
-let matrizParaOJogador = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
+function mostraMatriz(){
+    console.table(tabuleiroHTMLparaJSON(".tabuleiro-jogador"));
+}
 
 /**
  * Classe do navio, criada para guardar as informações dos navios
@@ -79,23 +78,6 @@ class Navios{
         }
     }
 
-}
-
-/**
- * Ao clicar inicializa a matriz pronta para iniciazar o jogo, cada div da matriz será um botão para ler aonde o ataque foi dado.
- * OBS: A matriz so deve ser inicializada quando todos os navios forem colocados na matriz.
- */
-btnIniciarJogo.addEventListener("click", () => {
-    //Criar um if para compara se todos os navios foram adicionados na matriz.
-    criaNavios();
-    criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
-    criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
-    alternarTransparenciaTabuleiro("inimigo");
-    mostraMatriz();
-});
-
-function mostraMatriz(){
-    console.table(matrizParaOJogador);
 }
 
 /**
@@ -250,115 +232,4 @@ function verificaEspacoMatriz(navioSendoArrastado, idCelula) {
             return false;
         }
     }
-}
-
-// Função para ocultar/exibir conteúdos colapsáveis
-botoes.forEach(botao => {
-    botao.addEventListener("click", () => {
-        const conteudo = botao.nextElementSibling;
-
-        const displayAtual = getComputedStyle(conteudo).display;
-
-        if (displayAtual === "none") {
-            conteudo.style.display = "block";
-        } else {
-            conteudo.style.display = "none";
-        }
-    });
-});
-
-conteudos.forEach(cont => {
-    cont.style.display = "none";
-})
-
-// Função para ativar/desativar transparência de um tabuleiro
-function alternarTransparenciaTabuleiro(tipo) {
-
-    if (tipo === "jogador") {
-        transparenciaJogador = !transparenciaJogador;
-
-        tabuleiroJogador.classList.toggle(
-            "tabuleiro-transparente",
-            transparenciaJogador
-        );
-    }
-
-    if (tipo === "inimigo") {
-        transparenciaInimigo = !transparenciaInimigo;
-
-        tabuleiroInimigo.classList.toggle(
-            "tabuleiro-transparente",
-            transparenciaInimigo
-        );
-    }
-}
-
-// Executa uma vez ao abrir o site
-//alternarTransparenciaTabuleiro("jogador");
-//alternarTransparenciaTabuleiro("inimigo");
-
-botaoIniciar.addEventListener("click", () =>{
-    //alternarTransparenciaTabuleiro("jogador");
-    //alternarTransparenciaTabuleiro("inimigo");
-});
-
-// Funções para utilização de gifs
-
-/**
- *  Função responsável por adicionar o gif de ondas em uma celula.
- * 
- * @param celula referente ao campo a receber o gif de ondas.
- */
-function addGifOndas(celula){
-    const gifOnda = document.createElement('img');
-    gifOnda.style.width = '40px';
-    gifOnda.style.height = '40px';
-    gifOnda.style.borderRadius = '5px';
-    gifOnda.src = 'assets/gifs/ondas.gif';
-    gifOnda.alt = 'Gif de Ondas';
-    celula.appendChild(gifOnda);
-}
-
-/**
- *  Função responsável por adicionar o gif de nuvens em uma celula.
- * 
- * @param celula referente ao campo a receber o gif de nuvens.
- */
-function addGifNuvens(celula){
-    const gifNuvens = document.createElement('img');
-    gifNuvens.style.width = '40px';
-    gifNuvens.style.height = '40px';
-    gifNuvens.style.borderRadius = '5px';
-    gifNuvens.src = 'assets/gifs/nuvens.gif';
-    gifNuvens.alt = 'Gif de Nuvens';
-    celula.appendChild(gifNuvens);
-}
-
-/**
- *  Função responsável por adicionar um gif específico ao campo de acordo com o status da celula.
- *  Status disponíveis: 
- *      0: navio atingido;  (Gif de Explosão)
- *      1: navio afundado.  (Gif de Navio Afundado);
- * 
- * @param celula referente ao campo a receber o gif específico.
- */
-function estadoCampo(celula){
-    const gifEstado = document.createElement('img');
-    gifEstado.style.width = '40px';
-    gifEstado.style.height = '40px';
-    gifEstado.style.borderRadius = '5px';
-
-    // 0: navio atingido
-    if(celula.dataset.status === "0"){
-        // gifNuvens.src = 'assets/gifs/nuvens.gif';
-        celula.style.backgroundColor = 'red';
-        gifNuvens.alt = 'Gif de Explosão';
-    }
-    // 1: navio afundado
-    else{
-        // gifNuvens.src = 'assets/gifs/nuvens.gif';
-        celula.style.backgroundColor = 'gray';
-        gifNuvens.alt = 'Gif de Navio Afundado';
-    }
-    celula.appendChild(gifEstado);
 }
