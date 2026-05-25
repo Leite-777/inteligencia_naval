@@ -20,8 +20,19 @@ const VERTICAL = -1;
 //Guarda o ID do navio sendo arrastado em tempo de execução.
 let navioSendoArrastado = null; 
 
+/*Guarda o tamanho de cada um dos navios criados referente a posição:
+ * carrierTam, battleshipTam, destroyerTam, submarineTam, patrolBoatTam
+*/
+let tamanhoNavios = [5, 4, 3, 3, 2];
+
+/* Quantia de cada navio referente a posição:
+ * carrierQuant, battleshipQuant, destroyerQuant, submarineQuant, patrolBoatQuant
+*/
+let quantiaNavios = [1, 2, 3, 4, 5];
+
 //Cria o vetor da classe Navios com base no total de navios criados no jogo.
 let naviosCriados;
+let contNaviosCriados=0;//Contador para saber quantos navios ja foram criados em tempo de execução.
 
 // Para a ocultação/exibição dos tabuleiros
 const botaoIniciar = document.querySelector(".botao-iniciar-jogo");
@@ -145,43 +156,34 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
 }
 
 /**
- * Cria os navios e adiciona cada um deles a variavel "campoDosNavios".
- */
-/**
- * Cria os navios e adiciona cada um deles a variavel "campoDosNavios".
+ * Soma quantos navios exitem dentro do jogo.
  */
 function criaNavios(){
-    numeroDeNavios = 3;
-    naviosCriados = new Array(numeroDeNavios);
+    //Total é o acumulador e valorAtual é o número da vez
+    const soma = quantiaNavios.reduce((total, valorAtual) => total + valorAtual, 0);
 
-    //Navios de tamanho 1
-    for(let index=0; index < numeroDeNavios; index++){
+    naviosCriados = new Array(soma); 
+    for(let index=0; index < quantiaNavios.length; index++){
+        inicializaNavios(tamanhoNavios[index], quantiaNavios[index]);
+    }
+}
+
+/**
+ * Cria os navios de acordo com as especificações passadas por parametro e adiciona eles no "campoDosNavios".
+ * 
+ * @param {*} tamanho Tamanho do navio.
+ * @param {*} quantidade Quantos navios serão criados
+ */
+function inicializaNavios(tamanho, quantidade){
+    for(let index=0; index < quantidade; index++){
         const navio = document.createElement("div");
-        if(index == 0){
-            navio.classList.add("navioTamanho1");
-            naviosCriados[index] = new Navios(1, HORIZONTAL);
-        }else{
-            if(index == 1){
-                navio.classList.add("navioTamanho2");
-                naviosCriados[index] = new Navios(2, HORIZONTAL);
-            }else{
-                if(index == 2){
-                    navio.classList.add("navioTamanho2-vertical");
-                    naviosCriados[index] = new Navios(2, VERTICAL);
-                }
-            }
-            /*
-            else{
-                if(index == 2){
-                    navio.classList.add("navioTamanho3-vertical");
-                    naviosCriados[index] = new Navios(3, HORIZONTAL);
-                }
-            }
-            */
-        }
-        navio.textContent="a";
+        let classeNavio = "navioTamanho" + tamanho + "-vertical";
+
+        navio.classList.add(classeNavio);
+        naviosCriados[contNaviosCriados] = new Navios(tamanho, HORIZONTAL);
+        
         //Cria um ID para o navio
-        navio.id = index+1;
+        navio.id = contNaviosCriados;
 
         //Permite o navio ser arrastavel
         navio.draggable = true;
@@ -190,6 +192,8 @@ function criaNavios(){
         navio.addEventListener("dragstart", (e) =>{
             navioSendoArrastado = e.target;
         });
+
+        contNaviosCriados++;
         campoDosNavios.appendChild(navio);
     }
 }
@@ -206,8 +210,9 @@ campoDosNavios.addEventListener("drop", (e) =>{
 });
 
 //Procura o navio no vetor de Navios.
-function buscaNavioVetor(tamanho) {
-    return naviosCriados.find(n => n.tamanho === tamanho) ?? null;
+function buscaNavioPorId(id) {
+    // Convertemos para Number pois o id do elemento HTML vem como string
+    return naviosCriados[Number(id)] ?? null;
 }
 
 /**
@@ -222,31 +227,29 @@ function verificaEspacoMatriz(navioSendoArrastado, idCelula) {
     const coluna = Number(colunaStr);
     const linha  = Number(linhaStr);
 
-    // MUDANÇA 2: tamanho1 também precisa retornar o objeto navio, não "true"
-    // pois o drop handler compara "navio != false" e espera o objeto para removeNavioVetor()
-    if (navioSendoArrastado.className === "navioTamanho1"){
-        return buscaNavioVetor(1);
-    }
-
-    const navio = buscaNavioVetor(2);
+    // Pegamos o objeto do navio real usando o ID dele
+    const navio = buscaNavioPorId(navioSendoArrastado.id);
     if (navio === null) return false;
 
-    if (navioSendoArrastado.className === "navioTamanho2") {
-        if((coluna + navio.tamanho) <= TAMANHO_MATRIZ){
-            return navio;
-        }else{
-            return false;
-        }
-    }
-    if (navioSendoArrastado.className === "navioTamanho2-vertical") {
-        if((linha + navio.tamanho) <= TAMANHO_MATRIZ){
-            return navio;
-        }else{
-            return false;
-        }
-    }
+    // Descobre se o elemento visual está na vertical
+    const ehVertical = navioSendoArrastado.classList.contains("vertical") || 
+                       navioSendoArrastado.className.includes("vertical");
 
-    return false;
+    if (ehVertical) {
+        // Verifica se o navio cabe verticalmente sem sair por baixo do tabuleiro
+        if ((linha + navio.tamanho) <= TAMANHO_MATRIZ) {
+            return navio;
+        } else {
+            return false;
+        }
+    } else {
+        // Verifica se o navio cabe horizontalmente sem sair pela direita
+        if ((coluna + navio.tamanho) <= TAMANHO_MATRIZ) {
+            return navio;
+        } else {
+            return false;
+        }
+    }
 }
 
 // Função para ocultar/exibir conteúdos colapsáveis
