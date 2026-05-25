@@ -29,6 +29,11 @@ let matrizTeste = [
     [0, 0, 2, 2, 2, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 2, 2, 2]
 ];
+var Acerto;
+(function (Acerto) {
+    Acerto[Acerto["Errou"] = 40] = "Errou";
+    Acerto[Acerto["Acertou"] = 50] = "Acertou";
+})(Acerto || (Acerto = {}));
 //                              Função principal para a Chamada de API, com o retorno dos dados
 async function chamadaApi(prompt) {
     const apiKey = document.getElementById('api-key').value;
@@ -129,7 +134,7 @@ async function chamarApi(matrizIa, matrizJogador) {
     let apiKey = chaveHtml.value;
     if (!apiKey) {
         console.error("A chave da API não foi informada.");
-        return;
+        return { acerto: undefined };
     }
     // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
     let matrizFormatada = matrizIa.map(linha => `[${linha.join(', ')}]`).join('\n');
@@ -180,14 +185,17 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
                 // Acertou um Navio! Atualiza a matriz do prompt com 3
                 matrizIa[linhaAtaque][colunaAtaque] = 3;
                 alert(`💥 TIRO CERTEIRO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
+                return { acerto: Acerto.Acertou };
             }
             else if (matrizIa[linhaAtaque][colunaAtaque] === 0) {
                 // Água! Atualiza a matriz do prompt com 1
                 matrizIa[linhaAtaque][colunaAtaque] = 1;
                 alert(`🌊 Água... O Gemini errou em (${linhaAtaque}, ${colunaAtaque})`);
+                return { acerto: Acerto.Errou };
             }
             else {
                 alert(`⚠️ O Gemini atacou uma posição repetida (${linhaAtaque}, ${colunaAtaque})!`);
+                return { acerto: Acerto.Errou };
             }
         }
         else {
@@ -198,7 +206,9 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
         const erro = respostaFunc;
         console.error(`Erro na chamada da API [Código ${erro.CodigoErro}]: ${erro.mensagemErro}`);
         alert(`Erro ao chamar a API: ${erro.mensagemErro}`);
+        return { acerto: undefined };
     }
+    return { acerto: undefined };
 }
 //      Configurando o botão Iniciar Jogo temporariamente para iniciar a chamada da API
 const botaoIniciarJogo = document.querySelector('.botao-iniciar-jogo');
@@ -210,14 +220,44 @@ if (botaoIniciarJogo) {
         botaoIniciarJogo.innerText = "Gemini pensando...";
         console.log("Botão pressionado! Iniciando turno da IA...");
         // Dispara a função principal que criamos
-        await chamarApi(matrizParaOPrompt, matrizTeste);
+        //let respostaChamadaApi = await chamarApi(matrizParaOPrompt, matrizTeste);
         // Reativa o botão após o término da jogada
         botaoIniciarJogo.disabled = false;
         botaoIniciarJogo.innerText = "Iniciar Jogo!";
+        const campoIa = document.querySelector('.tabuleiro-inimigo');
+        if (campoIa) {
+            Array.from(campoIa.children).forEach((filho) => {
+                filho.addEventListener("click", async () => {
+                    let parada = 0;
+                    do {
+                        let status = await JogadaApi();
+                        if (status.acerto != Acerto.Acertou) {
+                            parada = 0;
+                        }
+                        else {
+                            parada = 1;
+                        }
+                    } while (parada != 0);
+                });
+            });
+            console.log(campoIa.childNodes);
+        }
     });
 }
 else {
     console.error("Botão '.botao-iniciar-jogo' não foi encontrado no HTML. Verifique a classe.");
+}
+async function JogadaApi() {
+    let alvo = await chamarApi(matrizParaOPrompt, matrizTeste);
+    if (alvo.acerto == Acerto.Errou) {
+        return { acerto: Acerto.Errou };
+    }
+    if (alvo.acerto == Acerto.Acertou) {
+        return { acerto: Acerto.Acertou };
+    }
+    else {
+        return { acerto: Acerto.Errou };
+    }
 }
 //Tipos de erro
 /*
