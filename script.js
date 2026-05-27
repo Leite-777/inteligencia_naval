@@ -146,8 +146,18 @@ function criaNavios(){
 
     naviosCriados = new Array(soma); 
     for(let index=0; index < quantiaNavios.length; index++){
-        inicializaNavios(tamanhoNavios[index], quantiaNavios[index]);
+        inicializaONavio(tamanhoNavios[index], quantiaNavios[index]);
     }
+}
+/**
+ * Gera um numero aleatorio de acordo com os parametros passados. 
+ * 
+ * @param {*} min Valor minimo gerado pela função.
+ * @param {*} max Valor máximo gerado pela função.
+ * @returns 
+ */
+function geraNumeroAleatorio(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
@@ -156,29 +166,38 @@ function criaNavios(){
  * @param {*} tamanho Tamanho do navio.
  * @param {*} quantidade Quantos navios serão criados
  */
-function inicializaNavios(tamanho, quantidade){
-    for(let index=0; index < quantidade; index++){
-        const navio = document.createElement("div");
-        let classeNavio = "navioTamanho" + tamanho + "-vertical";
+function inicializaONavio(tamanho, quantidade){
+    let classeNavio;
+    const navio = document.createElement("div");
 
-        navio.classList.add(classeNavio);
+    if(geraNumeroAleatorio(0, 1) == 1){
+
+        classeNavio = "navioTamanho" + tamanho + "-horizontal";
         naviosCriados[contNaviosCriados] = new Navios(tamanho, HORIZONTAL);
-        
-        //Cria um ID para o navio
-        navio.id = contNaviosCriados;
+    }else{
 
-        //Permite o navio ser arrastavel
-        navio.draggable = true;
-
-        //Guarda o ID do navio que está sendo arrastado
-        navio.addEventListener("dragstart", (e) =>{
-            navioSendoArrastado = e.target;
-        });
-
-        contNaviosCriados++;
-        campoDosNavios.appendChild(navio);
+        classeNavio = "navioTamanho" + tamanho + "-vertical";
+        naviosCriados[contNaviosCriados] = new Navios(tamanho, HORIZONTAL);
     }
+    navio.classList.add(classeNavio);
+
+    //Cria um ID para o navio
+    navio.id = contNaviosCriados;
+
+    //Permite o navio ser arrastavel
+    navio.draggable = true;
+
+    //Guarda o ID do navio que está sendo arrastado
+    navio.addEventListener("dragstart", (e) =>{
+        navioSendoArrastado = e.target;
+    });
+
+    contNaviosCriados++;
+    campoDosNavios.appendChild(navio);
+  
 }
+
+
 
 /**
  * Permite que os navios possam ser arrastados novamente para o campo de onde foram criado
