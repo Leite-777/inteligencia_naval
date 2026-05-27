@@ -1,0 +1,41 @@
+.colapsavel-expandir, nav > ul > li {
+  transition: 
+    transform 0.3s ease
+}
+
+.colapsavel-expandir:hover, nav > ul > li:hover {
+  transform: translateX(10px);
+}
+
+.colapsavel-expandir:active {
+  transform: scale(0.9); /* Shrinks slightly to look "pressed" */
+}
+
+.botao-header, .botao-iniciar-jogo {
+  transition: 
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    filter 0.4s ease;
+}
+
+.botao-header:hover, .botao-iniciar-jogo:hover {
+  transform: scale(1.05) translateY(-4px);
+  box-shadow: 0 25px 30px rgba(16, 6, 100, 0.3);
+  filter: brightness(1.1);
+}
+
+/* -    -   -   -   -   -   -   -   -   -   - */
+/* Células da grade de batalha naval com animação ao passar o mouse em cima*/
+
+/* Fonte: https://design.dev/tools/hover-effect-generator/ */
+.celula {
+  transition: 
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.celula:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  background-color: #0050b0;
+}
