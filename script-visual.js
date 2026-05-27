@@ -76,30 +76,60 @@ function addGifNuvens(celula){
 }
 
 /**
+ *  Função responsável por adicionar o gif de fogo em uma célula de navio parcialmente atingido.
+ * 
+ * @param celula referente ao campo a receber o gif de fogo.
+ */
+function addGifFogo(celula){
+    const gifFogo = document.createElement('img');
+    gifFogo.style.width = '40px';
+    gifFogo.style.height = '40px';
+    gifFogo.style.borderRadius = '5px';
+    gifFogo.src = 'assets/gifs/fogo.gif';
+    gifFogo.alt = 'Gif de Fogo';
+    celula.appendChild(gifFogo);
+}
+
+/**
+ *  Função responsável por adicionar o gif de caveiras em uma célula de navio completamente afundado.
+ * 
+ * @param celula referente ao campo a receber o gif de fogo.
+ */
+function addGifCaveira(celula){
+    const gifCaveira = document.createElement('img');
+    gifCaveira.style.width = '40px';
+    gifCaveira.style.height = '40px';
+    gifCaveira.style.borderRadius = '5px';
+    gifCaveira.src = 'assets/gifs/caveira.gif';
+    gifCaveira.alt = 'Gif de Fogo';
+    celula.appendChild(gifCaveira);
+}
+
+/**
  *  Função responsável por adicionar um gif específico ao campo de acordo com o status da celula.
  *  Status disponíveis: 
- *      0: navio atingido;  (Gif de Explosão)
- *      1: navio afundado.  (Gif de Navio Afundado);
+ *      0: Desconhecido - Nuvens
+ *      1: Água - Ondas
+ *      2: Navio - (sem alteração)
+ *      3: Navio atingido - Fogo
+ *      4: Navio afundado - Caveira
  * 
  * @param celula referente ao campo a receber o gif específico.
  */
 function estadoCampo(celula){
-    const gifEstado = document.createElement('img');
-    gifEstado.style.width = '40px';
-    gifEstado.style.height = '40px';
-    gifEstado.style.borderRadius = '5px';
-
-    // 0: navio atingido
-    if(celula.dataset.status === "0"){
-        // gifNuvens.src = 'assets/gifs/nuvens.gif';
-        celula.style.backgroundColor = 'red';
-        gifNuvens.alt = 'Gif de Explosão';
+    switch(celula.dataset.status){
+        case "0": // Desconhecido
+            addGifNuvens(celula);
+            break;
+        case "1": // Água
+            addGifOndas(celula);
+            break;
+        case "3": // Navio parcialmente atingido
+            addGifFogo(celula);
+            break;
+        case "4": // Navio completamente afundado
+            celula.style.backgroundColor = 'gray';    
+            addGifCaveira(celula);
+            break;
     }
-    // 1: navio afundado
-    else{
-        // gifNuvens.src = 'assets/gifs/nuvens.gif';
-        celula.style.backgroundColor = 'gray';
-        gifNuvens.alt = 'Gif de Navio Afundado';
-    }
-    celula.appendChild(gifEstado);
 }
