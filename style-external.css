@@ -1,0 +1,76 @@
+/* -    -   -   -   -   -   -   -   -   -   - */
+/* Efeitos do título/header da página*/
+
+/* Fonte: https://css-generators.com/wavy-divider/ */
+.titulo{
+    padding-bottom: 50px;
+    clip-path: shape(from 0 0,vline to calc(100% - 25px),curve to 16.67% calc(100% - 4.5px) with 11.11% calc(100% - 3px),curve to 27.78% calc(100% - 22.5px) with 22.22% calc(100% - 6px),curve to 38.89% calc(100% - 39.5px) with 33.33% calc(100% - 39px),curve to 50% calc(100% - 21px) with 44.44% calc(100% - 40px),curve to 61.11% calc(100% - 16px) with 55.56% calc(100% - 2px),curve to 72.22% calc(100% - 27.5px) with 66.67% calc(100% - 30px),curve to 83.33% calc(100% - 20.5px) with 77.78% calc(100% - 25px),curve to 100% calc(100% - 25px) with 88.89% calc(100% - 16px),vline to 0, hline to 0);
+}
+
+/* Fonte: https://css-generators.com/ribbon-shapes/ */
+.titulo h1 {
+  font-size: 50px;
+  font-weight: bold;
+  color: #fff;
+}
+.titulo h1 {
+  --s: 1.8em; /* the ribbon size */
+  --d: .8em;  /* the depth */
+  --c: .8em;  /* the cutout part */
+  
+  padding: 0 calc(var(--s) + .5em) var(--d);
+  line-height: 1.8;
+  background:
+    conic-gradient(at left  var(--s) bottom var(--d),
+     #0000 25%,#0008 0 37.5%,#0004 0) 0   /50% 100% no-repeat,
+    conic-gradient(at right var(--s) bottom var(--d),
+     #0004 62.5%,#0008 0 75%,#0000 0) 100%/50% 100% no-repeat;
+  clip-path: polygon(0 var(--d), var(--s) var(--d),var(--s) 0,calc(100% - var(--s)) 0,calc(100% - var(--s)) var(--d),100% var(--d),calc(100% - var(--c)) calc(50% + var(--d)/2),100% 100%,calc(100% - var(--s) - var(--d)) 100%,calc(100% - var(--s) - var(--d)) calc(100% - var(--d)),calc(var(--s) + var(--d)) calc(100% - var(--d)),calc(var(--s) + var(--d)) 100%,0 100%,var(--c) calc(50% + var(--d)/2));
+  background-color: #002c50; /* the main color */
+  width: fit-content;
+}
+
+/* -    -   -   -   -   -   -   -   -   -   - */
+/* Conteúdo expandível na forma de balões de mensagem*/
+
+.colapsavel-expandir{
+  --b: 1em; /* control the base */
+  --h: .7em; /* control the height */
+
+  --c: #014177;
+
+  padding: 1em;
+  border-radius: 1.2em;
+  border-bottom-left-radius: 0;
+  clip-path: polygon(0 0,100% 0,100% 100%,
+    var(--b) 100%,
+    calc(-1*var(--h)) calc(100% + var(--h)),
+    0 calc(100% - var(--b)));
+  background: var(--c);
+  border-image: conic-gradient(var(--c) 0 0) 0 0 999 999/
+    0 0 calc(var(--h) + var(--b)) calc(var(--h) + var(--b))/0 0 var(--h) var(--h);
+}
+
+.colapsavel-conteudo{
+  /* triangle dimension */
+  --b: 1em; /* control the base */
+  --h: .7em; /* control the height */
+
+  --c:#3EE5DF;
+
+  padding: 1em;
+  border-radius: 1.2em;
+  border-bottom-right-radius: 0;
+  clip-path: polygon(100% 0,0 0,0 100%,
+    calc(100% - var(--b)) 100%,
+    calc(100% + var(--h)) calc(100% + var(--h)),
+    100% calc(100% - var(--b)));
+  background: var(--c);
+  border-image: conic-gradient(var(--c) 0 0) 0 999 999 0/
+    0 calc(var(--h) + var(--b)) calc(var(--h) + var(--b)) 0/0 var(--h) var(--h) 0;
+}
+
+.colapsavel-conteudo, .colapsavel-expandir{
+    margin-left: 30px;
+}
+

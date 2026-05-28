@@ -1,0 +1,109 @@
+:root {
+    --larguraNavio: 35px;
+    --alturaNavio: 35px;
+    --bordaDosnavios: 10px;
+
+    --tamanhoCelula: 40px;
+}
+
+.navioTamanho2-horizontal {
+    display: flex;
+    position: absolute;
+    background-color: rgb(0, 0, 255);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    height: var(--alturaNavio);
+    width: calc(var(--larguraNavio) * 2); /* Dobro do 1 navio */
+    gap: 2px; 
+}
+
+.navioTamanho2-vertical {
+    display: flex;
+    position: absolute;
+    background-color: rgb(0, 0, 255);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    margin-top: 50px;
+    height: calc(var(--alturaNavio) * 2);
+    width: var(--larguraNavio); /* Dobro do 1 navio */
+    gap: 2px; 
+}
+
+.navioTamanho3-horizontal {
+    display: flex;
+    position: absolute;
+    background-color: rgb(9, 255, 0);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    height: var(--alturaNavio);
+    width: calc(var(--larguraNavio) * 3);  /* Triplo do 1 navio */
+    gap: 2px;
+}
+
+.navioTamanho3-vertical {
+    display: flex;
+    position: absolute;
+    background-color: rgb(9, 255, 0);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    margin-top: 90px;
+    height: calc(var(--alturaNavio) * 3.5);
+    width: var(--larguraNavio);  /* Triplo do 1 navio */
+    gap: 2px;
+}
+
+.navioTamanho4-horizontal {
+    display: flex;
+    position: absolute;
+    background-color: rgb(255, 0, 0);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    margin-left: 50px;
+    height: var(--alturaNavio);
+    width: calc(var(--larguraNavio) * 5);  /* Quadruplo do 1 navio */
+    gap: 2px;
+}
+
+.navioTamanho4-vertical {
+    display: flex;
+    position: absolute;
+    background-color: rgb(255, 0, 0);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    margin-top: 50px;
+    height: calc(var(--alturaNavio) * 4.5);
+    width: var(--larguraNavio);  /* Quadruplo do 1 navio */
+    gap: 2px;
+}
+
+.navioTamanho5-horizontal {
+    display: flex;
+    position: absolute;
+    background-color: rgb(255, 255, 0);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    height: var(--alturaNavio);
+    width: calc(var(--larguraNavio) * 5);  /* Quintuplo do 1 navio */
+    gap: 2px;
+}
+
+.navioTamanho5-vertical {
+    display: flex;
+    position: absolute;
+    background-color: rgb(255, 255, 0);
+    border-color: black;
+    border-radius: var(--bordaDosnavios);
+    height: calc(var(--alturaNavio) * 6);
+    width: var(--larguraNavio);  /* Quintuplo do 1 navio */
+    gap: 2px;
+}
+
+/* Adicione este bloco inteiro no final do arquivo style-navios.css */
+
+.celula [class^="navioTamanho"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0; /* Zera as margens (margin-top/left) para não empurrar o navio para fora da célula */
+    z-index: 10; /* Garante que o navio fique na frente da água */
+}
