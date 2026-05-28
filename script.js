@@ -18,7 +18,9 @@ const HORIZONTAL = 1;
 const VERTICAL = -1;
 
 //Guarda o Elemento do navio sendo arrastado em tempo de execução.
-let navioSendoArrastado = null; 
+let navioSendoArrastado = null;
+//Objeto do navio sendo arrastado naquele momento.
+let objNavioSendoArrastado = null;
 
 /*Guarda o tamanho de cada um dos navios criados referente a posição:
  * carrierTam, battleshipTam, destroyerTam, submarineTam, patrolBoatTam
@@ -44,12 +46,7 @@ btnIniciarJogo.addEventListener("click", () => {
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
     criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
     alternarTransparenciaTabuleiro("inimigo");
-    mostraMatriz();
 });
-
-function mostraMatriz(){
-    console.table(tabuleiroHTMLparaJSON(".tabuleiro-jogador"));
-}
 
 /**
  * Classe do navio, criada para guardar as informações dos navios
@@ -63,6 +60,7 @@ class Navios{
      * @param tamanho: Tamanho que o navio ocupará(Passe um numero maior ou igual a 1).
     */
     constructor(tamanho ,diracaoNavio){
+        this.codigo = gerarCodigoUnico();
         this.tamanho = tamanho;
         this.vetor = new Array(this.tamanho); 
         this.vetor.fill(0);//Inicializa com 0.
@@ -77,7 +75,59 @@ class Navios{
             return false;
         }
     }
+    //Recebe a 
+    set posicaoAtual(colunaXLinha){
+        const [colunaStr, linhaStr] = colunaXLinha.split('x');
+        this.linha = Number(colunaStr);
+        this.coluna  = Number(linhaStr);
+    }
+}
 
+/**
+ * Busca o Objeto Navio com base em seu id no vetor de Navios.
+ * 
+ * @param {*} ID : ID do navio a ser pesquisado.
+ * @return : Retorna o Objeto do Navio ou null caso não ache.
+ */
+function buscaNavio(ID){
+    for(let busca of naviosCriados){
+        if(busca.codigo === ID){ return busca; }
+    }
+    return null;
+}
+
+/**
+ * Gera um codigo único e aleatorio de 0 ao número de navios existentes no jogo.
+ * 
+ * @returns Retorna o codigo gerado de 0 ao número de navios criados.
+ */
+function gerarCodigoUnico() {
+    let codigoProposto;
+    let codigoJaExiste;
+
+    do {
+        codigoProposto = geraNumeroAleatorio(0, quantiaNavios.length); // Sua função existente
+        // .some() retorna true se encontrar QUALQUER navio com o mesmo código
+        codigoJaExiste = naviosCriados.some(navio => navio.codigo === codigoProposto);
+        
+    } while (codigoJaExiste); // Se já existir, o loop roda de novo
+    return codigoProposto;
+}
+
+/**
+ * Verifica se o Objeto do Navio que está sendo arrastado neste momento não está sobrepondo nenhum outro navio.
+ * 
+ * @return : Retorna true se é possivel inserir ou false se a posição ja esta ocupada.
+ */
+function verificaOcupacaoCelula(){
+    return true;
+}
+
+/**
+ * Atribui o navio que está sendo no momento a matriz JS
+ */
+function atribuiNavioMatriz(){
+    return null;
 }
 
 /**
@@ -90,7 +140,6 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
 
   for (let linha = 0; linha < TAMANHO_MATRIZ; linha++) {
         for (let coluna = 0; coluna < TAMANHO_MATRIZ; coluna++) {
-
             const celula = document.createElement("div");
 
             celula.classList.add("celula");
@@ -105,6 +154,7 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
 
             //Cria tabuleiro pra o Jogador poder colocar os seus navios.
             if(tipoDoTabuleiro == 1){
+
                 //Retira configuração padrão do navegador para poder arrastar os navios
                 celula.addEventListener("dragover", (e) => {
                     e.preventDefault();
@@ -117,7 +167,9 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 celula.addEventListener("drop", (e) =>{
                     e.preventDefault();
                     const navio = verificaEspacoMatriz(navioSendoArrastado, celula.id);
-                    if(navio === true){
+                    const ocupado = verificaOcupacaoCelula();
+                    if(navio === true && ocupado === true){
+                        //atribuiNavioMatriz();
                         celula.appendChild(navioSendoArrastado);
                     }else{
                         campoDosNavios.appendChild(navioSendoArrastado);
@@ -154,7 +206,7 @@ function criaNavios(){
  * 
  * @param {*} min Valor minimo gerado pela função.
  * @param {*} max Valor máximo gerado pela função.
- * @returns 
+ * @returns Um número aleatorio de min a max.
  */
 function geraNumeroAleatorio(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -177,12 +229,12 @@ function inicializaONavio(tamanho, quantidade){
     }else{
 
         classeNavio = "navioTamanho" + tamanho + "-vertical";
-        naviosCriados[contNaviosCriados] = new Navios(tamanho, HORIZONTAL);
+        naviosCriados[contNaviosCriados] = new Navios(tamanho, VERTICAL);
     }
     navio.classList.add(classeNavio);
 
-    //Cria um ID para o navio
-    navio.id = contNaviosCriados;
+    //Passa o ID do navio para o ID do Elemento que representa aquele Navio.
+    navio.id = naviosCriados[contNaviosCriados].codigo;
 
     //Permite o navio ser arrastavel
     navio.draggable = true;
@@ -192,6 +244,7 @@ function inicializaONavio(tamanho, quantidade){
         //Padroniza para que dessa forma o usuario sempre pegue o item pela parte inicial da div.
         event.dataTransfer.setDragImage(event.target, 0, 0);
         navioSendoArrastado = e.target;
+        objNavioSendoArrastado = buscaNavio(Number(e.target.id));
     });
 
     contNaviosCriados++;
@@ -209,12 +262,6 @@ campoDosNavios.addEventListener("drop", (e) =>{
     e.preventDefault();
     campoDosNavios.appendChild(navioSendoArrastado);
 });
-
-//Procura o navio no vetor de Navios.
-function buscaNavioPorId(id) {
-    // Convertemos para Number pois o id do elemento HTML vem como string
-    return naviosCriados[Number(id)] ?? null;
-}
 
 /** @param {*} input : Elemento do navio desejado.
  * @returns {string|null} : Uma String da sua direção ('horizontal' ou 'vertical') ou null se não encontrar.
@@ -287,7 +334,7 @@ function verificaEspacoMatriz(navioAtual, idCelula) {
     const linha  = Number(linhaStr);
 
     // Pegamos o objeto do navio real usando o ID dele
-    const navio = buscaNavioPorId(navioAtual.id);
+    const navio = buscaNavio(Number(navioAtual.id));
     if (navio === null) return false;
 
     // Descobre se o elemento visual está na vertical

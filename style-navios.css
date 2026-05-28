@@ -36,7 +36,7 @@
     border-color: black;
     border-radius: var(--bordaDosnavios);
     height: var(--alturaNavio);
-    width: calc(var(--larguraNavio) * 3);  /* Triplo do 1 navio */
+    width: calc(var(--larguraNavio) * 3.5);  /* Triplo do 1 navio */
     gap: 2px;
 }
 
@@ -60,7 +60,7 @@
     border-radius: var(--bordaDosnavios);
     margin-left: 50px;
     height: var(--alturaNavio);
-    width: calc(var(--larguraNavio) * 5);  /* Quadruplo do 1 navio */
+    width: calc(var(--larguraNavio) * 4.5);  /* Quadruplo do 1 navio */
     gap: 2px;
 }
 
@@ -83,7 +83,7 @@
     border-color: black;
     border-radius: var(--bordaDosnavios);
     height: var(--alturaNavio);
-    width: calc(var(--larguraNavio) * 5);  /* Quintuplo do 1 navio */
+    width: calc(var(--larguraNavio) * 6);  /* Quintuplo do 1 navio */
     gap: 2px;
 }
 
