@@ -34,7 +34,7 @@ let quantiaNavios = [1, 1, 1, 1, 1];
 
 //Cria o vetor da classe Navios com base no total de navios criados no jogo.
 let naviosCriados;
-let contNaviosCriados=0;//Contador para saber quantos navios ja foram criados em tempo de execução.
+let contNaviosCriados=0;//Index para saber quantos navios ja foram criados em tempo de execução.
 
 /**
  * Ao clicar inicializa a matriz pronta para iniciazar o jogo, cada div da matriz será um botão para ler aonde o ataque foi dado.
@@ -50,38 +50,78 @@ btnIniciarJogo.addEventListener("click", () => {
 
 /**
  * Classe do navio, criada para guardar as informações dos navios
+ * 
  * @param tamanho: Guarda quantos células da matriz o navio irá ocupar.
- * @param vetor: Irá guardar quais partes do navio foram atingidas(vetor inicializado com 0).
- * @param direcao: Guarda a informação se o navio esta na horizontal ou vertical.
+ * @param vetor: Irá guardar quais partes do navio foram atingidas(vetor inicializado com false).
+ * @param direcao: Passe a constante HORIZONTAL ou VERTICAL, caso passe algo diferente sera atribuido a constante HORIZONTAL.
  */
 class Navios{
     /** 
-     * @param diracaoNavio: Passe @param HORIZONTAL ou @param VERTICAL
+     * @param direcaoNavio: Passe @param HORIZONTAL ou @param VERTICAL
      * @param tamanho: Tamanho que o navio ocupará(Passe um numero maior ou igual a 1).
     */
-    constructor(tamanho ,diracaoNavio){
+    constructor(tamanho ,direcaoNavio){
         this.codigo = gerarCodigoUnico();
+        this.posicionado = false;//Se ja ésta na matriz
         this.tamanho = tamanho;
-        this.vetor = new Array(this.tamanho); 
-        this.vetor.fill(0);//Inicializa com 0.
-        this.direcao = diracaoNavio;
+        this.posicoesAtingidas = new Array(this.tamanho);
+        this.posicoesOcupadas = new Array(this.tamanho);//Ex: posicoesOcupadas[0]="1x1", posicoesOcupadas[1]="1x2", posicoesOcupadas[2]="1x3"... 
+
+        this.posicoesAtingidas.fill(false);
+        this.posicoesOcupadas.fill("-1");//Posição padrão
+        
+        if(direcaoNavio !== HORIZONTAL && direcaoNavio !== VERTICAL){
+            this.direcao = HORIZONTAL;
+        }else{
+            this.direcao = direcaoNavio;
+        }
+
+        this.linhaInicial = -1;
+        this.colunaInicial  = -1;
+
+        this.linhaFinal = -1;
+        this.colunaFinal  = -1;
     }
 
-    get verificaNavioAfundou() {
+    //Retorna true se o navio afundou, false se não.
+    get getVerificaNavioAfundou() {
         // O método .every() checa se CADA elemento é igual a 1
-        if(this.vetor.every(elemento => elemento === 1)){
+        if(this.posicoesAtingidas.every(elemento => elemento === 1)){
             return true;
         }else{
             return false;
         }
     }
-    //Recebe a 
-    set posicaoAtual(colunaXLinha){
+
+    /**
+     * Atribui o navio na posição atual.
+     * 
+     * @param {*} colunaXLinha "Coluna" + "x" + "Linha": posição que o navio deseja ocupar.
+     */
+    set atribuiPosicaoAtual(colunaXLinha) {
         const [colunaStr, linhaStr] = colunaXLinha.split('x');
-        this.linha = Number(colunaStr);
-        this.coluna  = Number(linhaStr);
+        this.colunaInicial = Number(colunaStr);
+        this.linhaInicial  = Number(linhaStr);
+
+        if (this.direcao === HORIZONTAL) {
+            this.colunaFinal = this.colunaInicial + this.tamanho - 1;
+
+            for (let i = 0; i < this.tamanho; i++) {
+                this.posicoesOcupadas[i] = (this.colunaInicial + i) + "x" + this.linhaInicial;
+            }
+
+        } else { // VERTICAL
+            this.linhaFinal = this.linhaInicial + this.tamanho - 1;
+
+            for (let i = 0; i < this.tamanho; i++) {
+                this.posicoesOcupadas[i] = this.colunaInicial + "x" + (this.linhaInicial + i);
+            }
+        }
     }
+
+    /**Durante o jogo**/
 }
+
 
 /**
  * Busca o Objeto Navio com base em seu id no vetor de Navios.
@@ -106,28 +146,64 @@ function gerarCodigoUnico() {
     let codigoJaExiste;
 
     do {
-        codigoProposto = geraNumeroAleatorio(0, quantiaNavios.length); // Sua função existente
-        // .some() retorna true se encontrar QUALQUER navio com o mesmo código
-        codigoJaExiste = naviosCriados.some(navio => navio.codigo === codigoProposto);
-        
-    } while (codigoJaExiste); // Se já existir, o loop roda de novo
+        codigoProposto = geraNumeroAleatorio(0, quantiaNavios.length);
+        //.filter(Boolean) remove slots undefined/null antes de comparar
+        codigoJaExiste = naviosCriados
+            .filter(Boolean)
+            .some(navio => navio.codigo === codigoProposto);
+
+    } while (codigoJaExiste);
+
     return codigoProposto;
+}
+
+/**
+ * Gera um numero aleatorio de acordo com os parametros passados. 
+ * 
+ * @param {*} min Valor minimo gerado pela função.
+ * @param {*} max Valor máximo gerado pela função.
+ * @returns Um número aleatorio de min a max.
+ */
+function geraNumeroAleatorio(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
  * Verifica se o Objeto do Navio que está sendo arrastado neste momento não está sobrepondo nenhum outro navio.
  * 
+ * @param {*} celulaId ID da celula aonde o navio deseja ser inserio.
  * @return : Retorna true se é possivel inserir ou false se a posição ja esta ocupada.
  */
-function verificaOcupacaoCelula(){
-    return true;
-}
+function verificaOcupacaoCelula(celulaId) {
+    // Calcula temporariamente as posições SEM alterar o objeto ainda
+    const [colunaStr, linhaStr] = celulaId.split('x');
+    const colunaInicial = Number(colunaStr);
+    const linhaInicial  = Number(linhaStr);
 
-/**
- * Atribui o navio que está sendo no momento a matriz JS
- */
-function atribuiNavioMatriz(){
-    return null;
+    // Monta o vetor de posições que o navio OCUPARIA
+    let posicoesNovas = [];
+    if (objNavioSendoArrastado.direcao === HORIZONTAL) {
+        for (let i = 0; i < objNavioSendoArrastado.tamanho; i++) {
+            posicoesNovas.push((colunaInicial + i) + "x" + linhaInicial);
+        }
+    } else {
+        for (let i = 0; i < objNavioSendoArrastado.tamanho; i++) {
+            posicoesNovas.push(colunaInicial + "x" + (linhaInicial + i));
+        }
+    }
+
+    for (let navio of naviosCriados.filter(Boolean)) {
+        //Ignora o próprio navio sendo arrastado
+        if (navio.codigo === objNavioSendoArrastado.codigo) continue;
+
+        //Ignora navios que ainda não foram posicionados
+        if (!navio.posicionado) continue;
+
+        const posicoesDeste = new Set(navio.posicoesOcupadas);
+        const temColisao = posicoesNovas.some(pos => posicoesDeste.has(pos));
+        if (temColisao) return false;
+    }
+    return true;
 }
 
 /**
@@ -163,15 +239,20 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 /**
                  * Permite que cada celula possa receber o arraste de um navio.
                  * A celula recebe o navio arrastado e se torna pai da tag do navio.
+                 * 
+                 * Atribui a posição e marca como posicionado APÓS as validações
                  */
-                celula.addEventListener("drop", (e) =>{
+                celula.addEventListener("drop", (e) => {
                     e.preventDefault();
-                    const navio = verificaEspacoMatriz(navioSendoArrastado, celula.id);
-                    const ocupado = verificaOcupacaoCelula();
-                    if(navio === true && ocupado === true){
-                        //atribuiNavioMatriz();
+                    const cabeNaMatriz = verificaEspacoMatriz(navioSendoArrastado, celula.id);
+                    const semColisao   = verificaOcupacaoCelula(celula.id);
+
+                    if (cabeNaMatriz === true && semColisao === true) {
+                        // ✅ Só agora grava a posição real no objeto
+                        objNavioSendoArrastado.atribuiPosicaoAtual = celula.id;
+                        objNavioSendoArrastado.posicionado = true;
                         celula.appendChild(navioSendoArrastado);
-                    }else{
+                    } else {
                         campoDosNavios.appendChild(navioSendoArrastado);
                     }
                 });
@@ -200,16 +281,6 @@ function criaNavios(){
     for(let index=0; index < quantiaNavios.length; index++){
         inicializaONavio(tamanhoNavios[index], quantiaNavios[index]);
     }
-}
-/**
- * Gera um numero aleatorio de acordo com os parametros passados. 
- * 
- * @param {*} min Valor minimo gerado pela função.
- * @param {*} max Valor máximo gerado pela função.
- * @returns Um número aleatorio de min a max.
- */
-function geraNumeroAleatorio(min, max){
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
@@ -258,12 +329,19 @@ function inicializaONavio(tamanho, quantidade){
 campoDosNavios.addEventListener("dragover", (e) =>{
     e.preventDefault();  
 });
-campoDosNavios.addEventListener("drop", (e) =>{
+
+campoDosNavios.addEventListener("drop", (e) => {
     e.preventDefault();
+    //Reseta o navio quando devolvido ao campo
+    if (objNavioSendoArrastado) {
+        objNavioSendoArrastado.posicoesOcupadas.fill("-1");
+        objNavioSendoArrastado.posicionado = false;
+    }
     campoDosNavios.appendChild(navioSendoArrastado);
 });
 
-/** @param {*} input : Elemento do navio desejado.
+/** 
+ * @param {*} input : Elemento do navio desejado.
  * @returns {string|null} : Uma String da sua direção ('horizontal' ou 'vertical') ou null se não encontrar.
  */
 function obterDirecaoDoNavio(input) {
