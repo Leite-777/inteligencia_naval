@@ -248,7 +248,8 @@ else {
     console.error("Botão '.botao-iniciar-jogo' não foi encontrado no HTML. Verifique a classe.");
 }
 async function JogadaApi() {
-    let alvo = await chamarApi(matrizParaOPrompt, matrizTeste);
+    let tabuleiroJogador = tabuleiroHTMLparaJSON(".tabuleiro-jogador");
+    let alvo = await chamarApi(matrizParaOPrompt, tabuleiroJogador);
     if (alvo.acerto == Acerto.Errou) {
         return { acerto: Acerto.Errou };
     }
