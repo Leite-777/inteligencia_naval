@@ -3,13 +3,17 @@
     --alturaNavio: 35px;
     --bordaDosnavios: 10px;
 
+    --corNavio2: rgb(203, 230, 255);
+    --corNavio3: rgb(157, 208, 255);
+    --corNavio4: rgb(72, 157, 255);
+    --corNavio5: rgb(28, 123, 255);
+
     --tamanhoCelula: 40px;
 }
 
 .navioTamanho2-horizontal {
     display: flex;
-    position: absolute;
-    background-color: rgb(0, 0, 255);
+    background-color: var(--corNavio2);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     height: var(--alturaNavio);
@@ -19,8 +23,7 @@
 
 .navioTamanho2-vertical {
     display: flex;
-    position: absolute;
-    background-color: rgb(0, 0, 255);
+    background-color: var(--corNavio2);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     margin-top: 50px;
@@ -31,8 +34,7 @@
 
 .navioTamanho3-horizontal {
     display: flex;
-    position: absolute;
-    background-color: rgb(9, 255, 0);
+    background-color: var(--corNavio3);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     height: var(--alturaNavio);
@@ -42,8 +44,7 @@
 
 .navioTamanho3-vertical {
     display: flex;
-    position: absolute;
-    background-color: rgb(9, 255, 0);
+    background-color: var(--corNavio3);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     margin-top: 90px;
@@ -54,8 +55,7 @@
 
 .navioTamanho4-horizontal {
     display: flex;
-    position: absolute;
-    background-color: rgb(255, 0, 0);
+    background-color: var(--corNavio4);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     margin-left: 50px;
@@ -66,8 +66,7 @@
 
 .navioTamanho4-vertical {
     display: flex;
-    position: absolute;
-    background-color: rgb(255, 0, 0);
+    background-color: var(--corNavio4);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     margin-top: 50px;
@@ -78,8 +77,7 @@
 
 .navioTamanho5-horizontal {
     display: flex;
-    position: absolute;
-    background-color: rgb(255, 255, 0);
+    background-color: var(--corNavio5);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     height: var(--alturaNavio);
@@ -89,8 +87,7 @@
 
 .navioTamanho5-vertical {
     display: flex;
-    position: absolute;
-    background-color: rgb(255, 255, 0);
+    background-color: var(--corNavio5);
     border-color: black;
     border-radius: var(--bordaDosnavios);
     height: calc(var(--alturaNavio) * 6);
