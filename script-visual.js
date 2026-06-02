@@ -1,3 +1,7 @@
+// Para os botões de conteúdo colapsáveis
+const botoes = document.querySelectorAll(".colapsavel-expandir");
+const conteudos = document.querySelectorAll(".colapsavel-conteudo");
+
 // Função para ocultar/exibir conteúdos colapsáveis
 botoes.forEach(botao => {
     botao.addEventListener("click", () => {
@@ -28,7 +32,7 @@ function alternarTransparenciaTabuleiro(tipo) {
         transparenciaJogador = !transparenciaJogador;
 
         tabuleiroJogador.classList.toggle(
-            "tabuleiro-transparente",
+            "transparente",
             transparenciaJogador
         );
     }
@@ -37,10 +41,18 @@ function alternarTransparenciaTabuleiro(tipo) {
         transparenciaInimigo = !transparenciaInimigo;
 
         tabuleiroInimigo.classList.toggle(
-            "tabuleiro-transparente",
+            "transparente",
             transparenciaInimigo
         );
     }
+}
+
+function alternarTransparencia(seletorElemento){
+    const elemento = document.querySelector(seletorElemento);
+
+    elemento.classList.toggle(
+        "transparente"
+    );
 }
 
 // Funções para utilização de gifs
@@ -132,4 +144,31 @@ function estadoCampo(celula){
             addGifCaveira(celula);
             break;
     }
+}
+
+// Função para alteração do status-jogo
+const statusJogo = document.querySelector(".status-jogo");
+
+function typeWriter(mensagem, corFundo, velocidade = 30) {
+    statusJogo.innerHTML = "";
+    statusJogo.style.backgroundColor = corFundo;
+
+    let i = 0;
+
+    const intervalo = setInterval(() => {
+        statusJogo.innerHTML += mensagem.charAt(i);
+        i++;
+
+        if (i >= mensagem.length) {
+            clearInterval(intervalo);
+        }
+    }, velocidade);
+}
+
+function exibirMensagemStatus(mensagem) {
+    typeWriter(mensagem, "#014177");
+}
+
+function exibirAlertaStatus(mensagem) {
+    typeWriter(mensagem, "#aa2a2a");
 }

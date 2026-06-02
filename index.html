@@ -101,8 +101,16 @@
     <section id="jogo">
         <h3>Jogo da Batalha Naval</h3>
         
-        <button class="botao-iniciar-jogo">Iniciar Jogo!</button>
+        <div class="grid-botoes">
+            <button class="botao botao-iniciar-jogo">Iniciar Jogo!</button>
+            <button class="botao botao-posicionar-navios">Posicionar Navios</button>
+            <button class="botao botao-terminar-jogo">Terminar Jogo!</button>
+        </div>
         
+        <div class="status-jogo">
+            Aguardando início de jogo...
+        </div>
+
         <div id="jogo-batalha-naval">
             <div class="tabuleiro-container jogador">
                 <h2 class="status status-jogador">Seu Tabuleiro</h2>
@@ -111,7 +119,7 @@
 
                 </div>
 
-            </div>
+            </div>            
 
             <!-- Navios arrastáveis -->
             <div class="navios-arrastaveis">
@@ -201,10 +209,11 @@
         </div>
     </footer> <!-- footer -->
 
-    <script src="script.js"></script>
     <script src="script-visual.js"></script>
     <script src="script-tabuleiro.js"></script>
     <script src="script-audioManager.js"></script>
+    <script src="script-fallback.js"></script>
     <script type="module" src="script-prompt.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

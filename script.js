@@ -4,10 +4,6 @@ let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
 let campoDosNavios = document.querySelector(".navios-arrastaveis");
 let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
 
-// Para os botões de conteúdo colapsáveis
-const botoes = document.querySelectorAll(".colapsavel-expandir");
-const conteudos = document.querySelectorAll(".colapsavel-conteudo");
-
 //Constantes para serem passadas no parametro da função "criarTabuleiro()".
 const MATRIZ_JOGADOR = 1; //Cria a matriz com as opções disponinveis de arrastar navios para o jogador.
 const MATRIZ_INIMIGO = -1; //Desabilita a opção de arrastar, criando apenas uma matriz visual.
@@ -40,12 +36,22 @@ let contNaviosCriados=0;//Index para saber quantos navios ja foram criados em te
  * Ao clicar inicializa a matriz pronta para iniciazar o jogo, cada div da matriz será um botão para ler aonde o ataque foi dado.
  * OBS: A matriz so deve ser inicializada quando todos os navios forem colocados na matriz.
  */
+alternarTransparencia(".botao-posicionar-navios")
+alternarTransparencia(".botao-terminar-jogo")
+alternarTransparencia(".status-jogo")
+
 btnIniciarJogo.addEventListener("click", () => {
     //Criar um if para compara se todos os navios foram adicionados na matriz.
     criaNavios();
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
     criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
+
     alternarTransparenciaTabuleiro("inimigo");
+    alternarTransparencia(".botao-iniciar-jogo")
+    alternarTransparencia(".botao-posicionar-navios")
+    alternarTransparencia(".status-jogo")
+
+    exibirMensagemStatus("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
 });
 
 /**

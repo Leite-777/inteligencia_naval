@@ -250,7 +250,24 @@ header{
     border-left: white solid 2px;
 }
 
-.botao-iniciar-jogo{
+.grid-botoes{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.status-jogo{
+    background-color: #014177;
+    padding: 15px;
+    margin: 15px auto;
+    width: 50%;
+    border-radius: 10px;
+
+    text-align: center;
+    color: white;
+    font-size: 20px;
+}
+
+.botao{
     padding: 10px 30px;
     margin: 20px 10px;
 
@@ -335,7 +352,7 @@ header{
   position: relative; 
 }
 
-.tabuleiro-transparente {
+.transparente {
     opacity: 0.2;
     transition: opacity 1s ease;
 }
