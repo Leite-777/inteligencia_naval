@@ -51,7 +51,7 @@ btnIniciarJogo.addEventListener("click", () => {
     alternarTransparencia(".botao-posicionar-navios")
     alternarTransparencia(".status-jogo")
 
-    exibirMensagemStatus("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
+    statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
 });
 
 /**

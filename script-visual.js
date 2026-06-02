@@ -149,26 +149,30 @@ function estadoCampo(celula){
 // Função para alteração do status-jogo
 const statusJogo = document.querySelector(".status-jogo");
 
+let intervaloTypeWriter;
+
 function typeWriter(mensagem, corFundo, velocidade = 30) {
+    clearInterval(intervaloTypeWriter);
+
     statusJogo.innerHTML = "";
     statusJogo.style.backgroundColor = corFundo;
 
     let i = 0;
 
-    const intervalo = setInterval(() => {
+    intervaloTypeWriter = setInterval(() => {
         statusJogo.innerHTML += mensagem.charAt(i);
         i++;
 
         if (i >= mensagem.length) {
-            clearInterval(intervalo);
+            clearInterval(intervaloTypeWriter);
         }
     }, velocidade);
 }
 
-function exibirMensagemStatus(mensagem) {
+function statusMensagem(mensagem) {
     typeWriter(mensagem, "#014177");
 }
 
-function exibirAlertaStatus(mensagem) {
+function statusAlerta(mensagem) {
     typeWriter(mensagem, "#aa2a2a");
 }
