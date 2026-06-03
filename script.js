@@ -3,6 +3,7 @@ let tabuleiroJogador = document.querySelector(".tabuleiro-jogador");
 let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
 let campoDosNavios = document.querySelector(".navios-arrastaveis");
 let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
+let btnPosicionarNavios = document.querySelector(".botao-posicionar-navios");
 
 //Constantes para serem passadas no parametro da função "criarTabuleiro()".
 const MATRIZ_JOGADOR = 1; //Cria a matriz com as opções disponinveis de arrastar navios para o jogador.
@@ -52,6 +53,16 @@ btnIniciarJogo.addEventListener("click", () => {
     alternarTransparencia(".status-jogo")
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
+
+    btnPosicionarNavios.addEventListener("click", () =>{
+        if(verificaIniciarJogo() === true ){
+            console.log("Pronto!");
+            //Inicia o jogo
+            //Altera ambsa matrizes para gif com nuvem
+        }else{
+            console.log("Posicione todos os seus navios na matriz para poder iniciar o jogo!");
+        }
+    });
 });
 
 /**
@@ -175,6 +186,18 @@ function geraNumeroAleatorio(min, max){
 }
 
 /**
+ * Verifica se todos os navios que existem no jogo estão posicionados e prontos para iniciar o jogo.
+ * 
+ * @returns Retorna true se estiverem prontos e false caso não estejam.
+ */
+function verificaIniciarJogo(){
+    for(let contador=0; contador < quantiaNavios.length; contador++){
+        if(naviosCriados[contador].posicionado === false){ return false; }
+    }
+    return true;
+}
+
+/**
  * Verifica se o Objeto do Navio que está sendo arrastado neste momento não está sobrepondo nenhum outro navio.
  * 
  * @param {*} celulaId ID da celula aonde o navio deseja ser inserio.
@@ -285,7 +308,7 @@ function criaNavios(){
 
     naviosCriados = new Array(soma); 
     for(let index=0; index < quantiaNavios.length; index++){
-        inicializaONavio(tamanhoNavios[index], quantiaNavios[index]);
+        inicializaONavio(tamanhoNavios[index]);
     }
 }
 
@@ -295,7 +318,7 @@ function criaNavios(){
  * @param {*} tamanho Tamanho do navio.
  * @param {*} quantidade Quantos navios serão criados
  */
-function inicializaONavio(tamanho, quantidade){
+function inicializaONavio(tamanho){
     let classeNavio;
     const navio = document.createElement("div");
 
@@ -327,6 +350,26 @@ function inicializaONavio(tamanho, quantidade){
     contNaviosCriados++;
     campoDosNavios.appendChild(navio);
   
+}
+
+/**
+ * Inicializa os navios para uso da IA.
+ * 
+ * @param {*} navios Vetor da classe Navios que irá guardar os navios criados para a IA.
+ * 
+ * @returns retorna o vetor de Navios, com os devidos navios criados.
+ */
+function inicializaOsNaviosIA(navios){
+    
+    for(let contador=0; contador < quantiaNavios.length; contador++){
+        if(geraNumeroAleatorio(0, 1) == 1){
+            navios[contNaviosCriados] = new Navios(tamanho, HORIZONTAL);
+        }else{
+            navios[contNaviosCriados] = new Navios(tamanho, VERTICAL);
+        }
+    }
+
+    return navios;
 }
 
 /**
