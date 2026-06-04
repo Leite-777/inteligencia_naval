@@ -100,10 +100,12 @@ class Navios{
         this.colunaFinal  = -1;
     }
 
+    get verificaDirecao(){ return this.direcao; }
+
     //Retorna true se o navio afundou, false se não.
     get getVerificaNavioAfundou() {
-        // O método .every() checa se CADA elemento é igual a 1
-        if(this.posicoesAtingidas.every(elemento => elemento === 1)){
+        // O método .every() checa se CADA elemento é igual a true
+        if(this.posicoesAtingidas.every(elemento => elemento === true)){
             return true;
         }else{
             return false;
@@ -137,6 +139,23 @@ class Navios{
     }
 
     /**Durante o jogo**/
+
+    /**
+     * Verifica se o Navio está ocupando a posição em que foi disparada.
+     * 
+     * @param {*} colunaXLinha Posição que deseja atingir.
+     * @returns Retorna True e atualiza o vetor de posicoesAtingidas. Retorna false caso tenha errado.
+     */
+    disparo(colunaXLinha){
+
+        for(let index=0; index < this.posicoesOcupadas.length; index++){
+            if(this.posicoesOcupadas[index] === colunaXLinha){
+                this.posicoesAtingidas[index] = true;
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
