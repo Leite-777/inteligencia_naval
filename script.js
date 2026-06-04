@@ -34,38 +34,6 @@ let naviosCriados;
 let contNaviosCriados=0;//Index para saber quantos navios ja foram criados em tempo de execução.
 
 /**
- * Ao clicar inicializa a matriz pronta para iniciazar o jogo, cada div da matriz será um botão para ler aonde o ataque foi dado.
- * OBS: A matriz so deve ser inicializada quando todos os navios forem colocados na matriz.
- */
-alternarTransparencia(".botao-posicionar-navios")
-alternarTransparencia(".botao-terminar-jogo")
-alternarTransparencia(".status-jogo")
-
-btnIniciarJogo.addEventListener("click", () => {
-    //Criar um if para compara se todos os navios foram adicionados na matriz.
-    criaNavios();
-    criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
-    criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
-
-    alternarTransparenciaTabuleiro("inimigo");
-    alternarTransparencia(".botao-iniciar-jogo")
-    alternarTransparencia(".botao-posicionar-navios")
-    alternarTransparencia(".status-jogo")
-
-    statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
-
-    btnPosicionarNavios.addEventListener("click", () =>{
-        if(verificaIniciarJogo() === true ){
-            console.log("Pronto!");
-            //Inicia o jogo
-            //Altera ambsa matrizes para gif com nuvem
-        }else{
-            console.log("Posicione todos os seus navios na matriz para poder iniciar o jogo!");
-        }
-    });
-});
-
-/**
  * Classe do navio, criada para guardar as informações dos navios
  * 
  * @param tamanho: Guarda quantos células da matriz o navio irá ocupar.
@@ -495,4 +463,29 @@ function verificaEspacoMatriz(navioAtual, idCelula) {
         return false;
     }
 
+}
+
+// Faz os navios modificarem o campo "status" da div das células para 2, nas posições em que ocupam.
+// Para ser chamado quando os navios forem posicionados.
+function marcarPosicoesDosNavios() {
+    for (const navio of naviosCriados.filter(Boolean)) {
+
+        if (!navio.posicionado) continue;
+
+        for (const posicao of navio.posicoesOcupadas) {
+            const celula = document.getElementById(posicao);
+
+            if (celula) {
+                celula.dataset.status = "2";
+            }
+        }
+    }
+}
+
+// Faz os navios não poderem mais ser arrastáveis
+// Para ser chamado quando os navios forem posicionados.
+function bloquearArrasteDosNavios() {
+    document.querySelectorAll(".navio").forEach(navio => {
+        navio.draggable = false;
+    });
 }

@@ -274,22 +274,20 @@ Não use markdown.
 
 //      Configurando o botão Iniciar Jogo temporariamente para iniciar a chamada da API
 
-const botaoIniciarJogo = document.querySelector<HTMLButtonElement>('.botao-iniciar-jogo');
+const botaoPosicionarNavios = document.querySelector<HTMLButtonElement>('.botao-posicionar-navios');
 
 // Garante que o botão realmente existe na página antes de adicionar o evento
-if (botaoIniciarJogo) {
-    botaoIniciarJogo.addEventListener('click', async () => {
+if (botaoPosicionarNavios) {
+    botaoPosicionarNavios.addEventListener('click', async () => {
         // Desativa o botão temporariamente para o usuário não clicar várias vezes enquanto a API responde
-        botaoIniciarJogo.disabled = true;
-        botaoIniciarJogo.innerText = "Gemini pensando...";
+        botaoPosicionarNavios.disabled = true;
 
         console.log("Botão pressionado! Iniciando turno da IA...");
         
         // Dispara a função principal que criamos
         //let respostaChamadaApi = await chamarApi(matrizParaOPrompt, matrizTeste);
         // Reativa o botão após o término da jogada
-        botaoIniciarJogo.disabled = false;
-        botaoIniciarJogo.innerText = "Iniciar Jogo!";
+        botaoPosicionarNavios.disabled = false;
 
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
 
@@ -317,7 +315,7 @@ if (botaoIniciarJogo) {
 
 async function JogadaApi(): Promise<acertoAPI>{
     let tabuleiroJogador = tabuleiroHTMLparaJSON(".tabuleiro-jogador");
-    let alvo = await chamarApi(matrizParaOPrompt, matrizTeste);
+    let alvo = await chamarApi(matrizParaOPrompt, tabuleiroJogador);
     if(alvo.acerto == undefined){
         return {acerto : undefined};
     }
