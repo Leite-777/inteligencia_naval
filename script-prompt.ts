@@ -1,3 +1,6 @@
+import {tabuleiroHTMLparaJSON} from "./script-tabuleiro.js";
+import {escolherJogadaFallback} from "./script-fallback.js"
+
 let chaveHtml = document.getElementById('api-key') as HTMLInputElement;
 //para não travar a chava api
 
@@ -201,10 +204,10 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
     "debug": "string",
     "linha": número,
     "coluna": número
-
-    Responda APENAS em JSON válido.
-    Não use markdown.
-}`;
+}
+Responda APENAS em JSON válido.
+Não use markdown.    
+`;
 
     let respostaFunc = await chamadaApi(prompt);
     //console.log(respostaFunc);
@@ -263,7 +266,8 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
         
         console.error(`Erro na chamada da API [Código ${erro.CodigoErro}]: ${erro.mensagemErro}`);
         alert(`Erro ao chamar a API: ${erro.mensagemErro}`);
-         return {acerto :undefined};
+        return jogadaFallback(matrizIa,matrizJogador);
+        //return {acerto :undefined};
     }
     return {acerto :undefined};
 }
@@ -301,7 +305,7 @@ if (botaoIniciarJogo) {
                             parada = 1;
                         }
                     }while(parada != 0);
-                        
+                    
                 });
             });
             console.log(campoIa.childNodes);
@@ -312,7 +316,11 @@ if (botaoIniciarJogo) {
 }
 
 async function JogadaApi(): Promise<acertoAPI>{
+    let tabuleiroJogador = tabuleiroHTMLparaJSON(".tabuleiro-jogador");
     let alvo = await chamarApi(matrizParaOPrompt, matrizTeste);
+    if(alvo.acerto == undefined){
+        return {acerto : undefined};
+    }
     if(alvo.acerto == Acerto.Errou){
         return {acerto :Acerto.Errou};    
     }
@@ -322,6 +330,36 @@ async function JogadaApi(): Promise<acertoAPI>{
         return {acerto :Acerto.Errou};
     }
 }
+
+async function jogadaFallback(matrizIa : number[][],matrizJogador:number[][]): Promise<acertoAPI>{
+    let posFall = escolherJogadaFallback(matrizIa);
+    if(posFall != undefined){
+        let posmatrizJogador = matrizJogador[posFall.linha][posFall.coluna];
+        depurarAtaqueNoConsole(
+            matrizIa, 
+            posFall.linha, 
+            posFall.coluna, 
+            "Fallback"
+        );
+        console.log(matrizJogador[posFall.linha][posFall.coluna]);
+        if (posmatrizJogador === 2) {
+                // Acertou um Navio! Atualiza a matriz do prompt com 3
+                matrizIa[posFall.linha][posFall.coluna] = 3;
+                alert(`💥 TIRO CERTEIRO! O Fallback acertou um navio em (${posFall.linha}, ${posFall.coluna})`);
+                return {acerto: Acerto.Acertou};
+            } else if (matrizIa[posFall.linha][posFall.coluna] === 0) {
+                // Água! Atualiza a matriz do prompt com 1
+                matrizIa[posFall.linha][posFall.coluna] = 1;
+                alert(`🌊 Água... O Fallback errou em (${posFall.linha}, ${posFall.coluna})`);
+                return {acerto: Acerto.Errou};
+            }
+    }else{
+        return {acerto : undefined};
+    }   
+    return {acerto : undefined};
+}
+
+
 
 
 //Tipos de erro

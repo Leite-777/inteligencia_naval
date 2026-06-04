@@ -2,7 +2,7 @@
 const TAM = 10;
 
 // funcao principal que retorna a posicao escolhida para ser atingida
-function escolherJogadaFallback(tabuleiro) {
+export function escolherJogadaFallback(tabuleiro) {
 
     // modo para afundar navios ja acertados
     const jogadaAtaque = afundarNavios(tabuleiro);

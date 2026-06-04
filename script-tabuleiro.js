@@ -3,7 +3,7 @@
  * @param {*} seletorTabuleiro A classe do tabuleiro, como ".tabuleiro-jogador"
  * @returns A matriz JSON com o tabuleiro, onde cada posição é o celula.dataset.status
  */
-function tabuleiroHTMLparaJSON(seletorTabuleiro) {
+export function tabuleiroHTMLparaJSON(seletorTabuleiro) {
     const tabuleiro = document.querySelector(seletorTabuleiro);
     const matriz = [];
 

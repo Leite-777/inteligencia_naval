@@ -1,0 +1,1 @@
+export function tabuleiroHTMLparaJSON(seletorTabuleiro : string): number[][];
