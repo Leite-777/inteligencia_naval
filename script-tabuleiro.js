@@ -50,7 +50,8 @@ function tabuleiroJSONparaHTML(matriz, seletorTabuleiro = ".tabuleiro-jogador") 
             celula.dataset.coluna = coluna;
             celula.dataset.status = matriz[linha][coluna];
 
-            celula.id = `${coluna}x${linha}`;
+            // celula.id = `${coluna}x${linha}`;        // Erro de id duplicado
+            celula.id = `${seletorTabuleiro}_${coluna}x${linha}`;    // Possível resolução
 
             tabuleiro.appendChild(celula);
         }

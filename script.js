@@ -86,7 +86,12 @@ class Navios{
      * @param {*} colunaXLinha "Coluna" + "x" + "Linha": posição que o navio deseja ocupar.
      */
     set atribuiPosicaoAtual(colunaXLinha) {
-        const [colunaStr, linhaStr] = colunaXLinha.split('x');
+        // Da seguinte forma é possível utilizar o novo formato de id EX: "-1_0x3"
+        const [tipoTabuleiro, posicao] = colunaXLinha.split('_');
+        const [colunaStr, linhaStr] = posicao.split('x');
+
+        // const [colunaStr, linhaStr] = colunaXLinha.split('x');          // Desta forma o "possível id" não é utilizável
+        
         this.colunaInicial = Number(colunaStr);
         this.linhaInicial  = Number(linhaStr);
 
@@ -191,8 +196,13 @@ function verificaIniciarJogo(){
  * @return : Retorna true se é possivel inserir ou false se a posição ja esta ocupada.
  */
 function verificaOcupacaoCelula(celulaId) {
+    // Da seguinte forma é possível utilizar o novo formato de id EX: "-1_0x3"
+    const [tipoTabuleiro, posicao] = celulaId.split('_');
+    const [colunaStr, linhaStr] = posicao.split('x');
+
     // Calcula temporariamente as posições SEM alterar o objeto ainda
-    const [colunaStr, linhaStr] = celulaId.split('x');
+    // const [colunaStr, linhaStr] = celulaId.split('x');          // Desta forma o "possível id" não é utilizável
+    
     const colunaInicial = Number(colunaStr);
     const linhaInicial  = Number(linhaStr);
 
@@ -239,10 +249,12 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
             celula.dataset.linha = linha;
             celula.dataset.coluna = coluna;
 
-            // 0: navio atingido
-            // 1: navio afundado
-            celula.dataset.status = "0"; // Modificado para apenas o código saber o estado do campo.
-            celula.id = `${coluna}x${linha}`;
+            // -1: valor default
+            // 0: tiro errado
+            // 1: navio atingido
+            celula.dataset.status = "-1"; // Modificado para apenas o código saber o estado do campo.
+            // celula.id = `${coluna}x${linha}`;    // ERRO: Desta forma os ids das celulas ficam duplicados pois tanto o campo inimigo quanto do jogador possuem o mesmo número de linhas e colunas
+            celula.id = `${tipoDoTabuleiro}_${coluna}x${linha}`; // Melhor opção, deste jeito cada celula possui um id único
 
             //Cria tabuleiro pra o Jogador poder colocar os seus navios.
             if(tipoDoTabuleiro == 1){
@@ -445,7 +457,12 @@ function navioCabeNaMatriz(tamanho, orientacao, linha, coluna) {
  * @param idCelula: ID da celula para poder ter acesso a sua Linha e Coluna.
  */
 function verificaEspacoMatriz(navioAtual, idCelula) {
-    const [colunaStr, linhaStr] = idCelula.split('x');
+    // Da seguinte forma é possível utilizar o novo formato de id EX: "-1_0x3"
+    const [tipoTabuleiro, posicao] = idCelula.split('_');
+    const [colunaStr, linhaStr] = posicao.split('x');
+
+    // const [colunaStr, linhaStr] = idCelula.split('x');          // Desta forma o "possível id" não é utilizável
+    
     const coluna = Number(colunaStr);
     const linha  = Number(linhaStr);
 

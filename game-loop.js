@@ -25,6 +25,17 @@ function posicionarNavios(){
     if(verificaIniciarJogo() === true ){
         //statusMensagem("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar!");
         statusMensagem("Abra o console pressionando F12, e clique em uma posição do tabuleiro inimigo para ver o jogo em ação!");
+
+        // TESTE DA MUDANÇA DE GIFS
+            // document.getElementById('-1_0x3').dataset.status = "0";      // Possíveis ids
+            // document.getElementById('1_2x6').dataset.status = "1";
+            // document.getElementById('-1_5x3').dataset.status = "2";
+            // // document.getElementById('0x3').dataset.status = "0";     // Ids antigos
+            // // document.getElementById('2x6').dataset.status = "1";
+            // // document.getElementById('5x3').dataset.status = "2";
+            // atualizarGifTabuleiro(tabuleiroJogador);
+            // atualizarGifTabuleiro(tabuleiroInimigo);
+
         
         marcarPosicoesDosNavios();
         bloquearArrasteDosNavios();
