@@ -205,3 +205,18 @@ function statusMensagem(mensagem) {
 function statusAlerta(mensagem) {
     typeWriter(mensagem, "#aa2a2a");
 }
+
+
+// funcao que valida chave
+function validaEstruturaChaveAPI() {
+
+    let inputChaveAPI= document.querySelector("#api-key");
+    const apiKey= inputChaveAPI.value.trim();
+
+    // Regex para o padrao da chave do Google API: Começa com 'AIza' e
+    //  tem mais 35 caracteres letras, numeros, hifens ou underscores
+    const regexChave = /^AIza[0-9A-Za-z\-_]{35}$/;
+    
+    // verifica se a chave existe dentro das especificacoes e retorna true or flase
+    return regexChave.test(apiKey);
+}
