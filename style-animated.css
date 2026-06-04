@@ -11,14 +11,14 @@
   transform: scale(0.9); /* Shrinks slightly to look "pressed" */
 }
 
-.botao-header, .botao {
+.botao-header, .botao, .modal-expandir {
   transition: 
     transform 0.4s ease,
     box-shadow 0.4s ease,
     filter 0.4s ease;
 }
 
-.botao-header:hover, .botao:hover {
+.botao-header:hover, .botao:hover, .modal-expandir:hover {
   transform: scale(1.05) translateY(-4px);
   box-shadow: 0 25px 30px rgba(16, 6, 100, 0.3);
   filter: brightness(1.1);
@@ -29,13 +29,24 @@
 
 /* Fonte: https://design.dev/tools/hover-effect-generator/ */
 .celula {
-  transition: 
-    transform 0.4s ease,
+  transition:
+     background-color 0.2s ease,
     box-shadow 0.4s ease;
 }
 
 .celula:hover {
-  transform: scale(1.1);
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
   background-color: #0050b0;
+}
+
+/* Animação para os navios, fazendo um leve movimento de balanço*/
+
+.navio{
+  animation: wobble 4s ease-in-out infinite;
+}
+
+@keyframes wobble {
+  0% {transform: rotate(-1deg);}
+  50% {transform: rotate(1deg);}
+  100% {transform: rotate(-1deg);}
 }

@@ -22,6 +22,35 @@ conteudos.forEach(cont => {
     cont.style.display = "none";
 })
 
+// Para os botões de Modal
+const modais = document.querySelectorAll(".modal");
+
+modais.forEach(modal => {
+    // Busca os elementos APENAS dentro DESTE bloco modal específico
+    const botaoAbrir = modal.querySelector(".modal-expandir");
+    const container = modal.querySelector(".modal-container");
+    const botaoFechar = modal.querySelector(".modal-fechar");
+
+    // Abre o modal ao clicar no botão correspondente
+    botaoAbrir.addEventListener("click", () => {
+        container.classList.add("ativo");
+    });
+
+    // Fecha o modal ao clicar no botão de fechar (X) correspondente (se existir)
+    if (botaoFechar) {
+        botaoFechar.addEventListener("click", () => {
+            container.classList.remove("ativo");
+        });
+    }
+
+    // Fecha o modal se o usuário clicar no fundo escuro deste container
+    container.addEventListener("click", (event) => {
+        if (event.target === container) {
+            container.classList.remove("ativo");
+        }
+    });
+});
+
 // Função para ativar/desativar transparência de um tabuleiro
 let transparenciaJogador = false;
 let transparenciaInimigo = false;

@@ -75,24 +75,30 @@
             </div>
         </div>
         
-        <div class="colapsavel">
-            <button class="colapsavel-expandir">Onde consigo uma chave API?</button>
-            <div class="colapsavel-conteudo">
-                <ul>
-                    <li>Acesse o
-                        <a href="https://aistudio.google.com/?hl=pt-br" target="_blank" rel="noopener noreferrer">
-                            Google AI Studio
-                        </a>
-                    </li>
-                    <li>Faça login com sua conta do Google, no topo da página. Pode ser necessário
-                        <a href="https://support.google.com/accounts/answer/10071085?hl=pt-br" target="_blank" rel="noopener noreferrer">
-                            verificar sua idade.
-                        </a>
-                    </li>
-                    <li>No canto inferior esquerdo da página, vá para <u>Conferir a chave de API</u></li>
-                    <li>Na nova página, no canto superior direito clique em <u>Criar chave de API</u>, e então em <u>Criar Chave</u>.</li>
-                    <li>Na nova janela copie a chave de API, que se parece com uma sequência de caracteres aleatórios.</li>
-                </ul>
+        <div class="modal">
+            <button class="modal-expandir">Onde consigo uma chave API?</button>
+
+            <div class="modal-container">
+                <div class="modal-conteudo">
+                    <button class="modal-fechar">&times;</button>
+                    <h2>Como conseguir uma chave API?</h2>
+                    <ul>
+                        <li>Acesse o
+                            <a href="https://aistudio.google.com/?hl=pt-br" target="_blank" rel="noopener noreferrer">
+                                Google AI Studio
+                            </a>
+                        </li>
+                        <li>Faça login com sua conta do Google, no topo da página. Pode ser necessário
+                            <a href="https://support.google.com/accounts/answer/10071085?hl=pt" target="_blank" rel="noopener noreferrer">
+                                verificar sua idade.
+                            </a>
+                        </li>
+                        <li>No canto inferior esquerdo da página, vá para <u>Conferir a chave de API</u></li>
+                        <li>Na nova página, no canto superior direito clique em <u>Criar chave de API</u>, e então em <u>Criar Chave</u>.</li>
+                        <li>Na nova janela copie a chave de API, que se parece com uma sequência de caracteres aleatórios.</li>
+                    </ul>
+                </div>
+                <div class="gif-ilustrativo"></div>
             </div>
         </div>
 
@@ -102,6 +108,22 @@
         <h3>Jogo da Batalha Naval</h3>
         
         <div class="grid-botoes">
+            <div class="modal">
+                <button class="modal-expandir">Como jogar?</button>
+                <div class="modal-container">
+                    <div class="modal-conteudo">
+                        <button class="modal-fechar">&times;</button>
+                        <h2>Regras do Jogo</h2>
+                        <ul>
+                            <li>Cada jogador começa arrastando 5 navios para posições estratégicas da sua grelha.</li>
+                            <li>Na vez de cada jogador, ele deve escolher uma posição para atacar a grade do inimigo.</li>
+                            <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições até errar uma.</li>
+                            <li>Quando todas as partes de um navio são acertadas, ele é afundado.</li>
+                            <li>Vence quem afundar os 5 navios do oponente.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <button class="botao botao-iniciar-jogo">Iniciar Jogo!</button>
             <button class="botao botao-posicionar-navios">Posicionar Navios</button>
             <button class="botao botao-terminar-jogo">Terminar Jogo!</button>
@@ -121,9 +143,11 @@
 
             </div>            
 
-            <!-- Navios arrastáveis -->
-            <div class="navios-arrastaveis">
-
+            <div class="colapsavel">
+                <button class="colapsavel-expandir botao-raciocinio-ia">Visualizar Raciocínio da IA</button>
+                <div class="colapsavel-conteudo raciocinio-ia">
+                    <p>Aqui você verá a linha de raciocínio escrita pela IA, como as justificativas para a posição escolhida em suas jogadas.</p>
+                </div>
             </div>
 
             <!-- Grade do inimigo -->
@@ -135,27 +159,10 @@
                 </div>
 
             </div>
-        </div>
 
-        <div class="jogo-colapsaveis">
-            <div class="colapsavel">
-                <button class="colapsavel-expandir">Como funciona um jogo de Batalha Naval?</button>
-                <div class="colapsavel-conteudo">
-                    <ul>
-                        <li>Cada jogador começa arrastando 5 navios para posições estratégicas da sua grelha.</li>
-                        <li>Na vez de cada jogador, ele deve escolher uma posição para atacar a grade do inimigo.</li>
-                        <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições até errar uma.</li>
-                        <li>Quando todas as partes de um navio são acertadas, ele é afundado.</li>
-                        <li>Vence quem afundar os 5 navios do oponente.</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="colapsavel">
-                <button class="colapsavel-expandir">Visualizar Raciocínio da IA</button>
-                <div class="colapsavel-conteudo">
-                    <p>Aqui você verá a linha de raciocínio escrita pela IA, como as justificativas para a posição escolhida em suas jogadas.</p>
-                </div>
+            <!-- Navios arrastáveis -->
+            <div class="navios-arrastaveis">
+
             </div>
         </div>
 

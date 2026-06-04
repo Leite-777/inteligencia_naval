@@ -332,6 +332,8 @@ function inicializaONavio(tamanho){
         naviosCriados[contNaviosCriados] = new Navios(tamanho, VERTICAL);
     }
     navio.classList.add(classeNavio);
+    // Para aplicação de CSS a todos os navios
+    navio.classList.add("navio");
 
     //Passa o ID do navio para o ID do Elemento que representa aquele Navio.
     navio.id = naviosCriados[contNaviosCriados].codigo;

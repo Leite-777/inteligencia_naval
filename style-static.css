@@ -228,6 +228,78 @@ header{
     margin: 10px 0;
 }
 
+/* Botão de abrir */
+.modal-expandir {
+    padding: 10px 30px;
+    margin: 20px 10px;
+    background-color: #014177;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Container do Modal (Escondido por padrão) */
+.modal-container {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    
+    /* Centralização estrutural */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Classe que o JavaScript vai adicionar para abrir o modal */
+.modal-container.ativo {
+    display: flex;
+}
+
+/* Caixa do Modal */
+.modal-conteudo {
+    position: relative;
+    padding: 30px;
+    margin: 10px;
+    width: 90%;
+    max-width: 500px; /* Evita que fique gigante em telas grandes */
+    background-color: #3EE5DF;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Botão de fechar (X) */
+.modal-fechar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #014177;
+}
+
+/*
+.gif-ilustrativo{
+    width: 100%;
+    height: 200px;
+    background-image: 
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+}
+*/
+
+
 /* Tabuleiros da Batalha Naval */
 
 #jogo{
@@ -237,7 +309,7 @@ header{
 
 #jogo-batalha-naval{
     display: grid;
-    grid-template-columns: 3fr 1fr 3fr;
+    grid-template-columns: 3fr 1.5fr 3fr;
     gap: 10px;
 
     margin: 50px 0;
@@ -304,17 +376,18 @@ header{
     gap: 10px;
 }
 
-.jogo-colapsaveis{
-    display: flex;
-    align-items: flex-start;
+.jogo-batalha-naval .colapsavel{
+    width: 100%;
 }
 
-.jogo-colapsaveis > div{
-    flex: 1;
+.botao-raciocinio-ia{
+    font-size: 12px;
+    margin: 0;
 }
 
-.jogo-colapsaveis > div > .colapsavel-conteudo{
-    width: 50%;
+.raciocinio-ia{
+    font-size: 12px;
+    width: auto;
 }
 
 .tabuleiro-container {
