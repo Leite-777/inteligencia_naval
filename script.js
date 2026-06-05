@@ -99,14 +99,14 @@ class Navios{
             this.colunaFinal = this.colunaInicial + this.tamanho - 1;
 
             for (let i = 0; i < this.tamanho; i++) {
-                this.posicoesOcupadas[i] = (this.colunaInicial + i) + "x" + this.linhaInicial;
+                this.posicoesOcupadas[i] = tipoTabuleiro + "_" + (this.colunaInicial + i) + "x" + this.linhaInicial;
             }
 
         } else { // VERTICAL
             this.linhaFinal = this.linhaInicial + this.tamanho - 1;
 
             for (let i = 0; i < this.tamanho; i++) {
-                this.posicoesOcupadas[i] = this.colunaInicial + "x" + (this.linhaInicial + i);
+                this.posicoesOcupadas[i] = tipoTabuleiro + "_" + this.colunaInicial + "x" + (this.linhaInicial + i);
             }
         }
     }
@@ -249,10 +249,6 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
             celula.dataset.linha = linha;
             celula.dataset.coluna = coluna;
 
-            // -1: valor default
-            // 0: tiro errado
-            // 1: navio atingido
-            celula.dataset.status = "-1"; // Modificado para apenas o código saber o estado do campo.
             // celula.id = `${coluna}x${linha}`;    // ERRO: Desta forma os ids das celulas ficam duplicados pois tanto o campo inimigo quanto do jogador possuem o mesmo número de linhas e colunas
             celula.id = `${tipoDoTabuleiro}_${coluna}x${linha}`; // Melhor opção, deste jeito cada celula possui um id único
 
@@ -286,10 +282,12 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 });
 
                 // Adiciona os Gifs de Ondas aos campos do jogador.
+                celula.dataset.status = "1";
                 addGifOndas(celula);
             }
             else{
                 // Adiciona os Gifs de Nuvens aos campos da IA.
+                celula.dataset.status = "0";
                 addGifNuvens(celula);
             }
 

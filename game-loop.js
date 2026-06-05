@@ -13,6 +13,17 @@ function iniciarJogo(){
     alternarTransparencia(".botao-iniciar-jogo")
     alternarTransparencia(".botao-posicionar-navios")
     alternarTransparencia(".status-jogo")
+ 
+    // TESTE DA MUDANÇA DE GIFS
+    /* document.getElementById('-1_0x0').dataset.status = "2";
+    document.getElementById('-1_1x0').dataset.status = "3";
+    document.getElementById('-1_2x0').dataset.status = "4";
+    atualizarGifTabuleiro(tabuleiroInimigo);
+
+    document.getElementById('1_0x0').dataset.status = "2";
+    document.getElementById('1_1x0').dataset.status = "3";
+    document.getElementById('1_2x0').dataset.status = "4";
+    atualizarGifTabuleiro(tabuleiroJogador); */
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
 
@@ -26,19 +37,9 @@ function posicionarNavios(){
         //statusMensagem("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar!");
         statusMensagem("Abra o console pressionando F12, e clique em uma posição do tabuleiro inimigo para ver o jogo em ação!");
 
-        // TESTE DA MUDANÇA DE GIFS
-            // document.getElementById('-1_0x3').dataset.status = "0";      // Possíveis ids
-            // document.getElementById('1_2x6').dataset.status = "1";
-            // document.getElementById('-1_5x3').dataset.status = "2";
-            // // document.getElementById('0x3').dataset.status = "0";     // Ids antigos
-            // // document.getElementById('2x6').dataset.status = "1";
-            // // document.getElementById('5x3').dataset.status = "2";
-            // atualizarGifTabuleiro(tabuleiroJogador);
-            // atualizarGifTabuleiro(tabuleiroInimigo);
-
-        
         marcarPosicoesDosNavios();
         bloquearArrasteDosNavios();
+        atualizarGifTabuleiro(tabuleiroJogador);
 
         //console.log(tabuleiroHTMLparaJSON(".tabuleiro-jogador"));
 
@@ -48,7 +49,7 @@ function posicionarNavios(){
         alternarTransparenciaTabuleiro("inimigo");
 
         // Atualmente, a funcionalidade do jogo está visível somente no console.
-        
+
         // Na função chamarApi() de script-prompt.ts, na linha 277,
         // o botão Posicionar Navios está temporariamente configurado
         // para fazer cada célula do tabuleiro inimigo fazer a chamada

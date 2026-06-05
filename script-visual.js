@@ -22,6 +22,35 @@ conteudos.forEach(cont => {
     cont.style.display = "none";
 })
 
+// Para os botões de Modal
+const modais = document.querySelectorAll(".modal");
+
+modais.forEach(modal => {
+    // Busca os elementos APENAS dentro DESTE bloco modal específico
+    const botaoAbrir = modal.querySelector(".modal-expandir");
+    const container = modal.querySelector(".modal-container");
+    const botaoFechar = modal.querySelector(".modal-fechar");
+
+    // Abre o modal ao clicar no botão correspondente
+    botaoAbrir.addEventListener("click", () => {
+        container.classList.add("ativo");
+    });
+
+    // Fecha o modal ao clicar no botão de fechar (X) correspondente (se existir)
+    if (botaoFechar) {
+        botaoFechar.addEventListener("click", () => {
+            container.classList.remove("ativo");
+        });
+    }
+
+    // Fecha o modal se o usuário clicar no fundo escuro deste container
+    container.addEventListener("click", (event) => {
+        if (event.target === container) {
+            container.classList.remove("ativo");
+        }
+    });
+});
+
 // Função para ativar/desativar transparência de um tabuleiro
 let transparenciaJogador = false;
 let transparenciaInimigo = false;
@@ -143,43 +172,24 @@ function addGifCaveira(celula){
 //  * 
 //  * @param celula referente ao campo a receber o gif específico.
 //  */
-// function estadoCampo(celula){
-//     switch(celula.dataset.status){
-//         case "0": // Desconhecido
-//             addGifNuvens(celula);
-//             break;
-//         case "1": // Água
-//             addGifOndas(celula);
-//             break;
-//         case "3": // Navio parcialmente atingido
-//             addGifFogo(celula);
-//             break;
-//         case "4": // Navio completamente afundado
-//             celula.style.backgroundColor = 'gray';    
-//             addGifCaveira(celula);
-//             break;
-//     }
-// }
-
-/**
- *  Função responsável por adicionar um gif específico ao campo de acordo com o status da celula.
- *  Status disponíveis: 
- *      0: Tiro errado - Água atingida
- *      1: Navio atingido - Fogo
- *      2: Navio afundado - Caveira
- * 
- * @param celula referente ao campo a receber o gif específico.
- */
 function estadoCampo(celula){
     switch(celula.dataset.status){
-        case "0": // Tiro errado
-            addGifAguaAtingida(celula);
+        case "0": // Desconhecido
+            addGifNuvens(celula);
             break;
-        case "1": // Navio parcialmente atingido
+        case "1": // Água
+            addGifOndas(celula);
+            break;
+        case "2":
+            celula.style.backgroundColor = "#002341"
+            addGifOndas(celula);
+            break;
+        case "3": // Navio parcialmente atingido
+            celula.style.backgroundColor = "#4d2727"
             addGifFogo(celula);
             break;
-        case "2": // Navio completamente afundado
-            celula.style.backgroundColor = 'gray';    
+        case "4": // Navio completamente afundado
+            celula.style.backgroundColor = "rgb(46, 19, 19)"
             addGifCaveira(celula);
             break;
     }
@@ -203,32 +213,12 @@ function atualizarGifTabuleiro(tabuleiro){
         if(temImagem){ celula.removeChild(temImagem)}
 
         // Remove estilos antigos
-        celula.style.backgroundColor = "";
+        celula.style.backgroundColor = "#014177";
 
         // Status atual da célula
         const status = celula.dataset.status;
 
-        /*
-            -1 -> gif default
-             0 -> tiro errado
-             1 -> navio atingido
-             2 -> navio afundado
-        */
-
-        switch(status){
-            case "-1":      // Default
-                // Verifica de qual tabuleiro é a célula (jogador ou IA)
-                if(tabuleiro.classList.contains("tabuleiro-jogador")){
-                    addGifOndas(celula);
-                }
-                else{
-                    addGifNuvens(celula);
-                }
-                break;
-            default:
-                estadoCampo(celula);
-                break;
-        }
+        estadoCampo(celula);
     });
 }
 
@@ -261,4 +251,18 @@ function statusMensagem(mensagem) {
 
 function statusAlerta(mensagem) {
     typeWriter(mensagem, "#aa2a2a");
+}
+
+// funcao que valida chave
+function validaEstruturaChaveAPI() {
+
+    let inputChaveAPI= document.querySelector("#api-key");
+    const apiKey= inputChaveAPI.value.trim();
+
+    // Regex para o padrao da chave do Google API: Começa com 'AIza' e
+    //  tem mais 35 caracteres letras, numeros, hifens ou underscores
+    const regexChave = /^AIza[0-9A-Za-z\-_]{35}$/;
+    
+    // verifica se a chave existe dentro das especificacoes e retorna true or flase
+    return regexChave.test(apiKey);
 }
