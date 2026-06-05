@@ -218,7 +218,20 @@ function atualizarGifTabuleiro(tabuleiro){
         // Status atual da célula
         const status = celula.dataset.status;
 
-        estadoCampo(celula);
+        switch(status){
+            case "0":
+                // No tabuleiro do jogador, todas as posições sem navios são reveladas com água
+                if(tabuleiro.classList.contains("tabuleiro-jogador")){
+                    addGifOndas(celula);
+                }
+                else{
+                    addGifNuvens(celula);
+                }
+                break;
+            default:
+                estadoCampo(celula);
+                break;
+        }
     });
 }
 

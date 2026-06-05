@@ -248,6 +248,7 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
 
             celula.dataset.linha = linha;
             celula.dataset.coluna = coluna;
+            celula.dataset.status = "0";
 
             // celula.id = `${coluna}x${linha}`;    // ERRO: Desta forma os ids das celulas ficam duplicados pois tanto o campo inimigo quanto do jogador possuem o mesmo número de linhas e colunas
             celula.id = `${tipoDoTabuleiro}_${coluna}x${linha}`; // Melhor opção, deste jeito cada celula possui um id único
@@ -282,12 +283,10 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 });
 
                 // Adiciona os Gifs de Ondas aos campos do jogador.
-                celula.dataset.status = "1";
                 addGifOndas(celula);
             }
             else{
                 // Adiciona os Gifs de Nuvens aos campos da IA.
-                celula.dataset.status = "0";
                 addGifNuvens(celula);
             }
 
