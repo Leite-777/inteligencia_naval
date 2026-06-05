@@ -1,37 +1,5 @@
-// Para preenchimento dos tabuleiros com divs
-let tabuleiroJogador = document.querySelector(".tabuleiro-jogador");
-let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
-let campoDosNavios = document.querySelector(".navios-arrastaveis");
-let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
-let btnPosicionarNavios = document.querySelector(".botao-posicionar-navios");
-
 //Constantes para serem passadas no parametro da função "criarTabuleiro()".
-const MATRIZ_JOGADOR = 1; //Cria a matriz com as opções disponinveis de arrastar navios para o jogador.
-const MATRIZ_INIMIGO = -1; //Desabilita a opção de arrastar, criando apenas uma matriz visual.
-const TAMANHO_MATRIZ = 10;
 
-//Constantes para definir a direção do navio.
-const HORIZONTAL = 1;
-const VERTICAL = -1;
-
-//Guarda o Elemento do navio sendo arrastado em tempo de execução.
-let navioSendoArrastado = null;
-//Objeto do navio sendo arrastado naquele momento.
-let objNavioSendoArrastado = null;
-
-/*Guarda o tamanho de cada um dos navios criados referente a posição:
- * carrierTam, battleshipTam, destroyerTam, submarineTam, patrolBoatTam
-*/
-let tamanhoNavios = [5, 4, 3, 3, 2];
-
-/* Quantia de cada navio referente a posição:
- * carrierQuant, battleshipQuant, destroyerQuant, submarineQuant, patrolBoatQuant
-*/
-let quantiaNavios = [1, 1, 1, 1, 1];
-
-//Cria o vetor da classe Navios com base no total de navios criados no jogo.
-let naviosCriados;
-let contNaviosCriados=0;//Index para saber quantos navios ja foram criados em tempo de execução.
 
 /**
  * Classe do navio, criada para guardar as informações dos navios
@@ -40,7 +8,7 @@ let contNaviosCriados=0;//Index para saber quantos navios ja foram criados em te
  * @param vetor: Irá guardar quais partes do navio foram atingidas(vetor inicializado com false).
  * @param direcao: Passe a constante HORIZONTAL ou VERTICAL, caso passe algo diferente sera atribuido a constante HORIZONTAL.
  */
-class Navios{
+export class Navios{
     /** 
      * @param direcaoNavio: Passe @param HORIZONTAL ou @param VERTICAL
      * @param tamanho: Tamanho que o navio ocupará(Passe um numero maior ou igual a 1).
@@ -69,6 +37,8 @@ class Navios{
     }
 
     get verificaDirecao(){ return this.direcao; }
+
+    get getTamanho(){return this.tamanho}
 
     //Retorna true se o navio afundou, false se não.
     get getVerificaNavioAfundou() {
@@ -173,7 +143,7 @@ function gerarCodigoUnico() {
  * @param {*} max Valor máximo gerado pela função.
  * @returns Um número aleatorio de min a max.
  */
-function geraNumeroAleatorio(min, max){
+export function geraNumeroAleatorio(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -182,7 +152,7 @@ function geraNumeroAleatorio(min, max){
  * 
  * @returns Retorna true se estiverem prontos e false caso não estejam.
  */
-function verificaIniciarJogo(){
+export function verificaIniciarJogo(){
     for(let contador=0; contador < quantiaNavios.length; contador++){
         if(naviosCriados[contador].posicionado === false){ return false; }
     }
@@ -237,7 +207,7 @@ function verificaOcupacaoCelula(celulaId) {
  * @param tabuleiro  Adiciona as divs nos tabuleiros(Jogador e da IA/Inimigo)
  * @param tipoDoTabuleiro Passe 1 passa atribuir atribuir os elementos DragAndDrop ao tabuleiro do jogador e -1 para apenar criar o tabuleiro.
  */
-function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
+export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
   tabuleiro.innerHTML = "";
 
   for (let linha = 0; linha < TAMANHO_MATRIZ; linha++) {
@@ -298,7 +268,7 @@ function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
 /**
  * Soma quantos navios exitem dentro do jogo.
  */
-function criaNavios(){
+export function criaNavios(){
     //Total é o acumulador e valorAtual é o número da vez
     const soma = quantiaNavios.reduce((total, valorAtual) => total + valorAtual, 0);
 
@@ -357,13 +327,15 @@ function inicializaONavio(tamanho){
  * 
  * @returns retorna o vetor de Navios, com os devidos navios criados.
  */
-function inicializaOsNaviosIA(navios){
-    
+export function inicializaOsNaviosIA(){
+    let tamanho;
+    let navios = [];
     for(let contador=0; contador < quantiaNavios.length; contador++){
+        tamanho = geraNumeroAleatorio(1,5);
         if(geraNumeroAleatorio(0, 1) == 1){
-            navios[contNaviosCriados] = new Navios(tamanho, HORIZONTAL);
+            navios[contador] = new Navios(tamanho, HORIZONTAL);
         }else{
-            navios[contNaviosCriados] = new Navios(tamanho, VERTICAL);
+            navios[contador] = new Navios(tamanho, VERTICAL);
         }
     }
 
@@ -481,7 +453,7 @@ function verificaEspacoMatriz(navioAtual, idCelula) {
 
 // Faz os navios modificarem o campo "status" da div das células para 2, nas posições em que ocupam.
 // Para ser chamado quando os navios forem posicionados.
-function marcarPosicoesDosNavios() {
+export function marcarPosicoesDosNavios() {
     for (const navio of naviosCriados.filter(Boolean)) {
 
         if (!navio.posicionado) continue;
@@ -498,7 +470,7 @@ function marcarPosicoesDosNavios() {
 
 // Faz os navios não poderem mais ser arrastáveis
 // Para ser chamado quando os navios forem posicionados.
-function bloquearArrasteDosNavios() {
+export function bloquearArrasteDosNavios() {
     document.querySelectorAll(".navio").forEach(navio => {
         navio.draggable = false;
     });

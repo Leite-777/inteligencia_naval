@@ -1,4 +1,9 @@
 import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
+import { criarTabuleiro } from "./script-jogador.js";
+import { criaNavios } from "./script-jogador.js";
+import { bloquearArrasteDosNavios } from "./script-jogador.js";
+import { verificaIniciarJogo } from "./script-jogador.js";
+import { marcarPosicoesDosNavios } from "./script-jogador.js";
 
 alternarTransparencia(".botao-posicionar-navios")
 alternarTransparencia(".botao-terminar-jogo")

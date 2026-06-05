@@ -1,5 +1,8 @@
 import {tabuleiroHTMLparaJSON} from "./script-tabuleiro.js";
 import {escolherJogadaFallback} from "./script-fallback.js"
+import { inicializaOsNaviosIA } from "./script-jogador.js";
+import { Navios } from "./script-jogador.js";
+import { geraNumeroAleatorio } from "./script-jogador.js";
 
 let chaveHtml = document.getElementById('api-key') as HTMLInputElement;
 //para não travar a chava api
@@ -21,7 +24,7 @@ let matrizParaOPrompt : number[][] = [
 ];
 
 // Matriz com 7 navios inseridos
-let matrizTeste: number[][] = [
+let campoIA: number[][] = [
     [2,0,0,0,0,0,0,0,0,0],
     [2,0,0,2,2,2,0,0,0,0],
     [2,0,0,0,0,0,0,0,0,0],
@@ -62,6 +65,8 @@ enum Acerto{
 //tipo de retorno para a função chamada api ja que esse tipo pode ser Sucesso ou Erro
 type resultadoApi = Erro | Sucesso;
 type acertoAPI = {acerto:Acerto | undefined;};
+
+let totalNaviosIA = inicializaOsNaviosIA();
 
 //                              Função principal para a Chamada de API, com o retorno dos dados
 
@@ -288,22 +293,32 @@ if (botaoPosicionarNavios) {
         //let respostaChamadaApi = await chamarApi(matrizParaOPrompt, matrizTeste);
         // Reativa o botão após o término da jogada
         botaoPosicionarNavios.disabled = false;
-
+        campoIA = posicionaCampoIA(campoIA,totalNaviosIA);
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
 
         if(campoIa){
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
-                    let parada : number = 0;
-                    do{
-                        let status = await JogadaApi();
-                        if(status.acerto != Acerto.Acertou){
-                            parada = 0;
-                        }else{
-                            parada = 1;
-                        }
-                    }while(parada != 0);
+                    //console.log((filho as HTMLElement).dataset.linha);
                     
+                    // console.log(totalNaviosIA.length);
+                    // console.log(totalNaviosIA[0]?.verificaDirecao);
+                    // console.log(totalNaviosIA[0]?.getTamanho);
+                    console.log(campoIA);
+                    if(verficarNavioAcertadoIa(filho as HTMLElement)){
+                        alert("Navio da Ia acertado");
+                    }else{
+                        alert("Agua");
+                        let parada : number = 0;
+                        do{
+                            let status = await JogadaApi();
+                            if(status.acerto != Acerto.Acertou){
+                                parada = 0;
+                            }else{
+                                parada = 1;
+                            }
+                        }while(parada != 0);
+                    }
                 });
             });
             console.log(campoIa.childNodes);
@@ -357,6 +372,43 @@ async function jogadaFallback(matrizIa : number[][],matrizJogador:number[][]): P
     return {acerto : undefined};
 }
 
+function verficarNavioAcertadoIa(filho : HTMLElement) :boolean{
+    let linhaFilho = filho.dataset.linha;
+    let colunaFilho = filho.dataset.coluna;
+    if(linhaFilho != undefined && colunaFilho != undefined){
+        let posLinha = Number.parseInt(linhaFilho);
+        let posColuna = Number.parseInt(colunaFilho);
+        if(campoIA[posLinha][posColuna] == 2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    return false;
+}
+
+export function posicionaCampoIA(campoIA:number[][],totalNaviosIA: Navios[]) :number[][]{
+    const horizontal = "1";
+    for(let iterador = 0;iterador < totalNaviosIA.length;iterador++){
+        let posAleatoria = Math.floor(Math.random() * 10);
+        if(totalNaviosIA[iterador].verificaDirecao == horizontal){
+            for(let i=0;i < totalNaviosIA[iterador].getTamanho;i++){
+                if(campoIA[posAleatoria][i] == 2){
+                }else{
+                    campoIA[posAleatoria][i] = 2;
+                }
+            }
+        }else{
+            for(let i=0;i < totalNaviosIA[iterador].getTamanho;i++){
+                if(campoIA[i][posAleatoria] == 2){
+                }else{
+                    campoIA[i][posAleatoria] = 2;
+                }
+            }
+        }
+    }
+    return campoIA;
+}
 
 
 
