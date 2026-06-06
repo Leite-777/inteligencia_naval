@@ -468,6 +468,39 @@ export function marcarPosicoesDosNavios() {
     }
 }
 
+export function verificarSeNaviosForamAfundados() {
+    let naviosAfundados = 0;
+    let posicoesAfundadas = 0;
+    
+    for (const navio of naviosCriados.filter(Boolean)) {
+
+        if (!navio.posicionado) continue;
+        
+        posicoesAfundadas = 0;
+        // Conta o número de posições que foi atingido
+        for (const posicao of navio.posicoesOcupadas) {
+            const celula = document.getElementById(posicao);
+
+            if (celula) {
+                if(celula.dataset.status === "3")
+                    posicoesAfundadas++;
+            }
+        }
+        // Se o navio foi completamente atingido, atualiza o navio inteiro como afundado
+        if(posicoesAfundadas === navio.posicoesOcupadas.length){
+            for (const posicao of navio.posicoesOcupadas) {
+                const celula = document.getElementById(posicao);
+
+                if (celula) {
+                    celula.dataset.status = "4";
+                }
+            }
+        }
+        
+        naviosAfundados++;
+    }
+}
+
 // Faz os navios não poderem mais ser arrastáveis
 // Para ser chamado quando os navios forem posicionados.
 export function bloquearArrasteDosNavios() {

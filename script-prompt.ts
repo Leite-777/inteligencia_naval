@@ -1,4 +1,7 @@
 import {tabuleiroHTMLparaJSON} from "./script-tabuleiro.js";
+import {tabuleiroJSONparaHTML} from "./script-tabuleiro.js";
+import {statusMensagem} from "./script-tabuleiro.js";
+import {statusAlerta} from "./script-tabuleiro.js";
 import {escolherJogadaFallback} from "./script-fallback.js"
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { Navios } from "./script-jogador.js";
@@ -179,7 +182,7 @@ function depurarAtaqueNoConsole(matriz: number[][], linhaAtaque: number, colunaA
 
 //                              Função da passagem dos tabuleiros para, Chamada de API, junto com o prompt
 
-async function chamarApi(matrizIa: number[][], matrizJogador: number[][]): Promise<acertoAPI>{
+async function chamarApi(matrizJogadorRevelado: number[][], matrizJogadorCompleto: number[][]): Promise<acertoAPI>{
     // Pega o valor exato no momento que a função é ativada
     let apiKey = chaveHtml.value;
 
@@ -189,7 +192,7 @@ async function chamarApi(matrizIa: number[][], matrizJogador: number[][]): Promi
     }
 
     // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
-    let matrizFormatada = matrizIa.map(linha => `[${linha.join(', ')}]`).join('\n');
+    let matrizFormatada = matrizJogadorRevelado.map(linha => `[${linha.join(', ')}]`).join('\n');
 
     let prompt: string = `
 Você está jogando batalha naval contra um oponente humano, as regras são as seguintes:
@@ -215,7 +218,6 @@ Não use markdown.
 `;
 
     let respostaFunc = await chamadaApi(prompt);
-    //console.log(respostaFunc);
 
     // Debug temporário da resposta da chamada API, contendo:
     // A matriz completa do oponente exibida no console, a posição atacada, e o raciocínio da IA
@@ -234,7 +236,7 @@ Não use markdown.
 
         // Desenha o tabuleiro com os emojis no console
         depurarAtaqueNoConsole(
-            matrizIa, 
+            matrizJogadorRevelado, 
             coordenadasIa.linha, 
             coordenadasIa.coluna, 
             coordenadasIa.debug
@@ -245,16 +247,24 @@ Não use markdown.
         if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
             
             // Verifica o que tinha na matriz do jogador naquela coordenada
-            let matrizCompletaJogador = matrizJogador[linhaAtaque][colunaAtaque];
+            let posicaoAtacada = matrizJogadorCompleto[linhaAtaque][colunaAtaque];
 
-            if (matrizCompletaJogador === 2) {
-                // Acertou um Navio! Atualiza a matriz do prompt com 3
-                matrizIa[linhaAtaque][colunaAtaque] = 3;
+            if (posicaoAtacada === 2) {
+                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+                matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
+                matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
+                // Mostra a alteração do tabuleiro na página para o usuário ver
+                tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
+
                 alert(`💥 TIRO CERTEIRO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
                 return {acerto: Acerto.Acertou};
-            } else if (matrizIa[linhaAtaque][colunaAtaque] === 0) {
-                // Água! Atualiza a matriz do prompt com 1
-                matrizIa[linhaAtaque][colunaAtaque] = 1;
+            } else if (posicaoAtacada === 0) {
+                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+                matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
+                matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
+                // Mostra a alteração do tabuleiro na página para o usuário ver
+                tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
+
                 alert(`🌊 Água... O Gemini errou em (${linhaAtaque}, ${colunaAtaque})`);
                 return {acerto: Acerto.Errou};
             } else {
@@ -271,8 +281,7 @@ Não use markdown.
         
         console.error(`Erro na chamada da API [Código ${erro.CodigoErro}]: ${erro.mensagemErro}`);
         alert(`Erro ao chamar a API: ${erro.mensagemErro}`);
-        return jogadaFallback(matrizIa,matrizJogador);
-        //return {acerto :undefined};
+        return jogadaFallback(matrizJogadorRevelado,matrizJogadorCompleto);
     }
     return {acerto :undefined};
 }
@@ -287,28 +296,24 @@ if (botaoPosicionarNavios) {
         // Desativa o botão temporariamente para o usuário não clicar várias vezes enquanto a API responde
         botaoPosicionarNavios.disabled = true;
 
-        console.log("Botão pressionado! Iniciando turno da IA...");
-        
-        // Dispara a função principal que criamos
-        //let respostaChamadaApi = await chamarApi(matrizParaOPrompt, matrizTeste);
-        // Reativa o botão após o término da jogada
-        botaoPosicionarNavios.disabled = false;
+        console.log("Adicionando eventos de clique no tabuleiro inimigo");
+
+        // Adiciona os navios no tabuleiro da IA
         campoIA = posicionaCampoIA(campoIA,totalNaviosIA);
+
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
 
         if(campoIa){
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
-                    //console.log((filho as HTMLElement).dataset.linha);
-                    
-                    // console.log(totalNaviosIA.length);
-                    // console.log(totalNaviosIA[0]?.verificaDirecao);
-                    // console.log(totalNaviosIA[0]?.getTamanho);
-                    console.log(campoIA);
-                    if(verficarNavioAcertadoIa(filho as HTMLElement)){
+                    // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
+                    if(verificarNavioAcertadoIa(filho as HTMLElement)){
                         alert("Navio da Ia acertado");
-                    }else{
+                    }
+                    // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
+                    else{
                         alert("Agua");
+                        // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
                         let parada : number = 0;
                         do{
                             let status = await JogadaApi();
@@ -321,7 +326,7 @@ if (botaoPosicionarNavios) {
                     }
                 });
             });
-            console.log(campoIa.childNodes);
+            
         }
     });
 } else {
@@ -344,26 +349,36 @@ async function JogadaApi(): Promise<acertoAPI>{
     }
 }
 
-async function jogadaFallback(matrizIa : number[][],matrizJogador:number[][]): Promise<acertoAPI>{
-    let posFall = escolherJogadaFallback(matrizIa);
+async function jogadaFallback(matrizJogadorRevelado : number[][],matrizJogadorCompleta:number[][]): Promise<acertoAPI>{
+    let posFall = escolherJogadaFallback(matrizJogadorRevelado);
     if(posFall != undefined){
-        let posmatrizJogador = matrizJogador[posFall.linha][posFall.coluna];
+        let posicaoAtacada = matrizJogadorCompleta[posFall.linha][posFall.coluna];
         depurarAtaqueNoConsole(
-            matrizIa, 
+            matrizJogadorRevelado, 
             posFall.linha, 
             posFall.coluna, 
             "Fallback"
         );
-        console.log(matrizJogador[posFall.linha][posFall.coluna]);
-        if (posmatrizJogador === 2) {
-                // Acertou um Navio! Atualiza a matriz do prompt com 3
-                matrizIa[posFall.linha][posFall.coluna] = 3;
-                alert(`💥 TIRO CERTEIRO! O Fallback acertou um navio em (${posFall.linha}, ${posFall.coluna})`);
+        
+        if (posicaoAtacada === 2) {
+                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+                matrizJogadorRevelado[posFall.linha][posFall.coluna] = 3;
+                matrizJogadorCompleta[posFall.linha][posFall.coluna] = 3;
+                // Mostra a alteração do tabuleiro na página para o usuário ver
+                tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
+
+                statusMensagem(`TIRO CERTEIRO! O Fallback acertou um navio em (${posFall.linha}, ${posFall.coluna})`);
+                //alert(`💥 TIRO CERTEIRO! O Fallback acertou um navio em (${posFall.linha}, ${posFall.coluna})`);
                 return {acerto: Acerto.Acertou};
-            } else if (matrizIa[posFall.linha][posFall.coluna] === 0) {
-                // Água! Atualiza a matriz do prompt com 1
-                matrizIa[posFall.linha][posFall.coluna] = 1;
-                alert(`🌊 Água... O Fallback errou em (${posFall.linha}, ${posFall.coluna})`);
+            } else if (posicaoAtacada === 0) {
+                // Altera a posição nas duas matrizes pra marcar que a água foi atingida
+                matrizJogadorRevelado[posFall.linha][posFall.coluna] = 1;
+                matrizJogadorCompleta[posFall.linha][posFall.coluna] = 1;
+                // Mostra a alteração do tabuleiro na página para o usuário ver
+                tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
+                
+                statusMensagem(`Água... O Fallback errou em (${posFall.linha}, ${posFall.coluna})`)
+                //alert(`🌊 Água... O Fallback errou em (${posFall.linha}, ${posFall.coluna})`);
                 return {acerto: Acerto.Errou};
             }
     }else{
@@ -372,7 +387,7 @@ async function jogadaFallback(matrizIa : number[][],matrizJogador:number[][]): P
     return {acerto : undefined};
 }
 
-function verficarNavioAcertadoIa(filho : HTMLElement) :boolean{
+function verificarNavioAcertadoIa(filho : HTMLElement) :boolean{
     let linhaFilho = filho.dataset.linha;
     let colunaFilho = filho.dataset.coluna;
     if(linhaFilho != undefined && colunaFilho != undefined){

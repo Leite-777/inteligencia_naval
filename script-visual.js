@@ -143,6 +143,8 @@ function addGifFogo(celula){
     gifFogo.style.borderRadius = '5px';
     gifFogo.src = 'assets/gifs/fogo.gif';
     gifFogo.alt = 'Gif de Fogo';
+    // Faz o gif aparecer sobre o navio
+    gifFogo.style.zIndex = 100;
     celula.appendChild(gifFogo);
 }
 
@@ -158,6 +160,8 @@ function addGifCaveira(celula){
     gifCaveira.style.borderRadius = '5px';
     gifCaveira.src = 'assets/gifs/caveira.gif';
     gifCaveira.alt = 'Gif de Fogo';
+    // Faz o gif aparecer sobre o navio
+    gifCaveira.style.zIndex = 100;
     celula.appendChild(gifCaveira);
 }
 
@@ -178,6 +182,7 @@ function estadoCampo(celula){
             addGifNuvens(celula);
             break;
         case "1": // Água
+            celula.style.backgroundColor = "#002341"
             addGifOndas(celula);
             break;
         case "2":
@@ -233,37 +238,6 @@ function atualizarGifTabuleiro(tabuleiro){
                 break;
         }
     });
-}
-
-// Função para alteração do status-jogo
-const statusJogo = document.querySelector(".status-jogo");
-
-let intervaloTypeWriter;
-
-function typeWriter(mensagem, corFundo, velocidade = 30) {
-    clearInterval(intervaloTypeWriter);
-
-    statusJogo.innerHTML = "";
-    statusJogo.style.backgroundColor = corFundo;
-
-    let i = 0;
-
-    intervaloTypeWriter = setInterval(() => {
-        statusJogo.innerHTML += mensagem.charAt(i);
-        i++;
-
-        if (i >= mensagem.length) {
-            clearInterval(intervaloTypeWriter);
-        }
-    }, velocidade);
-}
-
-function statusMensagem(mensagem) {
-    typeWriter(mensagem, "#014177");
-}
-
-function statusAlerta(mensagem) {
-    typeWriter(mensagem, "#aa2a2a");
 }
 
 // funcao que valida chave

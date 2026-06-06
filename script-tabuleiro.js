@@ -1,3 +1,5 @@
+import { verificarSeNaviosForamAfundados } from "./script-jogador.js";
+
 /**
  * Converte o tabuleiro HTML para um array JSON, com o formato [0,0,0,0,0...]
  * @param {*} seletorTabuleiro A classe do tabuleiro, como ".tabuleiro-jogador"
@@ -23,12 +25,12 @@ export function tabuleiroHTMLparaJSON(seletorTabuleiro) {
 }
 
 /**
- * Converte uma matriz JSON para o tabuleiro HTML
+ * Converte uma matriz JSON para o tabuleiro HTML, atualiza navios que foram afundados, posiciona os gifs adequados pra cada posição.
  * @param {*} matriz A matriz JSON usada para substituir
  * @param {*} seletorTabuleiro A classe do tabuleiro que será substituído, como ".tabuleiro-jogador"
  * @returns Não há retorno, apenas substitui o tabuleiro no HTML
  */
-function tabuleiroJSONparaHTML(matriz, seletorTabuleiro = ".tabuleiro-jogador") {
+export function tabuleiroJSONparaHTML(matriz, seletorTabuleiro) {
     const tabuleiro = document.querySelector(seletorTabuleiro);
 
     if (!tabuleiro) {
@@ -36,59 +38,53 @@ function tabuleiroJSONparaHTML(matriz, seletorTabuleiro = ".tabuleiro-jogador") 
         return;
     }
 
-    // Limpa o conteúdo atual do tabuleiro
-    tabuleiro.innerHTML = "";
+    const celulas = tabuleiro.querySelectorAll(".celula");
 
     for (let linha = 0; linha < matriz.length; linha++) {
         for (let coluna = 0; coluna < matriz[linha].length; coluna++) {
 
-            const celula = document.createElement("div");
+            const indice = linha * matriz[linha].length + coluna;
+            const celula = celulas[indice];
 
-            celula.classList.add("celula");
+            if (!celula) continue;
 
             celula.dataset.linha = linha;
             celula.dataset.coluna = coluna;
             celula.dataset.status = matriz[linha][coluna];
-
-            // celula.id = `${coluna}x${linha}`;        // Erro de id duplicado
-            celula.id = `${seletorTabuleiro}_${coluna}x${linha}`;    // Possível resolução
-
-            tabuleiro.appendChild(celula);
         }
     }
-
-    // Atualmente o tabuleiro criado não possui:
-    // Os gifs de água, nuvens, etc.
-    // Funcionalidade drag and drop
-
-    // A fazer:
-    // Criar função separada pra iterar por todas as células de um tabuleiro HTML,
-    // E chamar as funções apropriadas de gifs dependendo do celula.dataset.status,
-    // Como por exemplo: 0 -> addGifNuvens(), 1-> addGifOndas(), etc.
-    // E chamar essa função aqui no final, pra atualizar os gifs do tabuleiro depois de criar as células.
+    
+    verificarSeNaviosForamAfundados();
+    atualizarGifTabuleiro(tabuleiro);
 }
 
-// Exemplo de uso, insira no final do btnIniciarJogo.addEventListener("click") do script.js:
-/*
-const matrizTeste2 = [
-    [0,0,0,1,0,0,0,0,0,0],
-    [0,1,0,0,0,0,1,0,0,0],
-    [0,0,0,0,1,0,0,0,0,0],
-    [1,0,0,0,0,0,0,1,0,0],
-    [0,0,1,0,0,1,0,0,0,0],
-    [0,0,0,0,0,0,0,0,1,0],
-    [0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,1,0,0,1,0,0,0],
-    [0,0,0,0,0,1,0,0,0,1],
-    [0,0,1,0,0,0,0,0,0,0]
-];
+// Função para alteração do status-jogo
+const statusJogo = document.querySelector(".status-jogo");
 
-console.log("Exibindo tabuleiro inicial:");
-console.log(tabuleiroHTMLparaJSON(".tabuleiro-jogador"));
+let intervaloTypeWriter;
 
-console.log("Substituindo tabuleiro por matrizTeste2:");
-tabuleiroJSONparaHTML(matrizTeste2, ".tabuleiro-jogador");
+function typeWriter(mensagem, corFundo, velocidade = 30) {
+    clearInterval(intervaloTypeWriter);
 
-console.log("Exibindo tabuleiro após atualização:");
-console.log(tabuleiroHTMLparaJSON(".tabuleiro-jogador"));
-*/
+    statusJogo.innerHTML = "";
+    statusJogo.style.backgroundColor = corFundo;
+
+    let i = 0;
+
+    intervaloTypeWriter = setInterval(() => {
+        statusJogo.innerHTML += mensagem.charAt(i);
+        i++;
+
+        if (i >= mensagem.length) {
+            clearInterval(intervaloTypeWriter);
+        }
+    }, velocidade);
+}
+
+export function statusMensagem(mensagem) {
+    typeWriter(mensagem, "#014177");
+}
+
+export function statusAlerta(mensagem) {
+    typeWriter(mensagem, "#aa2a2a");
+}

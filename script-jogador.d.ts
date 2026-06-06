@@ -10,4 +10,6 @@ export class Navios{
 
 export function inicializaOsNaviosIA() : Navios[];
 
+export function verificarSeNaviosForamAfundados() : null;
+
 export function geraNumeroAleatorio(min:number, max:number):number;
