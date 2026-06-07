@@ -81,6 +81,10 @@ export class Navios{
         }
     }
 
+    set marcarComoPosicionado(valor) {
+        this.posicionado = valor;
+    }
+
     /**Durante o jogo**/
 
     /**
@@ -272,7 +276,8 @@ export function criaNavios(){
     //Total é o acumulador e valorAtual é o número da vez
     const soma = quantiaNavios.reduce((total, valorAtual) => total + valorAtual, 0);
 
-    naviosCriados = new Array(soma); 
+    
+     new Array(soma); 
     for(let index=0; index < quantiaNavios.length; index++){
         inicializaONavio(tamanhoNavios[index]);
     }
@@ -327,19 +332,21 @@ function inicializaONavio(tamanho){
  * 
  * @returns retorna o vetor de Navios, com os devidos navios criados.
  */
-export function inicializaOsNaviosIA(){
-    let tamanho;
-    let navios = [];
-    for(let contador=0; contador < quantiaNavios.length; contador++){
-        tamanho = geraNumeroAleatorio(1,5);
-        if(geraNumeroAleatorio(0, 1) == 1){
-            navios[contador] = new Navios(tamanho, HORIZONTAL);
-        }else{
-            navios[contador] = new Navios(tamanho, VERTICAL);
+export function inicializaOsNaviosIA() {
+    for (let i = 0; i < tamanhoNavios.length; i++) {
+
+        for (let j = 0; j < quantiaNavios[i]; j++) {
+
+            const direcao =
+                geraNumeroAleatorio(0, 1) === 1
+                    ? HORIZONTAL
+                    : VERTICAL;
+
+            naviosIA[i] = new Navios(tamanhoNavios[i], direcao);
         }
     }
 
-    return navios;
+    return naviosIA;
 }
 
 /**
@@ -468,11 +475,18 @@ export function marcarPosicoesDosNavios() {
     }
 }
 
-export function verificarSeNaviosForamAfundados() {
+export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
     let naviosAfundados = 0;
     let posicoesAfundadas = 0;
+    let listaNavios = [];
+
+    if(tipoTabuleiro === 1){
+        listaNavios = naviosCriados;
+    }else{
+        listaNavios = naviosIA;
+    }
     
-    for (const navio of naviosCriados.filter(Boolean)) {
+    for (const navio of listaNavios.filter(Boolean)) {
 
         if (!navio.posicionado) continue;
         

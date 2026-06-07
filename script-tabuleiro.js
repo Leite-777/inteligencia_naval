@@ -1,4 +1,4 @@
-import { verificarSeNaviosForamAfundados } from "./script-jogador.js";
+import { inicializaOsNaviosIA, verificarSeNaviosForamAfundados } from "./script-jogador.js";
 
 /**
  * Converte o tabuleiro HTML para um array JSON, com o formato [0,0,0,0,0...]
@@ -54,7 +54,12 @@ export function tabuleiroJSONparaHTML(matriz, seletorTabuleiro) {
         }
     }
     
-    verificarSeNaviosForamAfundados();
+    if(seletorTabuleiro === ".tabuleiro-inimigo"){
+        verificarSeNaviosForamAfundados(-1);
+    }
+    else{
+        verificarSeNaviosForamAfundados(1);
+    }
     atualizarGifTabuleiro(tabuleiro);
 }
 

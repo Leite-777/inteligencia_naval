@@ -20,17 +20,6 @@ function iniciarJogo(){
     alternarTransparencia(".botao-iniciar-jogo")
     alternarTransparencia(".botao-posicionar-navios")
     alternarTransparencia(".status-jogo")
- 
-    // TESTE DA MUDANÇA DE GIFS
-    /* document.getElementById('-1_0x0').dataset.status = "2";
-    document.getElementById('-1_1x0').dataset.status = "3";
-    document.getElementById('-1_2x0').dataset.status = "4";
-    atualizarGifTabuleiro(tabuleiroInimigo);
-
-    document.getElementById('1_0x0').dataset.status = "2";
-    document.getElementById('1_1x0').dataset.status = "3";
-    document.getElementById('1_2x0').dataset.status = "4";
-    atualizarGifTabuleiro(tabuleiroJogador); */
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
 
@@ -41,26 +30,16 @@ function iniciarJogo(){
 
 function posicionarNavios(){
     if(verificaIniciarJogo() === true ){
-        //statusMensagem("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar!");
-        statusMensagem("Abra o console pressionando F12, e clique em uma posição do tabuleiro inimigo para ver o jogo em ação!");
+        statusMensagem("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
 
         marcarPosicoesDosNavios();
         bloquearArrasteDosNavios();
         atualizarGifTabuleiro(tabuleiroJogador);
 
-        //console.log(tabuleiroHTMLparaJSON(".tabuleiro-jogador"));
-
         btnPosicionarNavios.removeEventListener("click", posicionarNavios);
 
         //alternarTransparenciaTabuleiro("jogador");
         alternarTransparenciaTabuleiro("inimigo");
-
-        // Atualmente, a funcionalidade do jogo está visível somente no console.
-
-        // Na função chamarApi() de script-prompt.ts, na linha 277,
-        // o botão Posicionar Navios está temporariamente configurado
-        // para fazer cada célula do tabuleiro inimigo fazer a chamada
-        // da API ou do fallback, exibindo a posição atacada e o tabuleiro inteiro no console.
 
         gameLoop();
     }else{

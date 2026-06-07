@@ -30,4 +30,5 @@ let quantiaNavios = [1, 1, 1, 1, 1];
 
 //Cria o vetor da classe Navios com base no total de navios criados no jogo.
 let naviosCriados = [];
+let naviosIA = [];
 let contNaviosCriados=0;//Index para saber quantos navios ja foram criados em tempo de execução.
