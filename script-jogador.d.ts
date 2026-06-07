@@ -14,3 +14,5 @@ export function inicializaOsNaviosIA() : Navios[];
 export function verificarSeNaviosForamAfundados(tipoTabuleiro:number) : null;
 
 export function geraNumeroAleatorio(min:number, max:number):number;
+
+export function verificaIniciarJogo() : boolean;

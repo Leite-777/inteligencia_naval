@@ -3,6 +3,7 @@ import { tabuleiroJSONparaHTML } from "./script-tabuleiro.js";
 import { statusMensagem } from "./script-tabuleiro.js";
 import { escolherJogadaFallback } from "./script-fallback.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
+import { verificaIniciarJogo } from "./script-jogador.js";
 let chaveHtml = document.getElementById('api-key');
 //para não travar a chava api
 // O tabuleiro inimigo onde o usuário só vê as posições que ele atacou
@@ -140,6 +141,7 @@ Não use markdown.
     // Um alerta na tela mostrando a posição que o Gemini acertou
     // Atualização da matriz com a posição que o Gemini acertou (matrizIa[linhaAtaque][colunaAtaque] = 1;)
     // Se der erro na chamada, mostra no console o código do erro que foi retornado
+    let raciocinioIA = document.querySelector(".raciocinio-ia");
     if (respostaFunc.status) {
         const sucesso = respostaFunc;
         const coordenadasIa = sucesso.dados;
@@ -148,7 +150,6 @@ Não use markdown.
         // Exibe um alerta na tela mostrando a posição que o Gemini atacou, e atualiza da matriz
         // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
         if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
-            let raciocinioIA = document.querySelector(".raciocinio-ia");
             raciocinioIA.textContent = `${sucesso.dados.debug}`;
             // Verifica o que tinha na matriz do jogador naquela coordenada
             let posicaoAtacada = matrizJogadorCompleto[linhaAtaque][colunaAtaque];
@@ -183,6 +184,7 @@ Não use markdown.
         const erro = respostaFunc;
         console.error(`Erro na chamada da API [Código ${erro.CodigoErro}]: ${erro.mensagemErro}`);
         alert(`Erro ao chamar a API: ${erro.mensagemErro}`);
+        raciocinioIA.textContent = `Piloto automatico jogando`;
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
     }
     return { acerto: undefined };
@@ -200,29 +202,31 @@ if (botaoPosicionarNavios) {
         tabuleiroInimigoCompleto = posicionaCampoIA(tabuleiroInimigoCompleto, totalNaviosIA);
         const campoIa = document.querySelector('.tabuleiro-inimigo');
         if (campoIa) {
-            Array.from(campoIa.children).forEach((filho) => {
-                filho.addEventListener("click", async () => {
-                    // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
-                    if (verificarNavioAcertadoIa(filho)) {
-                        alert("Você acertou um navio!");
-                    }
-                    // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
-                    else {
-                        alert("Você errou o tiro...");
-                        // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
-                        let parada = 0;
-                        do {
-                            let status = await JogadaApi();
-                            if (status.acerto != Acerto.Acertou) {
-                                parada = 0;
-                            }
-                            else {
-                                parada = 1;
-                            }
-                        } while (parada != 0);
-                    }
+            if (verificaIniciarJogo() == true) {
+                Array.from(campoIa.children).forEach((filho) => {
+                    filho.addEventListener("click", async () => {
+                        // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
+                        if (verificarNavioAcertadoIa(filho)) {
+                            alert("Você acertou um navio!");
+                        }
+                        // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
+                        else {
+                            alert("Você errou o tiro...");
+                            // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
+                            let parada = 0;
+                            do {
+                                let status = await JogadaApi();
+                                if (status.acerto != Acerto.Acertou) {
+                                    parada = 0;
+                                }
+                                else {
+                                    parada = 1;
+                                }
+                            } while (parada != 0);
+                        }
+                    });
                 });
-            });
+            }
         }
     });
 }

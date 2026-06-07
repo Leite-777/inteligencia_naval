@@ -6,6 +6,7 @@ import {escolherJogadaFallback} from "./script-fallback.js"
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { Navios } from "./script-jogador.js";
 import { geraNumeroAleatorio } from "./script-jogador.js";
+import { verificaIniciarJogo } from "./script-jogador.js";
 
 let chaveHtml = document.getElementById('api-key') as HTMLInputElement;
 //para não travar a chava api
@@ -190,6 +191,7 @@ Não use markdown.
     // Atualização da matriz com a posição que o Gemini acertou (matrizIa[linhaAtaque][colunaAtaque] = 1;)
     // Se der erro na chamada, mostra no console o código do erro que foi retornado
 
+    let raciocinioIA = document.querySelector(".raciocinio-ia") as HTMLDivElement;
     if (respostaFunc.status) {
         const sucesso = respostaFunc as Sucesso;
         const coordenadasIa = sucesso.dados;
@@ -199,8 +201,6 @@ Não use markdown.
         // Exibe um alerta na tela mostrando a posição que o Gemini atacou, e atualiza da matriz
         // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
         if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
-            
-            let raciocinioIA = document.querySelector(".raciocinio-ia") as HTMLDivElement;
             raciocinioIA.textContent = `${sucesso.dados.debug}`
 
             // Verifica o que tinha na matriz do jogador naquela coordenada
@@ -238,6 +238,7 @@ Não use markdown.
         
         console.error(`Erro na chamada da API [Código ${erro.CodigoErro}]: ${erro.mensagemErro}`);
         alert(`Erro ao chamar a API: ${erro.mensagemErro}`);
+        raciocinioIA.textContent = `Piloto automatico jogando`;
         return jogadaFallback(matrizJogadorRevelado,matrizJogadorCompleto);
     }
     return {acerto :undefined};
@@ -262,6 +263,7 @@ if (botaoPosicionarNavios) {
 
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
         if(campoIa){
+        if(verificaIniciarJogo() == true){
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
                     // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
@@ -286,6 +288,7 @@ if (botaoPosicionarNavios) {
             });
             
         }
+    }
     });
 } else {
     console.error("Botão '.botao-iniciar-jogo' não foi encontrado no HTML. Verifique a classe.");
