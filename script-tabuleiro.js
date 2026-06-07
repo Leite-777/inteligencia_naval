@@ -63,27 +63,22 @@ export function tabuleiroJSONparaHTML(matriz, seletorTabuleiro) {
     atualizarGifTabuleiro(tabuleiro);
 }
 
-// Função para alteração do status-jogo
 const statusJogo = document.querySelector(".status-jogo");
 
 let intervaloTypeWriter;
 
-function typeWriter(mensagem, corFundo, velocidade = 30) {
+function typeWriter(mensagem, corFundo) {
     clearInterval(intervaloTypeWriter);
 
-    statusJogo.innerHTML = "";
     statusJogo.style.backgroundColor = corFundo;
 
-    let i = 0;
+    // Pega os parágrafos atuais
+    const paragrafos = statusJogo.querySelectorAll("p");
 
-    intervaloTypeWriter = setInterval(() => {
-        statusJogo.innerHTML += mensagem.charAt(i);
-        i++;
-
-        if (i >= mensagem.length) {
-            clearInterval(intervaloTypeWriter);
-        }
-    }, velocidade);
+    // Empurra as mensagens para trás
+    paragrafos[0].textContent = paragrafos[1].textContent;
+    paragrafos[1].textContent = paragrafos[2].textContent;
+    paragrafos[2].textContent = mensagem;
 }
 
 export function statusMensagem(mensagem) {

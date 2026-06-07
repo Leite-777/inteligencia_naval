@@ -145,6 +145,7 @@ function addGifFogo(celula){
     gifFogo.alt = 'Gif de Fogo';
     // Faz o gif aparecer sobre o navio
     gifFogo.style.zIndex = 100;
+    celula.style.boxShadow = '0 0 10px 5px rgba(255, 69, 0, 0.7)'; // Adiciona um brilho vermelho ao redor do gif de fogo
     celula.appendChild(gifFogo);
 }
 
@@ -162,6 +163,8 @@ function addGifCaveira(celula){
     gifCaveira.alt = 'Gif de Fogo';
     // Faz o gif aparecer sobre o navio
     gifCaveira.style.zIndex = 100;
+    celula.style.boxShadow = ""; // Remove qualquer brilho anterior
+    gifCaveira.style.boxShadow = '0 0 10px 5px rgba(0, 0, 0, 0.7)'; // Adiciona um brilho escuro ao redor do gif de caveira
     celula.appendChild(gifCaveira);
 }
 

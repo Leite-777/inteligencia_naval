@@ -213,6 +213,7 @@ function verificaOcupacaoCelula(celulaId) {
  */
 export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
   tabuleiro.innerHTML = "";
+  //campoDosNavios.innerHTML = "Clique e segure os navios para posicioná-los no tabuleiro!";
 
   for (let linha = 0; linha < TAMANHO_MATRIZ; linha++) {
         for (let coluna = 0; coluna < TAMANHO_MATRIZ; coluna++) {
@@ -509,9 +510,16 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
                     celula.dataset.status = "4";
                 }
             }
+
+            // Atualiza a cor do navio para indicar que ele afundou (apenas para o jogador, para a IA os navios continuam invisíveis)
+            let navioDiv = document.getElementById(navio.codigo);
+            if(navioDiv && tipoTabuleiro === 1){
+                navioDiv.style.backgroundColor = "rgb(50, 50, 50)";
+            }
+            naviosAfundados++;
         }
         
-        naviosAfundados++;
+        
     }
 }
 
