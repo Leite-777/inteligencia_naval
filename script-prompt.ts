@@ -200,6 +200,9 @@ Não use markdown.
         // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
         if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
             
+            let raciocinioIA = document.querySelector(".raciocinio-ia") as HTMLDivElement;
+            raciocinioIA.textContent = `${sucesso.dados.debug}`
+
             // Verifica o que tinha na matriz do jogador naquela coordenada
             let posicaoAtacada = matrizJogadorCompleto[linhaAtaque][colunaAtaque];
 
@@ -258,7 +261,6 @@ if (botaoPosicionarNavios) {
         tabuleiroInimigoCompleto = posicionaCampoIA(tabuleiroInimigoCompleto,totalNaviosIA);
 
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
-
         if(campoIa){
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {

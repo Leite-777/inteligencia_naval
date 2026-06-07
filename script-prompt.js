@@ -148,6 +148,8 @@ Não use markdown.
         // Exibe um alerta na tela mostrando a posição que o Gemini atacou, e atualiza da matriz
         // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
         if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
+            let raciocinioIA = document.querySelector(".raciocinio-ia");
+            raciocinioIA.textContent = `${sucesso.dados.debug}`;
             // Verifica o que tinha na matriz do jogador naquela coordenada
             let posicaoAtacada = matrizJogadorCompleto[linhaAtaque][colunaAtaque];
             if (posicaoAtacada === 2) {
