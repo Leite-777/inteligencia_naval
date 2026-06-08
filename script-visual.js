@@ -241,3 +241,9 @@ function verificarChaveAPI() {
 botaoPreencherAPI.addEventListener("click", () => {
     inputChaveAPI.value = "chave-temporaria";
 });
+
+/**
+ * Botão para ativar e desativar a música
+ */
+
+

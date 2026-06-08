@@ -15,6 +15,7 @@ import { desativarTabuleiros } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 
 const audio = new AudioManager();
+let musicaAtivada = true;
 
 alternarTransparencia(".botao-posicionar-navios")
 alternarTransparencia(".botao-terminar-jogo")
@@ -39,6 +40,7 @@ function iniciarJogo() {
     btnIniciarJogo.removeEventListener("click", iniciarJogo);
 
     btnPosicionarNavios.addEventListener("click", posicionarNavios);
+    btnMute.addEventListener("click", muteMusica);
 }
 
 function posicionarNavios() {
@@ -66,6 +68,7 @@ function posicionarNavios() {
 
 export function terminarJogo(vencedor = 0) {
     desativarTabuleiros();
+    audio.stopBackground();
     switch(vencedor){
         case 1:
             statusAnuncio("MISSÃO CUMPRIDA! A frota da Inteligência Naval foi completamente eliminada.");
@@ -78,6 +81,18 @@ export function terminarJogo(vencedor = 0) {
     }
 
     alternarTransparencia(".botao-terminar-jogo")
+}
+
+function muteMusica(){
+    if(musicaAtivada === true){
+        btnMute.innerHTML = "Ativar Música"
+        musicaAtivada = false;
+        audio.stopBackground();
+    }else{
+        btnMute.innerHTML = "Desativar Música"
+        musicaAtivada = true;
+        audio.playBackground();
+    }
 }
 
 btnIniciarJogo.addEventListener("click", iniciarJogo);

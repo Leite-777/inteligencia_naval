@@ -1,5 +1,9 @@
 import { terminarJogo } from "./game-loop.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
+import { AudioManager } from "./script-audioManager.js";
+
+//Instancia do AudioManager pra controlar o audio
+const audio = new AudioManager();
 
 /**
  * Converte o tabuleiro HTML para um array JSON, com o formato [0,0,0,0,0...]
@@ -110,6 +114,7 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
             }
 
             if(navio.afundou === false){
+                audio.playExplosion();
                 // Faz com que o alerta só apareça para navios atingidos recentemente
                 navio.marcarComoAfundado = true;
                 if(tipoTabuleiro === 1){

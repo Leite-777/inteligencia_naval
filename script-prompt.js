@@ -305,6 +305,8 @@ async function jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleta) {
             // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
             matrizJogadorRevelado[posFall.linha][posFall.coluna] = 3;
             matrizJogadorCompleta[posFall.linha][posFall.coluna] = 3;
+            //Som de tiro Acertado
+            audio.playHitShot();
             statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Piloto Automático acertou um navio em (${posFall.linha}, ${posFall.coluna}) [ ! ]`);
             // Mostra a alteração do tabuleiro na página para o usuário ver
             tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
@@ -314,6 +316,8 @@ async function jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleta) {
             // Altera a posição nas duas matrizes pra marcar que a água foi atingida
             matrizJogadorRevelado[posFall.linha][posFall.coluna] = 1;
             matrizJogadorCompleta[posFall.linha][posFall.coluna] = 1;
+            //Som de tiro Acertado
+            audio.playMissShot();
             statusAlerta(`[~] O Piloto Automático errou o alvo em (${posFall.linha}, ${posFall.coluna})!... Nenhum dano registrado. [~]`);
             // Mostra a alteração do tabuleiro na página para o usuário ver
             tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
@@ -335,6 +339,8 @@ function verificarNavioAcertadoIa(filho) {
         if (tabuleiroInimigoCompleto[posLinha][posColuna] == 2) {
             tabuleiroInimigoCompleto[posLinha][posColuna] = 3;
             tabuleiroInimigoRevelado[posLinha][posColuna] = 3;
+            //Som de tiro Acertado
+            audio.playHitShot();
             statusMensagem(`[+] IMPACTO CONFIRMADO! Uma embarcação inimiga foi atingida em(${posLinha}, ${posColuna}). [+]`);
             tabuleiroJSONparaHTML(tabuleiroInimigoRevelado, ".tabuleiro-inimigo");
             return true;
@@ -343,6 +349,8 @@ function verificarNavioAcertadoIa(filho) {
         else if (tabuleiroInimigoCompleto[posLinha][posColuna] == 0) {
             tabuleiroInimigoCompleto[posLinha][posColuna] = 1;
             tabuleiroInimigoRevelado[posLinha][posColuna] = 1;
+            //Som de tiro Errado
+            audio.playMissShot();
             statusMensagem(`[~] ÁGUA! O projétil caiu no mar. Nada atingido em (${posLinha}, ${posColuna}). [~]`);
             tabuleiroJSONparaHTML(tabuleiroInimigoRevelado, ".tabuleiro-inimigo");
             return false;
