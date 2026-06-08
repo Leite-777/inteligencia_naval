@@ -34,6 +34,8 @@ export class Navios{
 
         this.linhaFinal = -1;
         this.colunaFinal  = -1;
+
+        this.afundou = false;
     }
 
     get verificaDirecao(){ return this.direcao; }
@@ -83,6 +85,10 @@ export class Navios{
 
     set marcarComoPosicionado(valor) {
         this.posicionado = valor;
+    }
+
+    set marcarComoAfundado(valor){
+        this.afundou = valor;
     }
 
     /**Durante o jogo**/
@@ -473,53 +479,6 @@ export function marcarPosicoesDosNavios() {
                 celula.dataset.status = "2";
             }
         }
-    }
-}
-
-export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
-    let naviosAfundados = 0;
-    let posicoesAfundadas = 0;
-    let listaNavios = [];
-
-    if(tipoTabuleiro === 1){
-        listaNavios = naviosCriados;
-    }else{
-        listaNavios = naviosIA;
-    }
-    
-    for (const navio of listaNavios.filter(Boolean)) {
-
-        if (!navio.posicionado) continue;
-        
-        posicoesAfundadas = 0;
-        // Conta o número de posições que foi atingido
-        for (const posicao of navio.posicoesOcupadas) {
-            const celula = document.getElementById(posicao);
-
-            if (celula) {
-                if(celula.dataset.status === "3")
-                    posicoesAfundadas++;
-            }
-        }
-        // Se o navio foi completamente atingido, atualiza o navio inteiro como afundado
-        if(posicoesAfundadas === navio.posicoesOcupadas.length){
-            for (const posicao of navio.posicoesOcupadas) {
-                const celula = document.getElementById(posicao);
-
-                if (celula) {
-                    celula.dataset.status = "4";
-                }
-            }
-
-            // Atualiza a cor do navio para indicar que ele afundou (apenas para o jogador, para a IA os navios continuam invisíveis)
-            let navioDiv = document.getElementById(navio.codigo);
-            if(navioDiv && tipoTabuleiro === 1){
-                navioDiv.style.backgroundColor = "rgb(50, 50, 50)";
-            }
-            naviosAfundados++;
-        }
-        
-        
     }
 }
 

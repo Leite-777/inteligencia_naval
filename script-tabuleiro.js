@@ -1,4 +1,4 @@
-import { inicializaOsNaviosIA, verificarSeNaviosForamAfundados } from "./script-jogador.js";
+import { inicializaOsNaviosIA } from "./script-jogador.js";
 
 /**
  * Converte o tabuleiro HTML para um array JSON, com o formato [0,0,0,0,0...]
@@ -63,28 +63,128 @@ export function tabuleiroJSONparaHTML(matriz, seletorTabuleiro) {
     atualizarGifTabuleiro(tabuleiro);
 }
 
+export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
+    let naviosAfundados = 0;
+    let posicoesAfundadas = 0;
+    let listaNavios = [];
+
+    if(tipoTabuleiro === 1){
+        listaNavios = naviosCriados;
+    }else{
+        listaNavios = naviosIA;
+    }
+    
+    for (const navio of listaNavios.filter(Boolean)) {
+
+        if (!navio.posicionado) continue;
+        
+        posicoesAfundadas = 0;
+        // Conta o número de posições que foi atingido
+        for (const posicao of navio.posicoesOcupadas) {
+            const celula = document.getElementById(posicao);
+
+            if (celula) {
+                if(celula.dataset.status === "3")
+                    posicoesAfundadas++;
+            }
+        }
+        // Se o navio foi completamente atingido, atualiza o navio inteiro como afundado
+        if(posicoesAfundadas === navio.posicoesOcupadas.length){
+            for (const posicao of navio.posicoesOcupadas) {
+                const celula = document.getElementById(posicao);
+
+                if (celula) {
+                    celula.dataset.status = "4";
+                }
+            }
+
+            // Atualiza a cor do navio para indicar que ele afundou (apenas para o jogador, para a IA os navios continuam invisíveis)
+            let navioDiv = document.getElementById(navio.codigo);
+            if(navioDiv && tipoTabuleiro === 1){
+                navioDiv.style.backgroundColor = "rgb(50, 50, 50)";
+                
+            }
+
+            if(navio.afundou === false){
+                // Faz com que o alerta só apareça para navios atingidos recentemente
+                navio.marcarComoAfundado = true;
+                if(tipoTabuleiro === 1){
+                    statusAlerta("[ !! ] ALERTA CRÍTICO! Um navio da sua frota foi destruído. [ !! ]");
+                }else{
+                    statusMensagem("[XX] DESTRUIÇÃO TOTAL! O navio inimigo não resistiu aos danos. [XX]");
+                }
+            }
+            naviosAfundados++;
+        }
+    }
+    if(naviosAfundados === 5){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+// Função para ativar/desativar transparência de um tabuleiro
+let transparenciaJogador = false;
+let transparenciaInimigo = false;
+
+export function alternarTransparenciaTabuleiro(tipo) {
+
+    if (tipo === "jogador") {
+        transparenciaJogador = !transparenciaJogador;
+
+        tabuleiroJogador.classList.toggle(
+            "transparente",
+            transparenciaJogador
+        );
+    }
+
+    if (tipo === "inimigo") {
+        transparenciaInimigo = !transparenciaInimigo;
+
+        tabuleiroInimigo.classList.toggle(
+            "transparente",
+            transparenciaInimigo
+        );
+    }
+}
+
+export function alternarTransparencia(seletorElemento){
+    const elemento = document.querySelector(seletorElemento);
+
+    elemento.classList.toggle(
+        "transparente"
+    );
+}
+
+/**
+ * Funções para o Status, para adicionar informações sobre o que está ocorrendo no jogo da Batalha Naval.
+ */
 const statusJogo = document.querySelector(".status-jogo");
 
 let intervaloTypeWriter;
 
-function typeWriter(mensagem, corFundo) {
+function exibirStatus(mensagem, corTexto) {
     clearInterval(intervaloTypeWriter);
-
-    statusJogo.style.backgroundColor = corFundo;
 
     // Pega os parágrafos atuais
     const paragrafos = statusJogo.querySelectorAll("p");
 
     // Empurra as mensagens para trás
     paragrafos[0].textContent = paragrafos[1].textContent;
+    paragrafos[0].style.color = paragrafos[1].style.color;
+    
     paragrafos[1].textContent = paragrafos[2].textContent;
+    paragrafos[1].style.color = paragrafos[2].style.color;
+    
     paragrafos[2].textContent = mensagem;
+    paragrafos[2].style.color = corTexto
 }
 
 export function statusMensagem(mensagem) {
-    typeWriter(mensagem, "#014177");
+    exibirStatus(mensagem, "#3EE5DF");
 }
 
 export function statusAlerta(mensagem) {
-    typeWriter(mensagem, "#aa2a2a");
+    exibirStatus(mensagem, "#ff4040");
 }

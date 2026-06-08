@@ -1,11 +1,14 @@
-import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
 import { criarTabuleiro } from "./script-jogador.js";
 import { criaNavios } from "./script-jogador.js";
 import { bloquearArrasteDosNavios } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { marcarPosicoesDosNavios } from "./script-jogador.js";
+
 import { statusMensagem } from "./script-tabuleiro.js";
 import { statusAlerta } from "./script-tabuleiro.js";
+import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
+import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
+import { alternarTransparencia } from "./script-tabuleiro.js";
 
 alternarTransparencia(".botao-posicionar-navios")
 alternarTransparencia(".botao-terminar-jogo")
@@ -38,7 +41,7 @@ function posicionarNavios(){
 
         btnPosicionarNavios.removeEventListener("click", posicionarNavios);
 
-        //alternarTransparenciaTabuleiro("jogador");
+        alternarTransparenciaTabuleiro("jogador");
         alternarTransparenciaTabuleiro("inimigo");
 
         gameLoop();

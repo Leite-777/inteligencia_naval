@@ -51,39 +51,6 @@ modais.forEach(modal => {
     });
 });
 
-// Função para ativar/desativar transparência de um tabuleiro
-let transparenciaJogador = false;
-let transparenciaInimigo = false;
-
-function alternarTransparenciaTabuleiro(tipo) {
-
-    if (tipo === "jogador") {
-        transparenciaJogador = !transparenciaJogador;
-
-        tabuleiroJogador.classList.toggle(
-            "transparente",
-            transparenciaJogador
-        );
-    }
-
-    if (tipo === "inimigo") {
-        transparenciaInimigo = !transparenciaInimigo;
-
-        tabuleiroInimigo.classList.toggle(
-            "transparente",
-            transparenciaInimigo
-        );
-    }
-}
-
-function alternarTransparencia(seletorElemento){
-    const elemento = document.querySelector(seletorElemento);
-
-    elemento.classList.toggle(
-        "transparente"
-    );
-}
-
 // Funções para utilização de gifs
 
 /**
