@@ -162,10 +162,10 @@ export function alternarTransparencia(seletorElemento){
 }
 
 export function desativarTabuleiros(){
-    //tabuleiroJogador.classList.add("transparente");
-    //tabuleiroInimigo.classList.add("transparente");
     tabuleiroJogador.style.opacity = 0.2;
     tabuleiroInimigo.style.opacity = 0.2;
+    tabuleiroJogador.classList.add("encerrado");
+    tabuleiroInimigo.classList.add("encerrado");
     tabuleiroInimigo.querySelectorAll(".celula").forEach(celula => {
         celula.style.pointerEvents = "none";
     });

@@ -249,6 +249,9 @@ if (botaoPosicionarNavios) {
                         alternarTransparenciaTabuleiro("inimigo");
                         let parada = 0;
                         do {
+                            if (verificarTerminoDeJogo() == true) {
+                                break;
+                            }
                             let status = await JogadaApi();
                             if (status.acerto != Acerto.Acertou) {
                                 parada = 0;
@@ -292,6 +295,9 @@ export function wait(ms) {
 }
 async function jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleta) {
     await wait(2000);
+    if (verificarTerminoDeJogo() == true) {
+        return { acerto: Acerto.Errou };
+    }
     let posFall = escolherJogadaFallback(matrizJogadorRevelado);
     if (posFall != undefined) {
         let posicaoAtacada = matrizJogadorCompleta[posFall.linha][posFall.coluna];
@@ -401,6 +407,13 @@ export function posicionaCampoIA(campoIA, totalNaviosIA) {
     return campoIA;
 }
 function verificarTerminoDeJogo() {
+    let tabuleiroJogador = document.querySelector('.tabuleiro-inimigo');
+    if (tabuleiroJogador?.classList.contains("encerrado")) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 //Tipos de erro
 /*
