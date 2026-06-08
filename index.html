@@ -39,7 +39,7 @@
         
         <div class="titulo-2">
             <h2>Participe de um jogo de Batalha Naval contra a IA do Gemini, desenvolvida pelo Google.</h2>
-            <button class="botao-header">Começar</button>
+            
             
             <p>Instituto Federal de Educação, Ciência e Tecnologia - Campus Barbacena</p>
             <p>Tecnologia em Sistemas para Internet</p>
@@ -66,13 +66,6 @@
         <h3>Guia do Usuário</h3>
         <p>Possui dúvidas? Clique nos botões abaixo pra ver as explicações que precisa para participar de um jogo:</p>
         
-        <colapsavel-api titulo="O que é uma chave API?">
-            <p>Uma chave de API é um código que permite você conversar e receber respostas de um serviço de IA, da mesma forma como faria no site do ChatGPT ou do Gemini.</p>
-            <p>A diferença é que você pode enviar mensagens de forma automatizada utilizando código, como em uma página web por exemplo.</p>
-            <p>O código será utilizado para o Gemini receber as posições do jogo de batalha naval, e enviar suas jogadas para o site.</p>
-            <p>Normalmente Chaves API são pagas, mas atualmente o Google disponibiliza o uso gratuito do Gemini, mas com um limite diário.</p>
-        </colapsavel-api>
-        
         <div class="modal">
             <button class="modal-expandir">Onde consigo uma chave API?</button>
 
@@ -81,23 +74,38 @@
                     <button class="modal-fechar">&times;</button>
                     <h2>Como conseguir uma chave API?</h2>
                     <ul>
-                        <li>Acesse o
+                        <li>
+                            Acesse o
                             <a href="https://aistudio.google.com/?hl=pt-br" target="_blank" rel="noopener noreferrer">
                                 Google AI Studio
                             </a>
                         </li>
-                        <li>Faça login com sua conta do Google, no topo da página. Pode ser necessário
-                            <a href="https://support.google.com/accounts/answer/10071085?hl=pt" target="_blank" rel="noopener noreferrer">
-                                verificar sua idade.
+                        <li>Faça login com sua conta do Google, no canto superior direito da página.</li>
+                        <li>
+                            No canto inferior esquerdo da página, vá para 
+                            <a href="https://aistudio.google.com/api-keys" target="_blank" rel="noopener noreferrer">
+                                Conferir a chave de API
                             </a>
                         </li>
-                        <li>No canto inferior esquerdo da página, vá para <u>Conferir a chave de API</u></li>
                         <li>Na nova página, no canto superior direito clique em <u>Criar chave de API</u>, e então em <u>Criar Chave</u>.</li>
                         <li>Na nova janela copie a chave de API, que se parece com uma sequência de caracteres aleatórios.</li>
                     </ul>
                 </div>
-                <div class="gif-ilustrativo"></div>
             </div>
+
+            <colapsavel-api titulo="O que é uma chave API?">
+                <p>Uma chave de API é um código que permite você conversar e receber respostas de um serviço de IA, da mesma forma como faria no site do ChatGPT ou do Gemini.</p>
+                <p>A diferença é que você pode enviar mensagens de forma automatizada utilizando código, como em uma página web por exemplo.</p>
+                <p>O código será utilizado para o Gemini receber as posições do jogo de batalha naval, e enviar suas jogadas para o site.</p>
+                <p>Normalmente Chaves API são pagas, mas atualmente o Google disponibiliza o uso gratuito do Gemini, mas com um limite diário.</p>
+            </colapsavel-api>
+
+            <colapsavel-api titulo="Tenho problemas com a chave API, e agora?">
+                <p>O Jogo da Batalha Naval consegue funcionar mesmo quando o Gemini estiver indisponível, tanto por erros temporários quanto por utilizar a capacidade máxima diária.</p>
+                <p>Quando isso acontecer, o Piloto Automático realizará jogadas no seu lugar.</p>
+                <p>Se não foi possível obter sua Chave API no Google AI Studio, pressione esse botão:</p>
+                <button class="botao botao-preencher-api">Preencher campo da Chave API</button>
+            </colapsavel-api>
         </div>
 
     </section> <!-- guia-do-usuario -->
@@ -113,8 +121,8 @@
                         <button class="modal-fechar">&times;</button>
                         <h2>Regras do Jogo</h2>
                         <ul>
-                            <li>Cada jogador começa arrastando 5 navios para posições estratégicas da sua grelha.</li>
-                            <li>Na vez de cada jogador, ele deve escolher uma posição para atacar a grade do inimigo.</li>
+                            <li>Cada jogador começa arrastando 5 navios para posições estratégicas do seu tabuleiro.</li>
+                            <li>Na vez de cada jogador, ele deve escolher uma posição para atacar o tabuleiro do inimigo.</li>
                             <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições até errar uma.</li>
                             <li>Quando todas as partes de um navio são acertadas, ele é afundado.</li>
                             <li>Vence quem afundar os 5 navios do oponente.</li>
@@ -146,7 +154,7 @@
             <div class="colapsavel">
                 <button class="colapsavel-expandir botao-raciocinio-ia">Visualizar Raciocínio da IA</button>
                 <div class="colapsavel-conteudo raciocinio-ia">
-                    <p>Aqui você verá a linha de raciocínio escrita pela IA, como as justificativas para a posição escolhida em suas jogadas.</p>
+                    <p>Aqui você verá a linha de raciocínio escrita pelo Gemini, como as justificativas para a posição escolhida em suas jogadas.</p>
                 </div>
             </div>
 

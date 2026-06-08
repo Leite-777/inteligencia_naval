@@ -275,6 +275,10 @@ header{
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+.modal-conteudo li{
+    line-height: 1.8;
+}
+
 /* Botão de fechar (X) */
 .modal-fechar {
     position: absolute;

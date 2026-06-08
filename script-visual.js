@@ -210,10 +210,35 @@ function atualizarGifTabuleiro(tabuleiro){
     });
 }
 
-// funcao que valida chave
-function validaEstruturaChaveAPI() {
+/**
+ * Funções pra verificar se o campo da Chave API está vazia, ou se o conteúdo dentro segue os padrões de uma chave API do Gemini, respectivamente.
+ */
+const inputChaveAPI = document.querySelector("#api-key");
+const botaoPreencherAPI = document.querySelector(".botao-preencher-api");
 
-    let inputChaveAPI= document.querySelector("#api-key");
+function verificarChaveAPI() {
+    const apiKey = inputChaveAPI.value.trim();
+
+    if (apiKey === "") {
+        inputChaveAPI.style.border = "2px solid red";
+
+        inputChaveAPI.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        inputChaveAPI.focus();
+
+        return false;
+    }
+
+    // Remove a borda vermelha caso o campo esteja preenchido
+    inputChaveAPI.style.border = "";
+
+    return true;
+}
+
+function validaEstruturaChaveAPI() {
     const apiKey= inputChaveAPI.value.trim();
 
     // Regex para o padrao da chave do Google API: Começa com 'AIza' e
@@ -223,3 +248,7 @@ function validaEstruturaChaveAPI() {
     // verifica se a chave existe dentro das especificacoes e retorna true or flase
     return regexChave.test(apiKey);
 }
+
+botaoPreencherAPI.addEventListener("click", () => {
+    inputChaveAPI.value = "chave-temporaria";
+});

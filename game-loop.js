@@ -19,6 +19,9 @@ alternarTransparencia(".botao-terminar-jogo")
 alternarTransparencia(".status-jogo")
 
 function iniciarJogo() {
+    // Se não há nada no campo da Chave API, instrui ao usuário inserir um valor lá
+    if(!verificarChaveAPI()){return;}
+    
     audio.playBackground();
     criaNavios();
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
