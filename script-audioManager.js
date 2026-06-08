@@ -1,4 +1,4 @@
-class AudioManager {
+export class AudioManager {
     constructor() {
         this.sons = {
             background: new Audio("assets/audio/background_music.mp3"),

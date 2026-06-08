@@ -8,12 +8,12 @@
  * @param vetor: Irá guardar quais partes do navio foram atingidas(vetor inicializado com false).
  * @param direcao: Passe a constante HORIZONTAL ou VERTICAL, caso passe algo diferente sera atribuido a constante HORIZONTAL.
  */
-export class Navios{
+export class Navios {
     /** 
      * @param direcaoNavio: Passe @param HORIZONTAL ou @param VERTICAL
      * @param tamanho: Tamanho que o navio ocupará(Passe um numero maior ou igual a 1).
     */
-    constructor(tamanho ,direcaoNavio){
+    constructor(tamanho, direcaoNavio) {
         this.codigo = gerarCodigoUnico();
         this.posicionado = false;//Se ja ésta na matriz
         this.tamanho = tamanho;
@@ -22,30 +22,30 @@ export class Navios{
 
         this.posicoesAtingidas.fill(false);
         this.posicoesOcupadas.fill("-1");//Posição padrão
-        
-        if(direcaoNavio !== HORIZONTAL && direcaoNavio !== VERTICAL){
+
+        if (direcaoNavio !== HORIZONTAL && direcaoNavio !== VERTICAL) {
             this.direcao = HORIZONTAL;
-        }else{
+        } else {
             this.direcao = direcaoNavio;
         }
 
         this.linhaInicial = -1;
-        this.colunaInicial  = -1;
+        this.colunaInicial = -1;
 
         this.linhaFinal = -1;
-        this.colunaFinal  = -1;
+        this.colunaFinal = -1;
     }
 
-    get verificaDirecao(){ return this.direcao; }
+    get verificaDirecao() { return this.direcao; }
 
-    get getTamanho(){return this.tamanho}
+    get getTamanho() { return this.tamanho }
 
     //Retorna true se o navio afundou, false se não.
     get getVerificaNavioAfundou() {
         // O método .every() checa se CADA elemento é igual a true
-        if(this.posicoesAtingidas.every(elemento => elemento === true)){
+        if (this.posicoesAtingidas.every(elemento => elemento === true)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -61,9 +61,9 @@ export class Navios{
         const [colunaStr, linhaStr] = posicao.split('x');
 
         // const [colunaStr, linhaStr] = colunaXLinha.split('x');          // Desta forma o "possível id" não é utilizável
-        
+
         this.colunaInicial = Number(colunaStr);
-        this.linhaInicial  = Number(linhaStr);
+        this.linhaInicial = Number(linhaStr);
 
         if (this.direcao === HORIZONTAL) {
             this.colunaFinal = this.colunaInicial + this.tamanho - 1;
@@ -93,10 +93,10 @@ export class Navios{
      * @param {*} colunaXLinha Posição que deseja atingir.
      * @returns Retorna True e atualiza o vetor de posicoesAtingidas. Retorna false caso tenha errado.
      */
-    disparo(colunaXLinha){
+    disparo(colunaXLinha) {
 
-        for(let index=0; index < this.posicoesOcupadas.length; index++){
-            if(this.posicoesOcupadas[index] === colunaXLinha){
+        for (let index = 0; index < this.posicoesOcupadas.length; index++) {
+            if (this.posicoesOcupadas[index] === colunaXLinha) {
                 this.posicoesAtingidas[index] = true;
                 return true;
             }
@@ -112,9 +112,9 @@ export class Navios{
  * @param {*} ID : ID do navio a ser pesquisado.
  * @return : Retorna o Objeto do Navio ou null caso não ache.
  */
-function buscaNavio(ID){
-    for(let busca of naviosCriados){
-        if(busca.codigo === ID){ return busca; }
+function buscaNavio(ID) {
+    for (let busca of naviosCriados) {
+        if (busca.codigo === ID) { return busca; }
     }
     return null;
 }
@@ -147,7 +147,7 @@ function gerarCodigoUnico() {
  * @param {*} max Valor máximo gerado pela função.
  * @returns Um número aleatorio de min a max.
  */
-export function geraNumeroAleatorio(min, max){
+export function geraNumeroAleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -156,9 +156,9 @@ export function geraNumeroAleatorio(min, max){
  * 
  * @returns Retorna true se estiverem prontos e false caso não estejam.
  */
-export function verificaIniciarJogo(){
-    for(let contador=0; contador < quantiaNavios.length; contador++){
-        if(naviosCriados[contador].posicionado === false){ return false; }
+export function verificaIniciarJogo() {
+    for (let contador = 0; contador < quantiaNavios.length; contador++) {
+        if (naviosCriados[contador].posicionado === false) { return false; }
     }
     return true;
 }
@@ -176,9 +176,9 @@ function verificaOcupacaoCelula(celulaId) {
 
     // Calcula temporariamente as posições SEM alterar o objeto ainda
     // const [colunaStr, linhaStr] = celulaId.split('x');          // Desta forma o "possível id" não é utilizável
-    
+
     const colunaInicial = Number(colunaStr);
-    const linhaInicial  = Number(linhaStr);
+    const linhaInicial = Number(linhaStr);
 
     // Monta o vetor de posições que o navio OCUPARIA
     let posicoesNovas = [];
@@ -212,10 +212,10 @@ function verificaOcupacaoCelula(celulaId) {
  * @param tipoDoTabuleiro Passe 1 passa atribuir atribuir os elementos DragAndDrop ao tabuleiro do jogador e -1 para apenar criar o tabuleiro.
  */
 export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
-  tabuleiro.innerHTML = "";
-  //campoDosNavios.innerHTML = "Clique e segure os navios para posicioná-los no tabuleiro!";
+    tabuleiro.innerHTML = "";
+    //campoDosNavios.innerHTML = "Clique e segure os navios para posicioná-los no tabuleiro!";
 
-  for (let linha = 0; linha < TAMANHO_MATRIZ; linha++) {
+    for (let linha = 0; linha < TAMANHO_MATRIZ; linha++) {
         for (let coluna = 0; coluna < TAMANHO_MATRIZ; coluna++) {
             const celula = document.createElement("div");
 
@@ -229,7 +229,7 @@ export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
             celula.id = `${tipoDoTabuleiro}_${coluna}x${linha}`; // Melhor opção, deste jeito cada celula possui um id único
 
             //Cria tabuleiro pra o Jogador poder colocar os seus navios.
-            if(tipoDoTabuleiro == 1){
+            if (tipoDoTabuleiro == 1) {
 
                 //Retira configuração padrão do navegador para poder arrastar os navios
                 celula.addEventListener("dragover", (e) => {
@@ -245,7 +245,7 @@ export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 celula.addEventListener("drop", (e) => {
                     e.preventDefault();
                     const cabeNaMatriz = verificaEspacoMatriz(navioSendoArrastado, celula.id);
-                    const semColisao   = verificaOcupacaoCelula(celula.id);
+                    const semColisao = verificaOcupacaoCelula(celula.id);
 
                     if (cabeNaMatriz === true && semColisao === true) {
                         // ✅ Só agora grava a posição real no objeto
@@ -260,7 +260,7 @@ export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                 // Adiciona os Gifs de Ondas aos campos do jogador.
                 addGifOndas(celula);
             }
-            else{
+            else {
                 // Adiciona os Gifs de Nuvens aos campos da IA.
                 addGifNuvens(celula);
             }
@@ -273,13 +273,13 @@ export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
 /**
  * Soma quantos navios exitem dentro do jogo.
  */
-export function criaNavios(){
+export function criaNavios() {
     //Total é o acumulador e valorAtual é o número da vez
     const soma = quantiaNavios.reduce((total, valorAtual) => total + valorAtual, 0);
 
-    
-     new Array(soma); 
-    for(let index=0; index < quantiaNavios.length; index++){
+
+    new Array(soma);
+    for (let index = 0; index < quantiaNavios.length; index++) {
         inicializaONavio(tamanhoNavios[index]);
     }
 }
@@ -290,15 +290,15 @@ export function criaNavios(){
  * @param {*} tamanho Tamanho do navio.
  * @param {*} quantidade Quantos navios serão criados
  */
-function inicializaONavio(tamanho){
+function inicializaONavio(tamanho) {
     let classeNavio;
     const navio = document.createElement("div");
 
-    if(geraNumeroAleatorio(0, 1) == 1){
+    if (geraNumeroAleatorio(0, 1) == 1) {
 
         classeNavio = "navioTamanho" + tamanho + "-horizontal";
         naviosCriados[contNaviosCriados] = new Navios(tamanho, HORIZONTAL);
-    }else{
+    } else {
 
         classeNavio = "navioTamanho" + tamanho + "-vertical";
         naviosCriados[contNaviosCriados] = new Navios(tamanho, VERTICAL);
@@ -314,7 +314,7 @@ function inicializaONavio(tamanho){
     navio.draggable = true;
 
     //Guarda o ID do navio que está sendo arrastado
-    navio.addEventListener("dragstart", (e) =>{
+    navio.addEventListener("dragstart", (e) => {
         //Padroniza para que dessa forma o usuario sempre pegue o item pela parte inicial da div.
         event.dataTransfer.setDragImage(event.target, 0, 0);
         navioSendoArrastado = e.target;
@@ -323,7 +323,7 @@ function inicializaONavio(tamanho){
 
     contNaviosCriados++;
     campoDosNavios.appendChild(navio);
-  
+
 }
 
 /**
@@ -353,8 +353,8 @@ export function inicializaOsNaviosIA() {
 /**
  * Permite que os navios possam ser arrastados novamente para o campo de onde foram criado
  */
-campoDosNavios.addEventListener("dragover", (e) =>{
-    e.preventDefault();  
+campoDosNavios.addEventListener("dragover", (e) => {
+    e.preventDefault();
 });
 
 campoDosNavios.addEventListener("drop", (e) => {
@@ -439,21 +439,21 @@ function verificaEspacoMatriz(navioAtual, idCelula) {
     const [colunaStr, linhaStr] = posicao.split('x');
 
     // const [colunaStr, linhaStr] = idCelula.split('x');          // Desta forma o "possível id" não é utilizável
-    
+
     const coluna = Number(colunaStr);
-    const linha  = Number(linhaStr);
+    const linha = Number(linhaStr);
 
     // Pegamos o objeto do navio real usando o ID dele
     const navio = buscaNavio(Number(navioAtual.id));
     if (navio === null) return false;
 
     // Descobre se o elemento visual está na vertical
-    const ehVertical = navioAtual.classList.contains("vertical") || 
-                       navioAtual.className.includes("vertical");
-    
-    if(navioCabeNaMatriz(obterTamanhoDoNavio(navioAtual), obterDirecaoDoNavio(navioAtual), linha, coluna) === true){
+    const ehVertical = navioAtual.classList.contains("vertical") ||
+        navioAtual.className.includes("vertical");
+
+    if (navioCabeNaMatriz(obterTamanhoDoNavio(navioAtual), obterDirecaoDoNavio(navioAtual), linha, coluna) === true) {
         return true;
-    }else{
+    } else {
         return false;
     }
 
@@ -481,28 +481,28 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
     let posicoesAfundadas = 0;
     let listaNavios = [];
 
-    if(tipoTabuleiro === 1){
+    if (tipoTabuleiro === 1) {
         listaNavios = naviosCriados;
-    }else{
+    } else {
         listaNavios = naviosIA;
     }
-    
+
     for (const navio of listaNavios.filter(Boolean)) {
 
         if (!navio.posicionado) continue;
-        
+
         posicoesAfundadas = 0;
         // Conta o número de posições que foi atingido
         for (const posicao of navio.posicoesOcupadas) {
             const celula = document.getElementById(posicao);
 
             if (celula) {
-                if(celula.dataset.status === "3")
+                if (celula.dataset.status === "3")
                     posicoesAfundadas++;
             }
         }
         // Se o navio foi completamente atingido, atualiza o navio inteiro como afundado
-        if(posicoesAfundadas === navio.posicoesOcupadas.length){
+        if (posicoesAfundadas === navio.posicoesOcupadas.length) {
             for (const posicao of navio.posicoesOcupadas) {
                 const celula = document.getElementById(posicao);
 
@@ -511,15 +511,18 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
                 }
             }
 
+            //Som de explosão do navio
+            playExplosion();
+
             // Atualiza a cor do navio para indicar que ele afundou (apenas para o jogador, para a IA os navios continuam invisíveis)
             let navioDiv = document.getElementById(navio.codigo);
-            if(navioDiv && tipoTabuleiro === 1){
+            if (navioDiv && tipoTabuleiro === 1) {
                 navioDiv.style.backgroundColor = "rgb(50, 50, 50)";
             }
             naviosAfundados++;
         }
-        
-        
+
+
     }
 }
 

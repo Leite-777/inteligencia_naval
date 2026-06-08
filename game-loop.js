@@ -11,7 +11,8 @@ alternarTransparencia(".botao-posicionar-navios")
 alternarTransparencia(".botao-terminar-jogo")
 alternarTransparencia(".status-jogo")
 
-function iniciarJogo(){
+function iniciarJogo() {
+    playBackground();
     criaNavios();
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
     criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
@@ -28,8 +29,8 @@ function iniciarJogo(){
     btnPosicionarNavios.addEventListener("click", posicionarNavios);
 }
 
-function posicionarNavios(){
-    if(verificaIniciarJogo() === true ){
+function posicionarNavios() {
+    if (verificaIniciarJogo() === true) {
         statusMensagem("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
 
         marcarPosicoesDosNavios();
@@ -42,12 +43,12 @@ function posicionarNavios(){
         alternarTransparenciaTabuleiro("inimigo");
 
         gameLoop();
-    }else{
+    } else {
         statusAlerta("Posicione todos os navios no tabuleiro antes de começar!")
     }
 }
 
-function gameLoop(){
+function gameLoop() {
 
 }
 

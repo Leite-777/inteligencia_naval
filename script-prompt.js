@@ -4,6 +4,10 @@ import { statusMensagem } from "./script-tabuleiro.js";
 import { escolherJogadaFallback } from "./script-fallback.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
+// @ts-ignore
+import { AudioManager } from "./script-audioManager.js";
+//Instancia do AudioManager pra controlar o audio
+const audio = new AudioManager();
 let chaveHtml = document.getElementById('api-key');
 //para não travar a chava api
 // O tabuleiro inimigo onde o usuário só vê as posições que ele atacou
@@ -157,6 +161,8 @@ Não use markdown.
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
                 matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
                 matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
+                //Som de tiro Acertado
+                audio.playHitShot();
                 // Mostra a alteração do tabuleiro na página para o usuário ver
                 tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
                 alert(`💥 TIRO CERTEIRO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
@@ -166,6 +172,8 @@ Não use markdown.
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
                 matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
                 matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
+                //Som de tiro errado
+                audio.playMissShot();
                 // Mostra a alteração do tabuleiro na página para o usuário ver
                 tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
                 alert(`🌊 Água... O Gemini errou em (${linhaAtaque}, ${colunaAtaque})`);
