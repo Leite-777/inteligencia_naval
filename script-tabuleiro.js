@@ -1,4 +1,4 @@
-import { terminarJogo } from "./game-loop.js";
+import { terminarJogo } from "./game-start.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { AudioManager } from "./script-audioManager.js";
 
