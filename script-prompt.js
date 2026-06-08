@@ -7,7 +7,6 @@ import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
-// @ts-ignore
 import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
 const audio = new AudioManager();

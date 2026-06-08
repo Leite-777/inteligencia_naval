@@ -9,7 +9,6 @@ import { geraNumeroAleatorio } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
-// @ts-ignore
 import { AudioManager } from "./script-audioManager.js";
 
 //Instancia do AudioManager pra controlar o audio
@@ -96,7 +95,7 @@ let totalNaviosIA = inicializaOsNaviosIA();
 //                              Função principal para a Chamada de API, com o retorno dos dados
 
 async function chamadaApi(prompt: string): Promise<resultadoApi> {
-    if(!validaEstruturaChaveAPI()){
+    if (!validaEstruturaChaveAPI()) {
         return undefined;
     }
 
@@ -196,8 +195,8 @@ Não use markdown.
 `;
 
     let respostaFunc = await chamadaApi(prompt);
-    if(respostaFunc == undefined){
-        return jogadaFallback(matrizJogadorRevelado,matrizJogadorCompleto);
+    if (respostaFunc == undefined) {
+        return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
     }
     // Debug temporário da resposta da chamada API, contendo:
     // A matriz completa do oponente exibida no console, a posição atacada, e o raciocínio da IA
@@ -230,7 +229,7 @@ Não use markdown.
                 tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
 
                 statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque}) [ ! ]`);
-                return {acerto: Acerto.Acertou};
+                return { acerto: Acerto.Acertou };
             } else if (posicaoAtacada === 0) {
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
                 matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
@@ -241,29 +240,29 @@ Não use markdown.
                 tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
 
                 statusAlerta(`[~] O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado. [~]`)
-                return {acerto: Acerto.Errou};
+                return { acerto: Acerto.Errou };
             } else {
                 statusAlerta(`[?] O Gemini marcou uma posição repetida em (${linhaAtaque}, ${colunaAtaque})! Recalculando... [?]`)
                 // Permite à IA tentar novamente
-                return {acerto: Acerto.Acertou};
+                return { acerto: Acerto.Acertou };
             }
 
         } else {
             statusAlerta(`[?] O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando... [?]`)
-            return {acerto: Acerto.Errou};
+            return { acerto: Acerto.Errou };
         }
 
     } else {
         const erro = respostaFunc as Erro;
 
-        if(erro.CodigoErro === 403 || erro.CodigoErro === 429){
+        if (erro.CodigoErro === 403 || erro.CodigoErro === 429) {
             statusAlerta("[X] Não é possível fazer contato com o Gemini! O Piloto Automático assumirá o controle. [X]");
         }
-        else if(erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503){
+        else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
             statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
         }
         raciocinioIA.textContent = `O Piloto automático está jogando...`;
-        return jogadaFallback(matrizJogadorRevelado,matrizJogadorCompleto);
+        return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
     }
     return { acerto: undefined };
 }
@@ -277,7 +276,7 @@ const botaoPosicionarNavios = document.querySelector<HTMLButtonElement>('.botao-
 // Garante que o botão realmente existe na página antes de adicionar o evento
 if (botaoPosicionarNavios) {
     botaoPosicionarNavios.addEventListener('click', async () => {
-        if(verificaIniciarJogo() === false){return;}
+        if (verificaIniciarJogo() === false) { return; }
         // Desativa o botão para o usuário não gerar vários eventos de clique
         botaoPosicionarNavios.disabled = true;
 
@@ -288,38 +287,38 @@ if (botaoPosicionarNavios) {
         tabuleiroInimigoCompleto = posicionaCampoIA(tabuleiroInimigoCompleto, totalNaviosIA);
 
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
-        if(campoIa){
+        if (campoIa) {
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
-                    if(!podeJogar){return;}
+                    if (!podeJogar) { return; }
                     podeJogar = false;
 
                     // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
-                    if(verificarNavioAcertadoIa(filho as HTMLElement)){                        
+                    if (verificarNavioAcertadoIa(filho as HTMLElement)) {
                         podeJogar = true;
                         // verificarTerminoDeJogo()
                     }
                     // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
-                    else{
+                    else {
                         // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
                         await wait(1500);
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
 
-                        let parada : number = 0;
-                        do{
+                        let parada: number = 0;
+                        do {
                             let status = await JogadaApi();
-                            if(status.acerto != Acerto.Acertou){
+                            if (status.acerto != Acerto.Acertou) {
                                 parada = 0;
-                            }else{
+                            } else {
                                 parada = 1;
                             }
-                        }while(parada != 0);
-                        
+                        } while (parada != 0);
+
                         await wait(1500);
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
-                        podeJogar = true;                        
+                        podeJogar = true;
                         // verificarTerminoDeJogo()
                     }
                 });
@@ -352,39 +351,39 @@ export function wait(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function jogadaFallback(matrizJogadorRevelado : number[][],matrizJogadorCompleta:number[][]): Promise<acertoAPI>{
+async function jogadaFallback(matrizJogadorRevelado: number[][], matrizJogadorCompleta: number[][]): Promise<acertoAPI> {
     await wait(2000);
     let posFall = escolherJogadaFallback(matrizJogadorRevelado);
     if (posFall != undefined) {
         let posicaoAtacada = matrizJogadorCompleta[posFall.linha][posFall.coluna];
-        
+
         if (posicaoAtacada === 2) {
-                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-                matrizJogadorRevelado[posFall.linha][posFall.coluna] = 3;
-                matrizJogadorCompleta[posFall.linha][posFall.coluna] = 3;
-                
-                statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Piloto Automático acertou um navio em (${posFall.linha}, ${posFall.coluna}) [ ! ]`);
+            // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+            matrizJogadorRevelado[posFall.linha][posFall.coluna] = 3;
+            matrizJogadorCompleta[posFall.linha][posFall.coluna] = 3;
 
-                // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
+            statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Piloto Automático acertou um navio em (${posFall.linha}, ${posFall.coluna}) [ ! ]`);
 
-                return {acerto: Acerto.Acertou};
-            } else if (posicaoAtacada === 0) {
-                // Altera a posição nas duas matrizes pra marcar que a água foi atingida
-                matrizJogadorRevelado[posFall.linha][posFall.coluna] = 1;
-                matrizJogadorCompleta[posFall.linha][posFall.coluna] = 1;
-                
-                statusAlerta(`[~] O Piloto Automático errou o alvo em (${posFall.linha}, ${posFall.coluna})!... Nenhum dano registrado. [~]`)
+            // Mostra a alteração do tabuleiro na página para o usuário ver
+            tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
 
-                // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
-                
-                return {acerto: Acerto.Errou};
-            }
-    }else{
-        return {acerto : undefined};
-    }   
-    return {acerto : undefined};
+            return { acerto: Acerto.Acertou };
+        } else if (posicaoAtacada === 0) {
+            // Altera a posição nas duas matrizes pra marcar que a água foi atingida
+            matrizJogadorRevelado[posFall.linha][posFall.coluna] = 1;
+            matrizJogadorCompleta[posFall.linha][posFall.coluna] = 1;
+
+            statusAlerta(`[~] O Piloto Automático errou o alvo em (${posFall.linha}, ${posFall.coluna})!... Nenhum dano registrado. [~]`)
+
+            // Mostra a alteração do tabuleiro na página para o usuário ver
+            tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
+
+            return { acerto: Acerto.Errou };
+        }
+    } else {
+        return { acerto: undefined };
+    }
+    return { acerto: undefined };
 }
 
 function verificarNavioAcertadoIa(filho: HTMLElement): boolean {
@@ -397,9 +396,9 @@ function verificarNavioAcertadoIa(filho: HTMLElement): boolean {
         if (tabuleiroInimigoCompleto[posLinha][posColuna] == 2) {
             tabuleiroInimigoCompleto[posLinha][posColuna] = 3;
             tabuleiroInimigoRevelado[posLinha][posColuna] = 3;
-            
+
             statusMensagem(`[+] IMPACTO CONFIRMADO! Uma embarcação inimiga foi atingida em(${posLinha}, ${posColuna}). [+]`);
-            tabuleiroJSONparaHTML(tabuleiroInimigoRevelado,".tabuleiro-inimigo");
+            tabuleiroJSONparaHTML(tabuleiroInimigoRevelado, ".tabuleiro-inimigo");
 
             return true;
         }
@@ -409,7 +408,7 @@ function verificarNavioAcertadoIa(filho: HTMLElement): boolean {
             tabuleiroInimigoRevelado[posLinha][posColuna] = 1;
 
             statusMensagem(`[~] ÁGUA! O projétil caiu no mar. Nada atingido em (${posLinha}, ${posColuna}). [~]`);
-            tabuleiroJSONparaHTML(tabuleiroInimigoRevelado,".tabuleiro-inimigo");
+            tabuleiroJSONparaHTML(tabuleiroInimigoRevelado, ".tabuleiro-inimigo");
 
             return false;
         }
@@ -483,7 +482,7 @@ export function posicionaCampoIA(campoIA: number[][], totalNaviosIA: Navios[]): 
     return campoIA;
 }
 
-function verificarTerminoDeJogo(){
+function verificarTerminoDeJogo() {
 
 }
 
