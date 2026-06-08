@@ -1,3 +1,4 @@
+import { terminarJogo } from "./game-loop.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 
 /**
@@ -55,10 +56,14 @@ export function tabuleiroJSONparaHTML(matriz, seletorTabuleiro) {
     }
     
     if(seletorTabuleiro === ".tabuleiro-inimigo"){
-        verificarSeNaviosForamAfundados(-1);
+        if(verificarSeNaviosForamAfundados(-1) == true){
+            terminarJogo(1);
+        }
     }
     else{
-        verificarSeNaviosForamAfundados(1);
+        if(verificarSeNaviosForamAfundados(1) == true){
+            terminarJogo(-1);
+        };
     }
     atualizarGifTabuleiro(tabuleiro);
 }
@@ -84,7 +89,7 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
             const celula = document.getElementById(posicao);
 
             if (celula) {
-                if(celula.dataset.status === "3")
+                if(celula.dataset.status === "3" || celula.dataset.status === "4")
                     posicoesAfundadas++;
             }
         }
@@ -102,7 +107,6 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
             let navioDiv = document.getElementById(navio.codigo);
             if(navioDiv && tipoTabuleiro === 1){
                 navioDiv.style.backgroundColor = "rgb(50, 50, 50)";
-                
             }
 
             if(navio.afundou === false){
@@ -157,6 +161,16 @@ export function alternarTransparencia(seletorElemento){
     );
 }
 
+export function desativarTabuleiros(){
+    //tabuleiroJogador.classList.add("transparente");
+    //tabuleiroInimigo.classList.add("transparente");
+    tabuleiroJogador.style.opacity = 0.2;
+    tabuleiroInimigo.style.opacity = 0.2;
+    tabuleiroInimigo.querySelectorAll(".celula").forEach(celula => {
+        celula.style.pointerEvents = "none";
+    });
+}
+
 /**
  * Funções para o Status, para adicionar informações sobre o que está ocorrendo no jogo da Batalha Naval.
  */
@@ -187,4 +201,8 @@ export function statusMensagem(mensagem) {
 
 export function statusAlerta(mensagem) {
     exibirStatus(mensagem, "#ff4040");
+}
+
+export function statusAnuncio(mensagem) {
+    exibirStatus(mensagem, "#40ff40");
 }

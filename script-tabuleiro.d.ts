@@ -8,6 +8,10 @@ export function alternarTransparenciaTabuleiro(tipo: "jogador" | "inimigo"): voi
 
 export function alternarTransparencia(seletorElemento: string): void;
 
+export function desativarTabuleiros(): void;
+
 export function statusMensagem(mensagem : string): null;
 
 export function statusAlerta(mensagem : string): null;
+
+export function statusAnuncio(mensagem : string): null;

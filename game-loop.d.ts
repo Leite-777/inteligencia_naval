@@ -1,0 +1,1 @@
+export function terminarJogo(vencedor?: -1 | 0 | 1): void;

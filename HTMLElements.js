@@ -4,6 +4,7 @@ let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
 let campoDosNavios = document.querySelector(".navios-arrastaveis");
 let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
 let btnPosicionarNavios = document.querySelector(".botao-posicionar-navios");
+let btnTerminarJogo = document.querySelector(".botao-terminar-jogo");
 
 const MATRIZ_JOGADOR = 1; //Cria a matriz com as opções disponinveis de arrastar navios para o jogador.
 const MATRIZ_INIMIGO = -1; //Desabilita a opção de arrastar, criando apenas uma matriz visual.
