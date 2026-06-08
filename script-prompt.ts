@@ -1,120 +1,127 @@
-import {tabuleiroHTMLparaJSON} from "./script-tabuleiro.js";
-import {tabuleiroJSONparaHTML} from "./script-tabuleiro.js";
-import {statusMensagem} from "./script-tabuleiro.js";
-import {statusAlerta} from "./script-tabuleiro.js";
-import {escolherJogadaFallback} from "./script-fallback.js"
+import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
+import { tabuleiroJSONparaHTML } from "./script-tabuleiro.js";
+import { statusMensagem } from "./script-tabuleiro.js";
+import { statusAlerta } from "./script-tabuleiro.js";
+import { escolherJogadaFallback } from "./script-fallback.js"
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { Navios } from "./script-jogador.js";
 import { geraNumeroAleatorio } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
+// @ts-ignore
+import { AudioManager } from "./script-audioManager.js";
+
+//Instancia do AudioManager pra controlar o audio
+const audio = new AudioManager();
+
+
 
 let chaveHtml = document.getElementById('api-key') as HTMLInputElement;
 //para não travar a chava api
 
 // O tabuleiro inimigo onde o usuário só vê as posições que ele atacou
-let tabuleiroInimigoRevelado : number[][] = [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
+let tabuleiroInimigoRevelado: number[][] = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 // O tabuleiro inimigo com todas as posições com navios e posições atacadas
 let tabuleiroInimigoCompleto: number[][] = [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 // O tabuleiro do jogador onde a IA só vê as posições que ela atacou
 let tabuleiroJogadorRevelado: number[][] = [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 //formato do json
-interface respostaApi{
-    coluna : number, 
-    linha: number,  
-    debug : string
+interface respostaApi {
+    coluna: number,
+    linha: number,
+    debug: string
 }
 
 //Interface do erro passando os campos
-interface Erro{
+interface Erro {
     CodigoErro: number, //Valor numerico do erro ex: 400
     status: boolean; //sempre false
-    mensagemErro : string // nome do erro ex: INVALID_ARGUMENT
+    mensagemErro: string // nome do erro ex: INVALID_ARGUMENT
 }
 
 //Interface do Sucesso passando os campos
-interface Sucesso{
+interface Sucesso {
     dados: respostaApi, //json com as informações
     status: boolean; //sempre true
 }
 
-enum Acerto{
+enum Acerto {
     Errou = 40,
     Acertou = 50
 }
 
 //tipo de retorno para a função chamada api ja que esse tipo pode ser Sucesso ou Erro
 type resultadoApi = Erro | Sucesso;
-type acertoAPI = {acerto:Acerto | undefined;};
+type acertoAPI = { acerto: Acerto | undefined; };
 
 let totalNaviosIA = inicializaOsNaviosIA();
 
 //                              Função principal para a Chamada de API, com o retorno dos dados
 
-async function chamadaApi(prompt : string): Promise<resultadoApi>{
-    
+async function chamadaApi(prompt: string): Promise<resultadoApi> {
+
     const apiKey = (document.getElementById('api-key') as HTMLInputElement).value;
     let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-    method: "POST",
-    headers: {
-    "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-    contents: [
-        {
-        parts: [
-            {
-            text: prompt
-            }
-        ]
-        }
-    ]
-    })
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            contents: [
+                {
+                    parts: [
+                        {
+                            text: prompt
+                        }
+                    ]
+                }
+            ]
+        })
     });
-    if(!resposta.ok){
+    if (!resposta.ok) {
         return {
-            CodigoErro : resposta.status,
-            status : false,
-            mensagemErro : resposta.statusText
+            CodigoErro: resposta.status,
+            status: false,
+            mensagemErro: resposta.statusText
         };
     }
-     try {
+    try {
 
         let dados = await resposta.json();
 
@@ -149,13 +156,13 @@ async function chamadaApi(prompt : string): Promise<resultadoApi>{
 
 //                              Função da passagem dos tabuleiros para, Chamada de API, junto com o prompt
 
-async function chamarApi(matrizJogadorRevelado: number[][], matrizJogadorCompleto: number[][]): Promise<acertoAPI>{
+async function chamarApi(matrizJogadorRevelado: number[][], matrizJogadorCompleto: number[][]): Promise<acertoAPI> {
     // Pega o valor exato no momento que a função é ativada
     let apiKey = chaveHtml.value;
 
     if (!apiKey) {
         console.error("A chave da API não foi informada.");
-        return {acerto : undefined};
+        return { acerto: undefined };
     }
 
     // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
@@ -211,6 +218,8 @@ Não use markdown.
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
                 matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
                 matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
+                //Som de tiro Acertado
+                audio.playHitShot();
                 // Mostra a alteração do tabuleiro na página para o usuário ver
                 tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
 
@@ -220,6 +229,8 @@ Não use markdown.
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
                 matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
                 matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
+                //Som de tiro errado
+                audio.playMissShot();
                 // Mostra a alteração do tabuleiro na página para o usuário ver
                 tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
 
@@ -248,7 +259,7 @@ Não use markdown.
         raciocinioIA.textContent = `O Piloto automático está jogando...`;
         return jogadaFallback(matrizJogadorRevelado,matrizJogadorCompleto);
     }
-    return {acerto :undefined};
+    return { acerto: undefined };
 }
 
 /**
@@ -268,7 +279,7 @@ if (botaoPosicionarNavios) {
 
         // Adiciona os navios no tabuleiro da IA
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
-        tabuleiroInimigoCompleto = posicionaCampoIA(tabuleiroInimigoCompleto,totalNaviosIA);
+        tabuleiroInimigoCompleto = posicionaCampoIA(tabuleiroInimigoCompleto, totalNaviosIA);
 
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
         if(campoIa){
@@ -311,19 +322,19 @@ if (botaoPosicionarNavios) {
     });
 }
 
-async function JogadaApi(): Promise<acertoAPI>{
+async function JogadaApi(): Promise<acertoAPI> {
     let tabuleiroJogadorCompleto = tabuleiroHTMLparaJSON(".tabuleiro-jogador");
     let alvo = await chamarApi(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
-    if(alvo.acerto == undefined){
-        return {acerto : undefined};
+    if (alvo.acerto == undefined) {
+        return { acerto: undefined };
     }
-    if(alvo.acerto == Acerto.Errou){
-        return {acerto :Acerto.Errou};    
+    if (alvo.acerto == Acerto.Errou) {
+        return { acerto: Acerto.Errou };
     }
-    if(alvo.acerto == Acerto.Acertou){
-        return {acerto :Acerto.Acertou};
-    }else{
-        return {acerto :Acerto.Errou};
+    if (alvo.acerto == Acerto.Acertou) {
+        return { acerto: Acerto.Acertou };
+    } else {
+        return { acerto: Acerto.Errou };
     }
 }
 
@@ -338,7 +349,7 @@ export function wait(ms: number): Promise<void> {
 async function jogadaFallback(matrizJogadorRevelado : number[][],matrizJogadorCompleta:number[][]): Promise<acertoAPI>{
     await wait(2000);
     let posFall = escolherJogadaFallback(matrizJogadorRevelado);
-    if(posFall != undefined){
+    if (posFall != undefined) {
         let posicaoAtacada = matrizJogadorCompleta[posFall.linha][posFall.coluna];
         
         if (posicaoAtacada === 2) {
@@ -370,14 +381,14 @@ async function jogadaFallback(matrizJogadorRevelado : number[][],matrizJogadorCo
     return {acerto : undefined};
 }
 
-function verificarNavioAcertadoIa(filho : HTMLElement) :boolean{
+function verificarNavioAcertadoIa(filho: HTMLElement): boolean {
     let linhaFilho = filho.dataset.linha;
     let colunaFilho = filho.dataset.coluna;
-    if(linhaFilho != undefined && colunaFilho != undefined){
+    if (linhaFilho != undefined && colunaFilho != undefined) {
         let posLinha = Number.parseInt(linhaFilho);
         let posColuna = Number.parseInt(colunaFilho);
         // Se o usuário acertou um navio do tabuleiro inimigo
-        if(tabuleiroInimigoCompleto[posLinha][posColuna] == 2){
+        if (tabuleiroInimigoCompleto[posLinha][posColuna] == 2) {
             tabuleiroInimigoCompleto[posLinha][posColuna] = 3;
             tabuleiroInimigoRevelado[posLinha][posColuna] = 3;
             
@@ -387,7 +398,7 @@ function verificarNavioAcertadoIa(filho : HTMLElement) :boolean{
             return true;
         }
         // Se o usuário errou o navio, ele não joga na próxima vez
-        else if(tabuleiroInimigoCompleto[posLinha][posColuna] == 0){
+        else if (tabuleiroInimigoCompleto[posLinha][posColuna] == 0) {
             tabuleiroInimigoCompleto[posLinha][posColuna] = 1;
             tabuleiroInimigoRevelado[posLinha][posColuna] = 1;
 
@@ -397,14 +408,14 @@ function verificarNavioAcertadoIa(filho : HTMLElement) :boolean{
             return false;
         }
         // Se o usuário clicou numa posição repetida, apenas deixa ele jogar novamente
-        else{
+        else {
             return true;
         }
     }
     return false;
 }
 
-export function posicionaCampoIA( campoIA: number[][], totalNaviosIA: Navios[]): number[][] {
+export function posicionaCampoIA(campoIA: number[][], totalNaviosIA: Navios[]): number[][] {
     const HORIZONTAL = 1;
     const TAMANHO_MATRIZ = 10;
     for (const navio of totalNaviosIA) {
