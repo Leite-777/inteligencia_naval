@@ -6,6 +6,7 @@ import { escolherJogadaFallback } from "./script-fallback.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
+import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
 // @ts-ignore
 import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
@@ -59,6 +60,9 @@ var Acerto;
 let totalNaviosIA = inicializaOsNaviosIA();
 //                              Função principal para a Chamada de API, com o retorno dos dados
 async function chamadaApi(prompt) {
+    if (!validaEstruturaChaveAPI()) {
+        return undefined;
+    }
     const apiKey = document.getElementById('api-key').value;
     let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: "POST",
@@ -142,6 +146,9 @@ Responda APENAS em JSON válido.
 Não use markdown.    
 `;
     let respostaFunc = await chamadaApi(prompt);
+    if (respostaFunc == undefined) {
+        return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
+    }
     // Debug temporário da resposta da chamada API, contendo:
     // A matriz completa do oponente exibida no console, a posição atacada, e o raciocínio da IA
     // Um alerta na tela mostrando a posição que o Gemini acertou

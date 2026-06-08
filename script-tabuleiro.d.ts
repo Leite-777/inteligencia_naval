@@ -15,3 +15,5 @@ export function statusMensagem(mensagem : string): null;
 export function statusAlerta(mensagem : string): null;
 
 export function statusAnuncio(mensagem : string): null;
+
+export function validaEstruturaChaveAPI(): boolean;
