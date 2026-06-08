@@ -10,12 +10,16 @@ import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { alternarTransparencia } from "./script-tabuleiro.js";
 
+import { AudioManager } from "./script-audioManager.js";
+
+const audio = new AudioManager();
+
 alternarTransparencia(".botao-posicionar-navios")
 alternarTransparencia(".botao-terminar-jogo")
 alternarTransparencia(".status-jogo")
 
 function iniciarJogo() {
-    playBackground();
+    audio.playBackground();
     criaNavios();
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
     criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);

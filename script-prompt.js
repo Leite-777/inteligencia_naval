@@ -198,7 +198,7 @@ Não use markdown.
             statusAlerta("[X] Não é possível fazer contato com o Gemini! O Piloto Automático assumirá o controle. [X]");
         }
         else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
-            statusAlerta("[X] O Gemini está temporariamente INDISPONÍVEL! O Piloto Automático assumirá o controle. [X]");
+            statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
         }
         raciocinioIA.textContent = `O Piloto automático está jogando...`;
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
@@ -219,7 +219,6 @@ if (botaoPosicionarNavios) {
         // Desativa o botão para o usuário não gerar vários eventos de clique
         botaoPosicionarNavios.disabled = true;
         let podeJogar = true;
-        console.log("Adicionando eventos de clique no tabuleiro inimigo");
         // Adiciona os navios no tabuleiro da IA
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
         tabuleiroInimigoCompleto = posicionaCampoIA(tabuleiroInimigoCompleto, totalNaviosIA);
@@ -233,8 +232,8 @@ if (botaoPosicionarNavios) {
                     podeJogar = false;
                     // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
                     if (verificarNavioAcertadoIa(filho)) {
-                        // verificarTerminoDeJogo
                         podeJogar = true;
+                        // verificarTerminoDeJogo()
                     }
                     // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
                     else {
@@ -252,11 +251,11 @@ if (botaoPosicionarNavios) {
                                 parada = 1;
                             }
                         } while (parada != 0);
-                        // verificarTerminoDeJogo
                         await wait(1500);
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
                         podeJogar = true;
+                        // verificarTerminoDeJogo()
                     }
                 });
             });
