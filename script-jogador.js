@@ -190,11 +190,11 @@ function verificaOcupacaoCelula(celulaId) {
     let posicoesNovas = [];
     if (objNavioSendoArrastado.direcao === HORIZONTAL) {
         for (let i = 0; i < objNavioSendoArrastado.tamanho; i++) {
-            posicoesNovas.push((colunaInicial + i) + "x" + linhaInicial);
+            posicoesNovas.push(`${tipoTabuleiro}_${colunaInicial + i}x${linhaInicial}`);
         }
     } else {
         for (let i = 0; i < objNavioSendoArrastado.tamanho; i++) {
-            posicoesNovas.push(colunaInicial + "x" + (linhaInicial + i));
+            posicoesNovas.push(`${tipoTabuleiro}_${colunaInicial}x${linhaInicial + i}`);
         }
     }
 
@@ -284,7 +284,7 @@ export function criaNavios() {
     const soma = quantiaNavios.reduce((total, valorAtual) => total + valorAtual, 0);
 
 
-    new Array(soma);
+    naviosCriados = new Array(soma);
     for (let index = 0; index < quantiaNavios.length; index++) {
         inicializaONavio(tamanhoNavios[index]);
     }
