@@ -8,6 +8,7 @@ import { Navios } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { ocultarElemento } from "./script-tabuleiro.js";
+import { verificarChaveAPI } from "./script-tabuleiro.js";
 import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 
@@ -274,6 +275,7 @@ const botaoIniciarJogo = document.querySelector<HTMLButtonElement>('.botao-inici
 // Garante que o botão realmente existe na página antes de adicionar o evento
 if (botaoIniciarJogo) {
     botaoIniciarJogo.addEventListener('click', async () => {
+        if (verificarChaveAPI() === false) { return; }
         if (verificaIniciarJogo() === false) { return; }
         // Desativa o botão para o usuário não gerar vários eventos de clique
 

@@ -12,6 +12,8 @@ export function ocultarElemento(seletorElemento: string, estado: boolean): void;
 
 export function desativarTabuleiros(): void;
 
+export function verificarChaveAPI(): boolean;
+
 export function statusMensagem(mensagem : string): null;
 
 export function statusAlerta(mensagem : string): null;

@@ -12,6 +12,7 @@ import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { alternarTransparencia } from "./script-tabuleiro.js";
 import { ocultarElemento } from "./script-tabuleiro.js";
 import { desativarTabuleiros } from "./script-tabuleiro.js";
+import { verificarChaveAPI } from "./script-tabuleiro.js";
 
 import { AudioManager } from "./script-audioManager.js";
 

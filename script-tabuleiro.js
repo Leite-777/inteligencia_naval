@@ -186,6 +186,38 @@ export function desativarTabuleiros(){
 }
 
 /**
+ * Funções pra verificar se o campo da Chave API está vazia, ou se o conteúdo dentro segue os padrões de uma chave API do Gemini, respectivamente.
+ */
+const inputChaveAPI = document.querySelector("#api-key");
+const botaoPreencherAPI = document.querySelector(".botao-preencher-api");
+
+export function verificarChaveAPI() {
+    const apiKey = inputChaveAPI.value.trim();
+
+    if (apiKey === "") {
+        inputChaveAPI.style.border = "2px solid red";
+
+        inputChaveAPI.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        inputChaveAPI.focus();
+
+        return false;
+    }
+
+    // Remove a borda vermelha caso o campo esteja preenchido
+    inputChaveAPI.style.border = "";
+
+    return true;
+}
+
+botaoPreencherAPI.addEventListener("click", () => {
+    inputChaveAPI.value = "chave-temporaria";
+});
+
+/**
  * Funções para o Status, para adicionar informações sobre o que está ocorrendo no jogo da Batalha Naval.
  */
 const statusJogo = document.querySelector(".status-jogo");
