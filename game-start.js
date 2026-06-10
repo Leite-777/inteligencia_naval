@@ -33,6 +33,7 @@ function iniciarJogo() {
     alternarTransparencia(".botao-iniciar-jogo")
     alternarTransparencia(".status-jogo")
 
+    ocultarElemento(".colapsavel-raciocinio-ia", true);
     ocultarElemento(".botao-terminar-jogo", true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
@@ -75,9 +76,13 @@ function posicionarNavios() {
     }
 }
 
-export function terminarJogo(vencedor = 0) {
+export async function terminarJogo(vencedor = 0) {
+    // Impede a execução da função quando o jogo já estiver encerrado
+    if(tabuleiroJogador.classList.contains("encerrado")){ return; }
+
+    alternarTransparencia(".botao-terminar-jogo");
     desativarTabuleiros();
-    jogoTelaCheia(false);
+
     audio.stopBackground();
     switch(vencedor){
         case 1:
@@ -90,7 +95,16 @@ export function terminarJogo(vencedor = 0) {
             statusAnuncio("CESSAR FOGO! Foi combinado um empate entre as duas equipes.");
     }
 
-    alternarTransparencia(".botao-terminar-jogo")
+    // Scrolla a página de volta para a seção do jogo
+    document.getElementById('jogo').scrollIntoView({
+        block: 'start'
+    });
+
+    // Espera 3 segundos, recarrega a página, e volta pra seção do jogo
+    await wait(2000);
+    
+    sessionStorage.setItem('scrollParaJogo', 'true');
+    location.reload();
 }
 
 function muteMusica(){
@@ -109,16 +123,30 @@ function jogoTelaCheia(estado){
     jogo = document.querySelector("#jogo");
     jogo.classList.toggle("tela-cheia",estado);
 
-    ocultarElemento("#nav", true);
-    ocultarElemento("#header", true);
-    ocultarElemento("#chave-api", true);
-    ocultarElemento("#guia-do-usuario", true);
-    ocultarElemento("#sobre", true);
-    ocultarElemento("#footer", true);
+    ocultarElemento("#nav", estado);
+    ocultarElemento("#header", estado);
+    ocultarElemento("#chave-api", estado);
+    ocultarElemento("#guia-do-usuario", estado);
+    ocultarElemento("#sobre", estado);
+    ocultarElemento("#footer", estado);
 }
 
-//btnIniciarJogo.addEventListener("click", iniciarJogo);
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     iniciarJogo();    
+});
+
+
+window.addEventListener('load', () => {
+    if (sessionStorage.getItem('scrollParaJogo') === 'true') {
+        sessionStorage.removeItem('scrollParaJogo');
+
+        document.getElementById('jogo').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
 });

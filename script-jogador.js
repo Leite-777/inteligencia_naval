@@ -250,6 +250,13 @@ export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                  */
                 celula.addEventListener("drop", (e) => {
                     e.preventDefault();
+
+                    // Navios arrastados passam seu id no dataTransfer. Se o elemento arrastado não é um navio, encerra a execução.
+                    const id = e.dataTransfer.getData("id");
+                    if (!id) {
+                        return;
+                    }
+                    
                     const cabeNaMatriz = verificaEspacoMatriz(navioSendoArrastado, celula.id);
                     const semColisao = verificaOcupacaoCelula(celula.id);
 
@@ -321,8 +328,11 @@ function inicializaONavio(tamanho) {
 
     //Guarda o ID do navio que está sendo arrastado
     navio.addEventListener("dragstart", (e) => {
-        //Padroniza para que dessa forma o usuario sempre pegue o item pela parte inicial da div.
+        // Padroniza para que dessa forma o usuario sempre pegue o item pela parte inicial da div.
         event.dataTransfer.setDragImage(event.target, 0, 0);
+        // Passa o id do navio para o elemento arrastado, para diferenciá-lo de outros elementos arrastáveis
+        e.dataTransfer.setData("id", e.target.id);
+
         navioSendoArrastado = e.target;
         objNavioSendoArrastado = buscaNavio(Number(e.target.id));
     });

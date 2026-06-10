@@ -6,6 +6,7 @@ import { escolherJogadaFallback } from "./script-fallback.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
+import { ocultarElemento } from "./script-tabuleiro.js";
 import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
@@ -155,7 +156,7 @@ Não use markdown.
         const coordenadasIa = sucesso.dados;
         const linhaAtaque = sucesso.dados.linha;
         const colunaAtaque = sucesso.dados.coluna;
-        // Exibe um alerta na tela mostrando a posição que o Gemini atacou, e atualiza da matriz
+        ocultarElemento(".colapsavel-raciocinio-ia", false);
         // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
         if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
             raciocinioIA.textContent = `${sucesso.dados.debug}`;
@@ -294,6 +295,8 @@ async function jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleta) {
     if (verificarTerminoDeJogo() == true) {
         return { acerto: Acerto.Errou };
     }
+    // Oculta o elemento que mostra o raciocínio do Gemini para sua jogada
+    ocultarElemento(".colapsavel-raciocinio-ia", true);
     let posFall = escolherJogadaFallback(matrizJogadorRevelado);
     if (posFall != undefined) {
         let posicaoAtacada = matrizJogadorCompleta[posFall.linha][posFall.coluna];
