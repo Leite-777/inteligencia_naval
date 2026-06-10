@@ -166,6 +166,15 @@ export function alternarTransparencia(seletorElemento){
     );
 }
 
+export function ocultarElemento(seletorElemento, estado) {
+    const elemento = document.querySelector(seletorElemento);
+
+    // O "if" garante que o código só roda se o elemento realmente existir
+    if (elemento) {
+        elemento.classList.toggle("oculto", estado);
+    }
+}
+
 export function desativarTabuleiros(){
     tabuleiroJogador.style.opacity = 0.2;
     tabuleiroInimigo.style.opacity = 0.2;

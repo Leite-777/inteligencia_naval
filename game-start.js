@@ -10,6 +10,7 @@ import { statusAnuncio } from "./script-tabuleiro.js";
 import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { alternarTransparencia } from "./script-tabuleiro.js";
+import { ocultarElemento } from "./script-tabuleiro.js";
 import { desativarTabuleiros } from "./script-tabuleiro.js";
 
 import { AudioManager } from "./script-audioManager.js";
@@ -17,47 +18,55 @@ import { AudioManager } from "./script-audioManager.js";
 const audio = new AudioManager();
 let musicaAtivada = true;
 
-alternarTransparencia(".botao-posicionar-navios")
+alternarTransparencia(".botao-iniciar-jogo")
 alternarTransparencia(".botao-terminar-jogo")
 alternarTransparencia(".status-jogo")
 
 function iniciarJogo() {
     // Se não há nada no campo da Chave API, instrui ao usuário inserir um valor lá
-    if(!verificarChaveAPI()){return;}
-
-    audio.playBackground();
+    
     criaNavios();
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
     criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
 
     alternarTransparenciaTabuleiro("inimigo");
     alternarTransparencia(".botao-iniciar-jogo")
-    alternarTransparencia(".botao-posicionar-navios")
     alternarTransparencia(".status-jogo")
+
+    ocultarElemento(".botao-terminar-jogo", true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
 
     btnIniciarJogo.removeEventListener("click", iniciarJogo);
 
-    btnPosicionarNavios.addEventListener("click", posicionarNavios);
+    btnIniciarJogo.addEventListener("click", posicionarNavios);
     btnMute.addEventListener("click", muteMusica);
 }
 
 function posicionarNavios() {
+    if(!verificarChaveAPI()){return;}
+
+    audio.playBackground();
+
     if (verificaIniciarJogo() === true) {
+        jogoTelaCheia(true);
+        
         statusAnuncio("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
 
         marcarPosicoesDosNavios();
         bloquearArrasteDosNavios();
         atualizarGifTabuleiro(tabuleiroJogador);
 
-        btnPosicionarNavios.removeEventListener("click", posicionarNavios);
+        btnIniciarJogo.removeEventListener("click", posicionarNavios);
 
         alternarTransparenciaTabuleiro("jogador");
         alternarTransparenciaTabuleiro("inimigo");
 
-        alternarTransparencia(".botao-posicionar-navios")
+        alternarTransparencia(".botao-iniciar-jogo")
         alternarTransparencia(".botao-terminar-jogo")
+
+        ocultarElemento(".botao-terminar-jogo", false);
+        ocultarElemento(".botao-iniciar-jogo", true);
 
         // Permite o usuário encerrar o jogo com um empate quando quiser
         btnTerminarJogo.addEventListener("click", terminarJogo);
@@ -68,6 +77,7 @@ function posicionarNavios() {
 
 export function terminarJogo(vencedor = 0) {
     desativarTabuleiros();
+    jogoTelaCheia(false);
     audio.stopBackground();
     switch(vencedor){
         case 1:
@@ -95,4 +105,20 @@ function muteMusica(){
     }
 }
 
-btnIniciarJogo.addEventListener("click", iniciarJogo);
+function jogoTelaCheia(estado){
+    jogo = document.querySelector("#jogo");
+    jogo.classList.toggle("tela-cheia",estado);
+
+    ocultarElemento("#nav", true);
+    ocultarElemento("#header", true);
+    ocultarElemento("#chave-api", true);
+    ocultarElemento("#guia-do-usuario", true);
+    ocultarElemento("#sobre", true);
+    ocultarElemento("#footer", true);
+}
+
+//btnIniciarJogo.addEventListener("click", iniciarJogo);
+
+window.addEventListener('DOMContentLoaded', () => {
+    iniciarJogo();    
+});

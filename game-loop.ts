@@ -271,14 +271,14 @@ Não use markdown.
  * O botão Posicionar Navios adiciona os eventos de clique para o tabuleiro inimigo,
  * permitindo tanto ao jogador quanto à IA fazer suas jogadas.
  */
-const botaoPosicionarNavios = document.querySelector<HTMLButtonElement>('.botao-posicionar-navios');
+const botaoIniciarJogo = document.querySelector<HTMLButtonElement>('.botao-iniciar-jogo');
 
 // Garante que o botão realmente existe na página antes de adicionar o evento
-if (botaoPosicionarNavios) {
-    botaoPosicionarNavios.addEventListener('click', async () => {
+if (botaoIniciarJogo) {
+    botaoIniciarJogo.addEventListener('click', async () => {
         if (verificaIniciarJogo() === false) { return; }
         // Desativa o botão para o usuário não gerar vários eventos de clique
-        botaoPosicionarNavios.disabled = true;
+        botaoIniciarJogo.disabled = true;
 
         let podeJogar = true;
 

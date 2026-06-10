@@ -152,11 +152,11 @@ function estadoCampo(celula){
             addGifNuvens(celula);
             break;
         case "1": // Água
-            celula.style.backgroundColor = "#002341"
+            celula.style.backgroundColor = "#001320"
             addGifOndas(celula);
             break;
         case "2":
-            celula.style.backgroundColor = "#002341"
+            celula.style.backgroundColor = "#003560";
             addGifOndas(celula);
             break;
         case "3": // Navio parcialmente atingido

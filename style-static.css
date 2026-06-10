@@ -311,6 +311,11 @@ header{
     background-color: #002c50;
 }
 
+.tela-cheia{
+    height: 100vh;
+    box-sizing: border-box;
+}
+
 #jogo-batalha-naval{
     display: grid;
     grid-template-columns: 3fr 1.5fr 3fr;
@@ -450,11 +455,6 @@ header{
 
   /* ADICIONE ESTA LINHA ABAIXO */
   position: relative; 
-}
-
-.transparente {
-    opacity: 0.2;
-    transition: opacity 1s ease;
 }
 
 /* Sobre */

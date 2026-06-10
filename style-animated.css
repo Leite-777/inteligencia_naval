@@ -43,10 +43,22 @@
 
 .navio{
   animation: wobble 4s ease-in-out infinite;
+
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.6);
 }
 
 @keyframes wobble {
   0% {transform: rotate(-1deg);}
   50% {transform: rotate(1deg);}
   100% {transform: rotate(-1deg);}
+}
+
+/* Para funções de desativar ou ativar transparência, ou ocultar elementos */
+.transparente {
+    opacity: 0.3;
+    transition: opacity 1s ease;
+}
+
+.oculto{
+  display: none;
 }
