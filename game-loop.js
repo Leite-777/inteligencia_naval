@@ -8,7 +8,6 @@ import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { ocultarElemento } from "./script-tabuleiro.js";
 import { verificarChaveAPI } from "./script-tabuleiro.js";
-import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
 const audio = new AudioManager();
@@ -61,9 +60,6 @@ var Acerto;
 let totalNaviosIA = inicializaOsNaviosIA();
 //                              Função principal para a Chamada de API, com o retorno dos dados
 async function chamadaApi(prompt) {
-    if (!validaEstruturaChaveAPI()) {
-        return undefined;
-    }
     const apiKey = document.getElementById('api-key').value;
     let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: "POST",

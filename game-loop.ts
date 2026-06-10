@@ -96,9 +96,6 @@ let totalNaviosIA = inicializaOsNaviosIA();
 //                              Função principal para a Chamada de API, com o retorno dos dados
 
 async function chamadaApi(prompt: string): Promise<resultadoApi> {
-    if (!validaEstruturaChaveAPI()) {
-        return undefined;
-    }
 
     const apiKey = (document.getElementById('api-key') as HTMLInputElement).value;
     let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
