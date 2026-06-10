@@ -122,7 +122,7 @@ function muteMusica(){
 }
 
 function jogoTelaCheia(estado){
-    jogo = document.querySelector("#jogo");
+    let jogo = document.querySelector("#jogo");
     jogo.classList.toggle("tela-cheia",estado);
 
     ocultarElemento("#nav", estado);
