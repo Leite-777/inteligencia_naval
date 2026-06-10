@@ -5,7 +5,6 @@ import { statusAlerta } from "./script-tabuleiro.js";
 import { escolherJogadaFallback } from "./script-fallback.js"
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { Navios } from "./script-jogador.js";
-import { geraNumeroAleatorio } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
@@ -194,17 +193,14 @@ Responda APENAS em JSON válido.
 Não use markdown.    
 `;
 
+    let raciocinioIA = document.querySelector(".raciocinio-ia") as HTMLDivElement;
+
     let respostaFunc = await chamadaApi(prompt);
     if (respostaFunc == undefined) {
+        raciocinioIA.textContent = "O Piloto automático está jogando...";
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
     }
-    // Debug temporário da resposta da chamada API, contendo:
-    // A matriz completa do oponente exibida no console, a posição atacada, e o raciocínio da IA
-    // Um alerta na tela mostrando a posição que o Gemini acertou
-    // Atualização da matriz com a posição que o Gemini acertou (matrizIa[linhaAtaque][colunaAtaque] = 1;)
-    // Se der erro na chamada, mostra no console o código do erro que foi retornado
 
-    let raciocinioIA = document.querySelector(".raciocinio-ia") as HTMLDivElement;
     if (respostaFunc.status) {
         const sucesso = respostaFunc as Sucesso;
         const coordenadasIa = sucesso.dados;
@@ -261,7 +257,7 @@ Não use markdown.
         else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
             statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
         }
-        raciocinioIA.textContent = `O Piloto automático está jogando...`;
+        raciocinioIA.textContent = "O Piloto automático está jogando...";
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
     }
     return { acerto: undefined };

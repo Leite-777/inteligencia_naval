@@ -144,16 +144,12 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
 Responda APENAS em JSON válido.
 Não use markdown.    
 `;
+    let raciocinioIA = document.querySelector(".raciocinio-ia");
     let respostaFunc = await chamadaApi(prompt);
     if (respostaFunc == undefined) {
+        raciocinioIA.textContent = "O Piloto automático está jogando...";
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
     }
-    // Debug temporário da resposta da chamada API, contendo:
-    // A matriz completa do oponente exibida no console, a posição atacada, e o raciocínio da IA
-    // Um alerta na tela mostrando a posição que o Gemini acertou
-    // Atualização da matriz com a posição que o Gemini acertou (matrizIa[linhaAtaque][colunaAtaque] = 1;)
-    // Se der erro na chamada, mostra no console o código do erro que foi retornado
-    let raciocinioIA = document.querySelector(".raciocinio-ia");
     if (respostaFunc.status) {
         const sucesso = respostaFunc;
         const coordenadasIa = sucesso.dados;
@@ -206,7 +202,7 @@ Não use markdown.
         else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
             statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
         }
-        raciocinioIA.textContent = `O Piloto automático está jogando...`;
+        raciocinioIA.textContent = "O Piloto automático está jogando...";
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
     }
     return { acerto: undefined };
