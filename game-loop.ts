@@ -276,7 +276,6 @@ if (botaoIniciarJogo) {
     botaoIniciarJogo.addEventListener('click', async () => {
         if (verificaIniciarJogo() === false) { return; }
         // Desativa o botão para o usuário não gerar vários eventos de clique
-        botaoIniciarJogo.disabled = true;
 
         let podeJogar = true;
 

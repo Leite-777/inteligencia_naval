@@ -58,6 +58,7 @@ function posicionarNavios() {
         bloquearArrasteDosNavios();
         atualizarGifTabuleiro(tabuleiroJogador);
 
+        btnIniciarJogo.disabled = true;
         btnIniciarJogo.removeEventListener("click", posicionarNavios);
 
         alternarTransparenciaTabuleiro("jogador");

@@ -220,7 +220,6 @@ if (botaoIniciarJogo) {
             return;
         }
         // Desativa o botão para o usuário não gerar vários eventos de clique
-        botaoIniciarJogo.disabled = true;
         let podeJogar = true;
         // Adiciona os navios no tabuleiro da IA
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
