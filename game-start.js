@@ -36,6 +36,9 @@ function iniciarJogo() {
 
     ocultarElemento(".colapsavel-raciocinio-ia", true);
     ocultarElemento(".botao-terminar-jogo", true);
+    ocultarElemento(".botao-reiniciar-jogo", true);
+    ocultarElemento(".guia-jogo", true);
+    ocultarElemento(".botao-mute", true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
 
@@ -69,6 +72,8 @@ function posicionarNavios() {
         alternarTransparencia(".botao-terminar-jogo")
 
         ocultarElemento(".botao-terminar-jogo", false);
+        ocultarElemento(".guia-jogo", false);
+        ocultarElemento(".botao-mute", false);
         ocultarElemento(".botao-iniciar-jogo", true);
 
         // Permite o usuário encerrar o jogo com um empate quando quiser
@@ -78,11 +83,10 @@ function posicionarNavios() {
     }
 }
 
-export async function terminarJogo(vencedor = 0) {
+export function terminarJogo(vencedor = 0) {
     // Impede a execução da função quando o jogo já estiver encerrado
     if(tabuleiroJogador.classList.contains("encerrado")){ return; }
 
-    alternarTransparencia(".botao-terminar-jogo");
     desativarTabuleiros();
 
     audio.stopBackground();
@@ -102,9 +106,16 @@ export async function terminarJogo(vencedor = 0) {
         block: 'start'
     });
 
-    // Espera 3 segundos, recarrega a página, e volta pra seção do jogo
-    await wait(2000);
-    
+    ocultarElemento(".guia-jogo", true);
+    ocultarElemento(".botao-mute", true);
+    ocultarElemento(".botao-terminar-jogo", true);
+    ocultarElemento(".botao-reiniciar-jogo", false);
+
+    btnTerminarJogo.removeEventListener("click", terminarJogo);
+    btnReiniciarJogo.addEventListener("click", reiniciarJogo);
+}
+
+function reiniciarJogo(){
     sessionStorage.setItem('scrollParaJogo', 'true');
     location.reload();
 }

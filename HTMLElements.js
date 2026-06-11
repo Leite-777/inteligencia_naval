@@ -3,8 +3,8 @@ let tabuleiroJogador = document.querySelector(".tabuleiro-jogador");
 let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
 let campoDosNavios = document.querySelector(".navios-arrastaveis");
 let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
-//let btnPosicionarNavios = document.querySelector(".botao-posicionar-navios");
 let btnTerminarJogo = document.querySelector(".botao-terminar-jogo");
+let btnReiniciarJogo = document.querySelector(".botao-reiniciar-jogo");
 let btnMute = document.querySelector(".botao-mute");
 
 const MATRIZ_JOGADOR = 1; //Cria a matriz com as opções disponinveis de arrastar navios para o jogador.

@@ -64,7 +64,7 @@ function addGifOndas(celula){
     gifOnda.style.height = '40px';
     gifOnda.style.borderRadius = '5px';
     gifOnda.src = 'assets/gifs/ondas.gif';
-    gifOnda.alt = 'Gif de Ondas';
+    gifOnda.alt = 'Água';
     celula.appendChild(gifOnda);
 }
 
@@ -79,7 +79,7 @@ function addGifNuvens(celula){
     gifNuvens.style.height = '40px';
     gifNuvens.style.borderRadius = '5px';
     gifNuvens.src = 'assets/gifs/nuvens.gif';
-    gifNuvens.alt = 'Gif de Nuvens';
+    gifNuvens.alt = 'Desconhecido';
     celula.appendChild(gifNuvens);
 }
 
@@ -94,7 +94,7 @@ function addGifAguaAtingida(celula){
     gifAguaAtingida.style.height = '40px';
     gifAguaAtingida.style.borderRadius = '5px';
     gifAguaAtingida.src = 'assets/gifs/aguaAtingida.gif';
-    gifAguaAtingida.alt = 'Gif de Água Atingida';
+    gifAguaAtingida.alt = 'Água';
     celula.appendChild(gifAguaAtingida);
 }
 
@@ -109,7 +109,7 @@ function addGifFogo(celula){
     gifFogo.style.height = '40px';
     gifFogo.style.borderRadius = '5px';
     gifFogo.src = 'assets/gifs/fogo.gif';
-    gifFogo.alt = 'Gif de Fogo';
+    gifFogo.alt = 'Atingido';
     // Faz o gif aparecer sobre o navio
     gifFogo.style.zIndex = 100;
     celula.style.boxShadow = '0 0 10px 5px rgba(255, 69, 0, 0.7)'; // Adiciona um brilho vermelho ao redor do gif de fogo
@@ -127,7 +127,7 @@ function addGifCaveira(celula){
     gifCaveira.style.height = '40px';
     gifCaveira.style.borderRadius = '5px';
     gifCaveira.src = 'assets/gifs/caveira.gif';
-    gifCaveira.alt = 'Gif de Fogo';
+    gifCaveira.alt = 'Afundado';
     // Faz o gif aparecer sobre o navio
     gifCaveira.style.zIndex = 100;
     celula.style.boxShadow = ""; // Remove qualquer brilho anterior
