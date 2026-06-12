@@ -72,6 +72,52 @@ export function tabuleiroJSONparaHTML(matriz, seletorTabuleiro) {
     atualizarGifTabuleiro(tabuleiro);
 }
 
+/**
+ * Recebe uma matriz JSON do tabuleiro revelado do jogador (as posições que o Gemini vê),
+ * E verifica a lista de navios posicionados pelo jogador para verificar se foram afundados.
+ * 
+ * Caso algum navio estaja fundado, atualiza essas posições na matriz JSON com o número "4" -> afundado
+ * Assim, o Gemini saberá quais navios estão afundados e deve evitar.
+ * @param {*} matrizRevelado 
+ */
+export function atualizarTabuleiroReveladoJogador(matrizRevelado){
+    let naviosAfundados = 0;
+    let posicoesAfundadas = 0;
+    let listaNavios = naviosCriados;
+    
+    for (const navio of listaNavios.filter(Boolean)) {
+
+        if (!navio.posicionado) continue;
+        
+        posicoesAfundadas = 0;
+        // Conta o número de posições que foi atingido
+        for (const posicao of navio.posicoesOcupadas) {
+            const celula = document.getElementById(posicao);
+
+            if (celula) {
+                if(celula.dataset.status === "3" || celula.dataset.status === "4")
+                    posicoesAfundadas++;
+            }
+        }
+        // Se o navio foi completamente atingido, atualiza as posições do navio afundado na matriz como afundado
+        if(posicoesAfundadas === navio.posicoesOcupadas.length){
+            for (const posicao of navio.posicoesOcupadas) {
+                const celula = document.getElementById(posicao);
+
+                if (celula) {
+                    const [tipoTabuleiro, coordenada] = posicao.split('_');
+                    const [colunaStr, linhaStr] = coordenada.split('x');
+
+                    let colunaInicial = Number(colunaStr);
+                    let linhaInicial = Number(linhaStr);
+
+                    matrizRevelado[linhaInicial][colunaInicial] = 4;
+                }
+            }
+        }
+    }
+}
+
 export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
     let naviosAfundados = 0;
     let posicoesAfundadas = 0;

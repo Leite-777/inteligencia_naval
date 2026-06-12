@@ -2,6 +2,7 @@ import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
 import { tabuleiroJSONparaHTML } from "./script-tabuleiro.js";
 import { statusMensagem } from "./script-tabuleiro.js";
 import { statusAlerta } from "./script-tabuleiro.js";
+import { atualizarTabuleiroReveladoJogador } from "./script-tabuleiro.js";
 import { escolherJogadaFallback } from "./script-fallback.js"
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { Navios } from "./script-jogador.js";
@@ -9,7 +10,6 @@ import { verificaIniciarJogo } from "./script-jogador.js";
 import { alternarTransparenciaTabuleiro } from "./script-tabuleiro.js";
 import { ocultarElemento } from "./script-tabuleiro.js";
 import { verificarChaveAPI } from "./script-tabuleiro.js";
-import { validaEstruturaChaveAPI } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 
 //Instancia do AudioManager pra controlar o audio
@@ -167,6 +167,7 @@ async function chamarApi(matrizJogadorRevelado: number[][], matrizJogadorComplet
     }
 
     // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
+    atualizarTabuleiroReveladoJogador(matrizJogadorRevelado);
     let matrizFormatada = matrizJogadorRevelado.map(linha => `[${linha.join(', ')}]`).join('\n');
 
     let prompt: string = `

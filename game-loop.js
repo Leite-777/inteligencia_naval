@@ -2,6 +2,7 @@ import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
 import { tabuleiroJSONparaHTML } from "./script-tabuleiro.js";
 import { statusMensagem } from "./script-tabuleiro.js";
 import { statusAlerta } from "./script-tabuleiro.js";
+import { atualizarTabuleiroReveladoJogador } from "./script-tabuleiro.js";
 import { escolherJogadaFallback } from "./script-fallback.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { verificaIniciarJogo } from "./script-jogador.js";
@@ -119,6 +120,7 @@ async function chamarApi(matrizJogadorRevelado, matrizJogadorCompleto) {
         return { acerto: undefined };
     }
     // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
+    atualizarTabuleiroReveladoJogador(matrizJogadorRevelado);
     let matrizFormatada = matrizJogadorRevelado.map(linha => `[${linha.join(', ')}]`).join('\n');
     let prompt = `
 Você está jogando batalha naval contra um oponente humano, as regras são as seguintes:
@@ -144,6 +146,7 @@ Não use markdown.
 `;
     let raciocinioIA = document.querySelector(".raciocinio-ia");
     let respostaFunc = await chamadaApi(prompt);
+    console.log(matrizFormatada);
     if (respostaFunc == undefined) {
         raciocinioIA.textContent = "O Piloto automático está jogando...";
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);

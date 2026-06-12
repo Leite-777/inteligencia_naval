@@ -2,6 +2,8 @@ export function tabuleiroHTMLparaJSON(seletorTabuleiro : string): number[][];
 
 export function tabuleiroJSONparaHTML(matriz: number[][], seletorTabuleiro : string): number[][];
 
+export function atualizarTabuleiroReveladoJogador(matrizRevelado: number[][]): void;
+
 export function verificarSeNaviosForamAfundados(tipoTabuleiro:number) : boolean;
 
 export function alternarTransparenciaTabuleiro(tipo: "jogador" | "inimigo"): void;
