@@ -366,23 +366,6 @@ export function inicializaOsNaviosIA() {
     return naviosIA;
 }
 
-/**
- * Permite que os navios possam ser arrastados novamente para o campo de onde foram criado
- */
-campoDosNavios.addEventListener("dragover", (e) => {
-    e.preventDefault();
-});
-
-campoDosNavios.addEventListener("drop", (e) => {
-    e.preventDefault();
-    //Reseta o navio quando devolvido ao campo
-    if (objNavioSendoArrastado) {
-        objNavioSendoArrastado.posicoesOcupadas.fill("-1");
-        objNavioSendoArrastado.posicionado = false;
-    }
-    campoDosNavios.appendChild(navioSendoArrastado);
-});
-
 /** 
  * @param {*} input : Elemento do navio desejado.
  * @returns {string|null} : Uma String da sua direção ('horizontal' ou 'vertical') ou null se não encontrar.
@@ -494,8 +477,19 @@ export function marcarPosicoesDosNavios() {
 
 // Faz os navios não poderem mais ser arrastáveis
 // Para ser chamado quando os navios forem posicionados.
+// Faz os navios não poderem mais ser arrastáveis
+// Para ser chamado quando os navios forem posicionados.
 export function bloquearArrasteDosNavios() {
     document.querySelectorAll(".navio").forEach(navio => {
+        // 1. Desativa a propriedade nativa de arrastar do HTML
         navio.draggable = false;
+
+        // 2. Remove o cursor de "mãozinha" para o usuário ver que está travado
+        navio.style.cursor = "default";
+
+        // 3. Clona o elemento para destruir todos os EventListeners de 'dragstart'
+        // Isso garante que nenhum código de arraste seja executado
+        const navioBloqueado = navio.cloneNode(true);
+        navio.parentNode.replaceChild(navioBloqueado, navio);
     });
 }
