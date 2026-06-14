@@ -261,6 +261,7 @@ export function verificarChaveAPI() {
 
 botaoPreencherAPI.addEventListener("click", () => {
     inputChaveAPI.value = "chave-temporaria";
+    alternarTransparencia(".botao-preencher-api");
 });
 
 /**

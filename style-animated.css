@@ -59,6 +59,10 @@
     transition: opacity 1s ease;
 }
 
+.transparente div{
+    cursor: default;
+}
+
 .oculto{
   display: none;
 }

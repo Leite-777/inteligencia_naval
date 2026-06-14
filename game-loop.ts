@@ -15,7 +15,16 @@ import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
 const audio = new AudioManager();
 
-
+/**
+ * Intervalo de tempo entre jogadas consecutivas do Fallback (Piloto Automático), em milissegundos.
+ * Default: 1500
+ */
+const intervaloJogadasAutomaticas = 1500;
+/**
+ * Intervalo de tempo entre a vez do jogador ou inimigo, quando um deles errar uma jogada, em milissegundos.
+ * Default: 1500
+ */
+const intervaloRodadas = 1500;
 
 let chaveHtml = document.getElementById('api-key') as HTMLInputElement;
 //para não travar a chava api
@@ -298,7 +307,7 @@ if (botaoIniciarJogo) {
                     // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
                     else {
                         // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
-                        await wait(1500);
+                        await wait(intervaloRodadas);
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
 
@@ -351,7 +360,7 @@ export function wait(ms: number): Promise<void> {
 }
 
 async function jogadaFallback(matrizJogadorRevelado: number[][], matrizJogadorCompleta: number[][]): Promise<acertoAPI> {
-    await wait(2000);
+    await wait(intervaloJogadasAutomaticas);
     if(verificarTerminoDeJogo() == true){return {acerto: Acerto.Errou}}
     
     // Oculta o elemento que mostra o raciocínio do Gemini para sua jogada

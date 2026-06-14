@@ -411,6 +411,12 @@ header{
     grid-column-end: 4;
 }
 
+.campo-navios-arrastaveis > p{
+    text-align: center;
+    color: white;
+    font-size: 20px;
+}
+
 .navios-arrastaveis{
     grid-row-start: 2;
     grid-row-end: 3;
@@ -426,10 +432,9 @@ header{
     align-items: center;
     gap: 10px;
 
-    text-align: center;
-    color: white;
-    font-size: 15px;
     margin-bottom: 0px;
+
+    padding: 10px;
 }
 
 .jogo-batalha-naval .colapsavel{
@@ -477,7 +482,7 @@ header{
   align-items: center;
   justify-content: center;
 
-  /* ADICIONE ESTA LINHA ABAIXO */
+  user-select: none;
   position: relative; 
 }
 

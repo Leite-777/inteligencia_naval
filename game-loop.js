@@ -12,6 +12,16 @@ import { verificarChaveAPI } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
 const audio = new AudioManager();
+/**
+ * Intervalo de tempo entre as jogadas do Fallback (Piloto Automático), em milissegundos.
+ * Default: 1500
+ */
+const intervaloJogadasAutomaticas = 1500;
+/**
+ * Intervalo de tempo entre a vez do jogador ou inimigo, quando um deles errar uma jogada, em milissegundos.
+ * Default: 1500
+ */
+const intervaloRodadas = 1500;
 let chaveHtml = document.getElementById('api-key');
 //para não travar a chava api
 // O tabuleiro inimigo onde o usuário só vê as posições que ele atacou
@@ -146,7 +156,6 @@ Não use markdown.
 `;
     let raciocinioIA = document.querySelector(".raciocinio-ia");
     let respostaFunc = await chamadaApi(prompt);
-    console.log(matrizFormatada);
     if (respostaFunc == undefined) {
         raciocinioIA.textContent = "O Piloto automático está jogando...";
         return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
@@ -243,7 +252,7 @@ if (botaoIniciarJogo) {
                     // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
                     else {
                         // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
-                        await wait(1500);
+                        await wait(intervaloRodadas);
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
                         let parada = 0;
@@ -293,7 +302,7 @@ export function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 async function jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleta) {
-    await wait(2000);
+    await wait(intervaloJogadasAutomaticas);
     if (verificarTerminoDeJogo() == true) {
         return { acerto: Acerto.Errou };
     }

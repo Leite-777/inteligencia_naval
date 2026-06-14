@@ -20,7 +20,7 @@ const audio = new AudioManager();
 let musicaAtivada = true;
 
 alternarTransparencia(".botao-iniciar-jogo")
-alternarTransparencia(".botao-terminar-jogo")
+alternarTransparencia(".modal-terminar-jogo")
 alternarTransparencia(".status-jogo")
 
 function iniciarJogo() {
@@ -35,12 +35,12 @@ function iniciarJogo() {
     alternarTransparencia(".status-jogo")
 
     ocultarElemento(".colapsavel-raciocinio-ia", true);
-    ocultarElemento(".botao-terminar-jogo", true);
+    ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", true);
     ocultarElemento(".guia-jogo", true);
     ocultarElemento(".botao-mute", true);
 
-    statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Posicionar Navios!");
+    statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Iniciar Jogo!");
 
     btnIniciarJogo.removeEventListener("click", iniciarJogo);
 
@@ -51,10 +51,9 @@ function iniciarJogo() {
 function posicionarNavios() {
     if(!verificarChaveAPI()){return;}
 
-    audio.playBackground();
-
     if (verificaIniciarJogo() === true) {
         jogoTelaCheia(true);
+        audio.playBackground();
         
         statusAnuncio("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
 
@@ -69,12 +68,13 @@ function posicionarNavios() {
         alternarTransparenciaTabuleiro("inimigo");
 
         alternarTransparencia(".botao-iniciar-jogo")
-        alternarTransparencia(".botao-terminar-jogo")
+        alternarTransparencia(".modal-terminar-jogo")
 
-        ocultarElemento(".botao-terminar-jogo", false);
+        ocultarElemento(".modal-terminar-jogo", false);
         ocultarElemento(".guia-jogo", false);
         ocultarElemento(".botao-mute", false);
         ocultarElemento(".botao-iniciar-jogo", true);
+        ocultarElemento(".campo-navios-arrastaveis", true);
 
         // Permite o usuário encerrar o jogo com um empate quando quiser
         btnTerminarJogo.addEventListener("click", terminarJogo);
@@ -108,7 +108,7 @@ export function terminarJogo(vencedor = 0) {
 
     ocultarElemento(".guia-jogo", true);
     ocultarElemento(".botao-mute", true);
-    ocultarElemento(".botao-terminar-jogo", true);
+    ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", false);
 
     btnTerminarJogo.removeEventListener("click", terminarJogo);
