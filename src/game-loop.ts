@@ -166,7 +166,7 @@ async function chamadaApi(prompt: string): Promise<resultadoApi> {
 
 //                              Função da passagem dos tabuleiros para, Chamada de API, junto com o prompt
 
-async function chamarApi(matrizJogadorRevelado: number[][], matrizJogadorCompleto: number[][]): Promise<acertoAPI> {
+async function realizarJogadaGemini(tabuleiroJogadorRevelado: number[][], tabuleiroJogadorCompleto: number[][]): Promise<acertoAPI> {
     // Pega o valor exato no momento que a função é ativada
     let apiKey = chaveHtml.value;
 
@@ -176,8 +176,8 @@ async function chamarApi(matrizJogadorRevelado: number[][], matrizJogadorComplet
     }
 
     // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
-    atualizarTabuleiroReveladoJogador(matrizJogadorRevelado);
-    let matrizFormatada = matrizJogadorRevelado.map(linha => `[${linha.join(', ')}]`).join('\n');
+    atualizarTabuleiroReveladoJogador(tabuleiroJogadorRevelado);
+    let matrizFormatada = tabuleiroJogadorRevelado.map(linha => `[${linha.join(', ')}]`).join('\n');
 
     let prompt: string = `
 Você está jogando batalha naval contra um oponente humano, as regras são as seguintes:
@@ -207,7 +207,7 @@ Não use markdown.
     let respostaFunc = await chamadaApi(prompt);
     if (respostaFunc == undefined) {
         raciocinioIA.textContent = "O Piloto automático está jogando...";
-        return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
+        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     }
 
     if (respostaFunc.status) {
@@ -223,27 +223,27 @@ Não use markdown.
             raciocinioIA.textContent = `${sucesso.dados.debug}`
 
             // Verifica o que tinha na matriz do jogador naquela coordenada
-            let posicaoAtacada = matrizJogadorCompleto[linhaAtaque][colunaAtaque];
+            let posicaoAtacada = tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque];
 
             if (posicaoAtacada === 2) {
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-                matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
-                matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
+                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
+                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
                 //Som de tiro Acertado
                 audio.playHitShot();
                 // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
+                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
 
                 statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque}) [ ! ]`);
                 return { acerto: Acerto.Acertou };
             } else if (posicaoAtacada === 0) {
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-                matrizJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
-                matrizJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
+                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
+                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
                 //Som de tiro errado
                 audio.playMissShot();
                 // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(matrizJogadorCompleto, ".tabuleiro-jogador");
+                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
 
                 statusAlerta(`[~] O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado. [~]`)
                 return { acerto: Acerto.Errou };
@@ -268,7 +268,7 @@ Não use markdown.
             statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
         }
         raciocinioIA.textContent = "O Piloto automático está jogando...";
-        return jogadaFallback(matrizJogadorRevelado, matrizJogadorCompleto);
+        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     }
     return { acerto: undefined };
 }
@@ -290,7 +290,7 @@ if (botaoIniciarJogo) {
 
         // Adiciona os navios no tabuleiro da IA
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
-        tabuleiroInimigoCompleto = posicionaCampoIA(tabuleiroInimigoCompleto, totalNaviosIA);
+        tabuleiroInimigoCompleto = posicionaNaviosTabuleiroInimigo(tabuleiroInimigoCompleto, totalNaviosIA);
 
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
         if (campoIa) {
@@ -300,7 +300,7 @@ if (botaoIniciarJogo) {
                     podeJogar = false;
 
                     // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
-                    if (verificarNavioAcertadoIa(filho as HTMLElement)) {
+                    if (verificarNaviosInimigosAtingidos(filho as HTMLElement)) {
                         podeJogar = true;
                         // verificarTerminoDeJogo()
                     }
@@ -315,7 +315,7 @@ if (botaoIniciarJogo) {
                         do {
                             if(verificarTerminoDeJogo() == true){break;}
 
-                            let status = await JogadaApi();
+                            let status = await resultadoJogadaGemini();
                             if (status.acerto != Acerto.Acertou) {
                                 parada = 0;
                             } else {
@@ -335,9 +335,9 @@ if (botaoIniciarJogo) {
     });
 }
 
-async function JogadaApi(): Promise<acertoAPI> {
+async function resultadoJogadaGemini(): Promise<acertoAPI> {
     let tabuleiroJogadorCompleto = tabuleiroHTMLparaJSON(".tabuleiro-jogador");
-    let alvo = await chamarApi(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
+    let alvo = await realizarJogadaGemini(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     if (alvo.acerto == undefined) {
         return { acerto: undefined };
     }
@@ -359,21 +359,21 @@ export function wait(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function jogadaFallback(matrizJogadorRevelado: number[][], matrizJogadorCompleta: number[][]): Promise<acertoAPI> {
+async function realizarJogadaFallback(tabuleiroJogadorRevelado: number[][], tabuleiroJogadorCompleto: number[][]): Promise<acertoAPI> {
     await wait(intervaloJogadasAutomaticas);
     if(verificarTerminoDeJogo() == true){return {acerto: Acerto.Errou}}
     
     // Oculta o elemento que mostra o raciocínio do Gemini para sua jogada
     ocultarElemento(".colapsavel-raciocinio-ia", true);
 
-    let posFall = escolherJogadaFallback(matrizJogadorRevelado);
+    let posFall = escolherJogadaFallback(tabuleiroJogadorRevelado);
     if (posFall != undefined) {
-        let posicaoAtacada = matrizJogadorCompleta[posFall.linha][posFall.coluna];
+        let posicaoAtacada = tabuleiroJogadorCompleto[posFall.linha][posFall.coluna];
 
         if (posicaoAtacada === 2) {
             // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-            matrizJogadorRevelado[posFall.linha][posFall.coluna] = 3;
-            matrizJogadorCompleta[posFall.linha][posFall.coluna] = 3;
+            tabuleiroJogadorRevelado[posFall.linha][posFall.coluna] = 3;
+            tabuleiroJogadorCompleto[posFall.linha][posFall.coluna] = 3;
 
             //Som de tiro Acertado
             audio.playHitShot();
@@ -381,13 +381,13 @@ async function jogadaFallback(matrizJogadorRevelado: number[][], matrizJogadorCo
             statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Piloto Automático acertou um navio em (${posFall.linha}, ${posFall.coluna}) [ ! ]`);
 
             // Mostra a alteração do tabuleiro na página para o usuário ver
-            tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
+            tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
 
             return { acerto: Acerto.Acertou };
         } else if (posicaoAtacada === 0) {
             // Altera a posição nas duas matrizes pra marcar que a água foi atingida
-            matrizJogadorRevelado[posFall.linha][posFall.coluna] = 1;
-            matrizJogadorCompleta[posFall.linha][posFall.coluna] = 1;
+            tabuleiroJogadorRevelado[posFall.linha][posFall.coluna] = 1;
+            tabuleiroJogadorCompleto[posFall.linha][posFall.coluna] = 1;
 
             //Som de tiro Acertado
             audio.playMissShot();
@@ -395,7 +395,7 @@ async function jogadaFallback(matrizJogadorRevelado: number[][], matrizJogadorCo
             statusAlerta(`[~] O Piloto Automático errou o alvo em (${posFall.linha}, ${posFall.coluna})!... Nenhum dano registrado. [~]`)
             
             // Mostra a alteração do tabuleiro na página para o usuário ver
-            tabuleiroJSONparaHTML(matrizJogadorCompleta, ".tabuleiro-jogador");
+            tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
 
             return { acerto: Acerto.Errou };
         }
@@ -405,7 +405,7 @@ async function jogadaFallback(matrizJogadorRevelado: number[][], matrizJogadorCo
     return { acerto: undefined };
 }
 
-function verificarNavioAcertadoIa(filho: HTMLElement): boolean {
+function verificarNaviosInimigosAtingidos(filho: HTMLElement): boolean {
     let linhaFilho = filho.dataset.linha;
     let colunaFilho = filho.dataset.coluna;
     if (linhaFilho != undefined && colunaFilho != undefined) {
@@ -445,7 +445,7 @@ function verificarNavioAcertadoIa(filho: HTMLElement): boolean {
     return false;
 }
 
-export function posicionaCampoIA(campoIA: number[][], totalNaviosIA: Navios[]): number[][] {
+function posicionaNaviosTabuleiroInimigo(campoIA: number[][], totalNaviosIA: Navios[]): number[][] {
     const HORIZONTAL = 1;
     const TAMANHO_MATRIZ = 10;
     for (const navio of totalNaviosIA) {
