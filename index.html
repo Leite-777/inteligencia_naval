@@ -159,6 +159,12 @@
         </div>
 
         <div id="jogo-batalha-naval">
+
+            <div class="info-container info-jogador">
+                <div class="info navios-restantes-jogador">Navios restantes:</div>
+                <div class="info numero-jogadas-jogador">Número de jogadas:</div>
+            </div>
+
             <div class="tabuleiro-container jogador">
                 <h2 class="status status-jogador">Seu Tabuleiro</h2>
 
@@ -168,13 +174,6 @@
 
             </div>            
 
-            <div class="colapsavel colapsavel-raciocinio-ia">
-                <button class="colapsavel-expandir botao-raciocinio-ia">Visualizar Raciocínio da IA</button>
-                <div class="colapsavel-conteudo raciocinio-ia">
-                    <p>Aqui você verá a linha de raciocínio escrita pelo Gemini, como as justificativas para a posição escolhida em suas jogadas.</p>
-                </div>
-            </div>
-
             <!-- Grade do inimigo -->
             <div class="tabuleiro-container inimigo">
                 <h2 class="status status-inimigo">Tabuleiro Inimigo</h2>
@@ -183,6 +182,17 @@
 
                 </div>
 
+            </div>
+
+            <div class="info-container info-inimigo">
+                <div class="info navios-restantes-inimigo">Navios restantes:</div>
+                <div class="info jogando-agora">Jogando agora:</div>
+                <div class="colapsavel colapsavel-raciocinio-ia">
+                    <button class="colapsavel-expandir botao-raciocinio-ia">Visualizar Raciocínio da IA</button>
+                    <div class="colapsavel-conteudo raciocinio-ia">
+                        <p>Aqui você verá a linha de raciocínio escrita pelo Gemini, como as justificativas para a posição escolhida em suas jogadas.</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Navios arrastáveis -->

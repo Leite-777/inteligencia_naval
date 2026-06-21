@@ -342,7 +342,7 @@ header{
 
 #jogo-batalha-naval{
     display: grid;
-    grid-template-columns: 3fr 1.5fr 3fr;
+    grid-template-columns: 1fr 3fr 3fr 1fr;
     gap: 10px;
 
     margin: 50px 0;
@@ -411,6 +411,14 @@ header{
     grid-column-end: 4;
 }
 
+.campo-navios-arrastaveis{
+    grid-row-start: 2;
+    grid-row-end: 3;
+
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
 .campo-navios-arrastaveis > p{
     text-align: center;
     color: white;
@@ -418,12 +426,6 @@ header{
 }
 
 .navios-arrastaveis{
-    grid-row-start: 2;
-    grid-row-end: 3;
-
-    grid-column-start: 1;
-    grid-column-end: 2;
-
     background-color: #014177;
     border-radius: 10px;
 
@@ -439,6 +441,23 @@ header{
 
 .jogo-batalha-naval .colapsavel{
     width: 100%;
+}
+
+.info-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:start;
+    gap: 50px;
+    
+    border-radius: 10px;
+}
+
+.info{
+    color: white;
+    background-color: #014177;
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .botao-raciocinio-ia{
