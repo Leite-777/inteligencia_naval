@@ -60,10 +60,16 @@ modais.forEach(modal => {
  */
 function addGifOndas(celula){
     const gifOnda = document.createElement('img');
+    
+    gifOnda.classList.add('gif-animado');
+
+    gifOnda.dataset.gif ='assets/gifs/ondas.gif';
+    gifOnda.dataset.img ='assets/img/ondas.png';
+
     gifOnda.style.width = '40px';
     gifOnda.style.height = '40px';
     gifOnda.style.borderRadius = '5px';
-    gifOnda.src = 'assets/gifs/ondas.gif';
+    gifOnda.src = gifOnda.dataset.gif;
     gifOnda.alt = 'Água';
     celula.appendChild(gifOnda);
 }
@@ -75,10 +81,16 @@ function addGifOndas(celula){
  */
 function addGifNuvens(celula){
     const gifNuvens = document.createElement('img');
+
+    gifNuvens.classList.add('gif-animado');
+
+    gifNuvens.dataset.gif ='assets/gifs/nuvens.gif';
+    gifNuvens.dataset.img ='assets/img/nuvens.png';
+
     gifNuvens.style.width = '40px';
     gifNuvens.style.height = '40px';
     gifNuvens.style.borderRadius = '5px';
-    gifNuvens.src = 'assets/gifs/nuvens.gif';
+    gifNuvens.src = gifNuvens.dataset.gif;
     gifNuvens.alt = 'Desconhecido';
     celula.appendChild(gifNuvens);
 }
@@ -105,6 +117,12 @@ function addGifAguaAtingida(celula){
  */
 function addGifFogo(celula){
     const gifFogo = document.createElement('img');
+    
+    gifFogo.classList.add('gif-animado');
+
+    gifFogo.dataset.gif ='assets/gifs/fogo.gif';
+    gifFogo.dataset.img ='assets/img/fogo.png';
+
     gifFogo.style.width = '40px';
     gifFogo.style.height = '40px';
     gifFogo.style.borderRadius = '5px';
@@ -123,6 +141,12 @@ function addGifFogo(celula){
  */
 function addGifCaveira(celula){
     const gifCaveira = document.createElement('img');
+    
+    gifCaveira.classList.add('gif-animado');
+
+    gifCaveira.dataset.gif ='assets/gifs/caveira.gif';
+    gifCaveira.dataset.img ='assets/img/caveira.png';
+
     gifCaveira.style.width = '40px';
     gifCaveira.style.height = '40px';
     gifCaveira.style.borderRadius = '5px';
@@ -211,3 +235,18 @@ function atualizarGifTabuleiro(tabuleiro){
 }
 
 
+// Funções para pausa e reproduzir os gifs
+
+function pausarGifs(){
+    const gifs = document.querySelectorALL('gif-animado');
+    gifs.forEach(gif =>{
+        gif.src = gif.dataset.img;
+    });
+}
+
+function reproduzirGifs(){
+    const gifs = document.querySelectorALL('gif-animado');
+    gifs.forEach(gif =>{
+        gif.src = gif.dataset.gif;
+    });
+}
