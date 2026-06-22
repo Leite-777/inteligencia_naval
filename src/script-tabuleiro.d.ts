@@ -16,6 +16,8 @@ export function desativarTabuleiros(): void;
 
 export function verificarChaveAPI(): boolean;
 
+export function preencherChaveAPI(valor: string): void;
+
 export function statusMensagem(mensagem : string): null;
 
 export function statusAlerta(mensagem : string): null;

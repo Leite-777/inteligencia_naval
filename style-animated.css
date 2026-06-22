@@ -66,3 +66,35 @@
 .oculto{
   display: none;
 }
+
+/* */
+
+
+.tela-cheia{
+    height: 100vh;
+    box-sizing: border-box;
+
+    background: linear-gradient(
+        -45deg,
+        #002c50,
+        #001f40,
+        #000822,
+        #001f40,
+        #002c50
+    );
+
+    background-size: 400% 400%;
+    animation: gradienteAzul 12s ease infinite;
+}
+
+@keyframes gradienteAzul {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

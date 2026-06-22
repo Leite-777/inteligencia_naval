@@ -13,6 +13,7 @@ import { alternarTransparencia } from "./script-tabuleiro.js";
 import { ocultarElemento } from "./script-tabuleiro.js";
 import { desativarTabuleiros } from "./script-tabuleiro.js";
 import { verificarChaveAPI } from "./script-tabuleiro.js";
+import { preencherChaveAPI } from "./script-tabuleiro.js";
 
 import { AudioManager } from "./script-audioManager.js";
 
@@ -24,8 +25,7 @@ alternarTransparencia(".modal-terminar-jogo")
 alternarTransparencia(".status-jogo")
 
 function iniciarJogo() {
-    // Se não há nada no campo da Chave API, instrui ao usuário inserir um valor lá
-    
+
     criaNavios();
     criarTabuleiro(tabuleiroJogador, MATRIZ_JOGADOR);
     criarTabuleiro(tabuleiroInimigo, MATRIZ_INIMIGO);
@@ -34,6 +34,10 @@ function iniciarJogo() {
     alternarTransparencia(".botao-iniciar-jogo")
     alternarTransparencia(".status-jogo")
 
+    ocultarElemento("#guia-do-usuario", true);
+    ocultarElemento("#chave-api", true);
+    ocultarElemento("#jogo", true);
+    
     ocultarElemento(".colapsavel-raciocinio-ia", true);
     ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", true);
@@ -42,7 +46,8 @@ function iniciarJogo() {
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Iniciar Jogo!");
 
-    btnIniciarJogo.removeEventListener("click", iniciarJogo);
+    btnJogarGemini.addEventListener("click", jogarComGemini);
+    btnJogarPiloto.addEventListener("click", jogarComPilotoAutomatico);
 
     btnIniciarJogo.addEventListener("click", posicionarNavios);
     btnMute.addEventListener("click", muteMusica);
@@ -136,12 +141,29 @@ function jogoTelaCheia(estado){
     let jogo = document.querySelector("#jogo");
     jogo.classList.toggle("tela-cheia",estado);
 
-    ocultarElemento("#nav", estado);
     ocultarElemento("#header", estado);
+    ocultarElemento("#modo-de-jogo", estado);
     ocultarElemento("#chave-api", estado);
     ocultarElemento("#guia-do-usuario", estado);
-    ocultarElemento("#sobre", estado);
     ocultarElemento("#footer", estado);
+}
+
+function jogarComGemini(){
+    ocultarElemento("#modo-de-jogo", true);
+
+    ocultarElemento("#guia-do-usuario", false);
+    ocultarElemento("#chave-api", false);
+    ocultarElemento("#jogo", false);
+}
+
+function jogarComPilotoAutomatico(){
+    ocultarElemento("#modo-de-jogo", true);
+    ocultarElemento("#guia-do-usuario", true);
+    ocultarElemento("#chave-api", true);
+
+    ocultarElemento("#jogo", false);
+    
+    preencherChaveAPI("piloto-automatico");
 }
 
 function wait(ms) {

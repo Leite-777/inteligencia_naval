@@ -259,8 +259,12 @@ export function verificarChaveAPI() {
     return true;
 }
 
+export function preencherChaveAPI(valor){
+    inputChaveAPI.value = valor;
+}
+
 botaoPreencherAPI.addEventListener("click", () => {
-    inputChaveAPI.value = "chave-temporaria";
+    preencherChaveAPI("piloto-automatico");
     alternarTransparencia(".botao-preencher-api");
 });
 

@@ -34,7 +34,7 @@ ul{
 
 p{
     margin-left: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
     padding-left: 10px;
 
     line-height: 1.8;
@@ -52,35 +52,6 @@ h3{
     font-size: 30px;
 }
 
-/* Barra de navegação */
-
-nav{
-    background-color: #002c50;
-    padding: 20px 0;
-    
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-
-    z-index: 1000;
-}
-
-nav ul{
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-
-    margin: 0;
-    padding: 0;
-}
-
-nav ul li a{
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-}
-
 /* Header */
 
 header{
@@ -95,7 +66,6 @@ header{
     background-color: #014177;
 
     height: 300px;
-    margin-top:55px;
 
     display: flex;
     flex-direction: column;
@@ -140,7 +110,7 @@ header{
 }
 
 .titulo-2 h2{
-    margin-top: 15px;
+    margin-top: 50px;
 }
 
 .botao-header{
@@ -159,11 +129,41 @@ header{
     cursor: pointer;
 }
 
+/* Seleção de modo de jogo */
+#modo-de-jogo{
+    background-color: #79ECED;
+    padding: 30px 0;
+}
+
+#modo-de-jogo > div{
+    width: 50%;
+    padding: 30px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+#modo-de-jogo p{
+    text-align: center;
+}
+
+#modo-de-jogo .botao{
+    padding: 20px;
+    font-size: 20px;
+}
+
 /* Chave de API */
 
 #chave-api{
     background-color: #3EE5DF;
     padding: 30px 0;
+}
+
+#chave-api p{
+    color: white;
 }
 
 .caixa-input{
@@ -195,6 +195,13 @@ header{
 #guia-do-usuario{
     background-color: #B4F2FB;
     padding: 30px 0;
+}
+
+.grid-guia-usuario{
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .colapsavel-expandir{
@@ -268,15 +275,24 @@ header{
     padding: 30px;
     margin: 10px;
     width: 90%;
-    max-width: 500px; /* Evita que fique gigante em telas grandes */
+    max-width: 600px; /* Evita que fique gigante em telas grandes */
     background-color: #3EE5DF;
     border: none;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+.modal-conteudo > h2 {
+    border-bottom: 2px solid #002c50;
+    margin-bottom: 15px;
+}
+
 .modal-conteudo li{
     line-height: 1.8;
+}
+
+.modal-conteudo button{
+    margin: auto;
 }
 
 /* Botão de fechar (X) */
@@ -309,35 +325,6 @@ header{
 #jogo{
     padding: 20px;
     background-color: #002c50;
-}
-
-.tela-cheia{
-    height: 100vh;
-    box-sizing: border-box;
-
-    background: linear-gradient(
-        -45deg,
-        #002c50,
-        #001f40,
-        #000822,
-        #001f40,
-        #002c50
-    );
-
-    background-size: 400% 400%;
-    animation: gradienteAzul 12s ease infinite;
-}
-
-@keyframes gradienteAzul {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 #jogo-batalha-naval{
@@ -503,24 +490,6 @@ header{
 
   user-select: none;
   position: relative; 
-}
-
-/* Sobre */
-
-#sobre{
-    background-color: #B4F2FB;
-    padding: 30px 0;
-}
-
-#sobre p{
-    width: 50%;
-}
-
-#sobre li{
-    line-height: 1.8;
-}
-#sobre ul{
-    margin-bottom: 10px;
 }
 
 /* Rodapé */
