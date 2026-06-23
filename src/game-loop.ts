@@ -292,6 +292,9 @@ if (botaoIniciarJogo) {
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
         tabuleiroInimigoCompleto = posicionaNaviosTabuleiroInimigo(tabuleiroInimigoCompleto, totalNaviosIA);
 
+        //É a vez do jogador()
+        atualizarIndicadorTurno('jogador');
+
         const campoIa = document.querySelector('.tabuleiro-inimigo') as HTMLDivElement;
         if (campoIa) {
             Array.from(campoIa.children).forEach((filho) => {
@@ -308,6 +311,8 @@ if (botaoIniciarJogo) {
                     else {
                         // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
                         await wait(intervaloRodadas);
+                        atualizarIndicadorTurno('ia');
+
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
 
@@ -327,6 +332,9 @@ if (botaoIniciarJogo) {
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
                         podeJogar = true;
+
+                        //Volta o turno para o jogador (Borda Verde) ---
+                        atualizarIndicadorTurno('jogador');
                         // verificarTerminoDeJogo()
                     }
                 });
@@ -515,6 +523,33 @@ function verificarTerminoDeJogo() {
         return false;
     }
 }  
+
+/**
+ * Altera visualmente as bordas dos tabuleiros para indicar quem deve jogar.
+ * @param {'jogador' | 'ia'} turno - O turno atual do jogo.
+ */
+function atualizarIndicadorTurno(turno: string) {
+    const painelJogador = document.querySelector('.tabuleiro-jogador');
+    const painelInimigo = document.querySelector('.tabuleiro-inimigo');
+
+    if (!painelJogador || !painelInimigo) return;
+
+    if (turno === 'jogador') {
+        // Turno do Jogador: Destaca o tabuleiro inimigo (onde ele clica) em verde
+        painelInimigo.classList.add('borda-turno-jogador');
+        painelInimigo.classList.remove('borda-turno-ia');
+        
+        // Remove destaques do tabuleiro do jogador
+        painelJogador.classList.remove('borda-turno-jogador', 'borda-turno-ia');
+    } else if (turno === 'ia') {
+        // Turno da IA: Destaca o tabuleiro do jogador (onde ela ataca) em vermelho
+        painelJogador.classList.add('borda-turno-ia');
+        painelJogador.classList.remove('borda-turno-jogador');
+        
+        // Remove destaques do tabuleiro inimigo
+        painelInimigo.classList.remove('borda-turno-jogador', 'borda-turno-ia');
+    }
+}
 
 //Tipos de erro
 /*

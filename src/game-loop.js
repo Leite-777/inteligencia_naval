@@ -223,41 +223,41 @@ Não use markdown.
  */
 const botaoIniciarJogo = document.querySelector('.botao-iniciar-jogo');
 // Garante que o botão realmente existe na página antes de adicionar o evento
-
-let JOGADOR = "jogador";
-let IA = "ia";
-
 if (botaoIniciarJogo) {
     botaoIniciarJogo.addEventListener('click', async () => {
-        if (verificarChaveAPI() === false) return;
-        if (verificaIniciarJogo() === false) return;
-
+        if (verificarChaveAPI() === false) {
+            return;
+        }
+        if (verificaIniciarJogo() === false) {
+            return;
+        }
+        // Desativa o botão para o usuário não gerar vários eventos de clique
         let podeJogar = true;
-
+        // Adiciona os navios no tabuleiro da IA
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
         tabuleiroInimigoCompleto = posicionaNaviosTabuleiroInimigo(tabuleiroInimigoCompleto, totalNaviosIA);
-
         //É a vez do jogador()
         atualizarIndicadorTurno('jogador');
-
         const campoIa = document.querySelector('.tabuleiro-inimigo');
         if (campoIa) {
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
-                    if (!podeJogar) return;
-                    podeJogar = false;
-
-                    if (verificarNaviosInimigosAtingidos(filho)) {
-                        podeJogar = true; //Jogador acertou, continua sendo a vez dele (borda verde se mantém)
+                    if (!podeJogar) {
+                        return;
                     }
+                    podeJogar = false;
+                    // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
+                    if (verificarNaviosInimigosAtingidos(filho)) {
+                        podeJogar = true;
+                        // verificarTerminoDeJogo()
+                    }
+                    // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
                     else {
-                        // Passa o turno para a IA (Borda Vermelha)
-                        atualizarIndicadorTurno('ia');
-
+                        // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
                         await wait(intervaloRodadas);
+                        atualizarIndicadorTurno('ia');
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
-                        
                         let parada = 0;
                         do {
                             if (verificarTerminoDeJogo() == true) {
@@ -271,14 +271,13 @@ if (botaoIniciarJogo) {
                                 parada = 1;
                             }
                         } while (parada != 0);
-
                         await wait(1500);
                         alternarTransparenciaTabuleiro("jogador");
                         alternarTransparenciaTabuleiro("inimigo");
-
+                        podeJogar = true;
                         //Volta o turno para o jogador (Borda Verde) ---
                         atualizarIndicadorTurno('jogador');
-                        podeJogar = true;
+                        // verificarTerminoDeJogo()
                     }
                 });
             });
@@ -439,7 +438,6 @@ function verificarTerminoDeJogo() {
         return false;
     }
 }
-
 /**
  * Altera visualmente as bordas dos tabuleiros para indicar quem deve jogar.
  * @param {'jogador' | 'ia'} turno - O turno atual do jogo.
@@ -447,26 +445,23 @@ function verificarTerminoDeJogo() {
 function atualizarIndicadorTurno(turno) {
     const painelJogador = document.querySelector('.tabuleiro-jogador');
     const painelInimigo = document.querySelector('.tabuleiro-inimigo');
-
-    if (!painelJogador || !painelInimigo) return;
-
+    if (!painelJogador || !painelInimigo)
+        return;
     if (turno === 'jogador') {
         // Turno do Jogador: Destaca o tabuleiro inimigo (onde ele clica) em verde
         painelInimigo.classList.add('borda-turno-jogador');
         painelInimigo.classList.remove('borda-turno-ia');
-        
         // Remove destaques do tabuleiro do jogador
         painelJogador.classList.remove('borda-turno-jogador', 'borda-turno-ia');
-    } else if (turno === 'ia') {
+    }
+    else if (turno === 'ia') {
         // Turno da IA: Destaca o tabuleiro do jogador (onde ela ataca) em vermelho
         painelJogador.classList.add('borda-turno-ia');
         painelJogador.classList.remove('borda-turno-jogador');
-        
         // Remove destaques do tabuleiro inimigo
         painelInimigo.classList.remove('borda-turno-jogador', 'borda-turno-ia');
     }
 }
-
 //Tipos de erro
 /*
 400 	INVALID_ARGUMENT 	O corpo da solicitação está incorreto. 	Há um erro de digitação ou um campo obrigatório ausente na sua solicitação. 	Consulte a referência da API para ver o formato da solicitação, exemplos e versões compatíveis. Usar recursos de uma versão mais recente da API com um endpoint mais antigo pode causar erros.

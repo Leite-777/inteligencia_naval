@@ -80,8 +80,7 @@ function posicionarNavios() {
 
         ocultarElemento(".modal-terminar-jogo", false);
         ocultarElemento(".guia-jogo", false);
-        ocultarElemento(".botao-mute", false);
-        ocultarElemento(".botao-gif-stop", false);
+        ocultarElemento(".botoes-preferencia", false);
         ocultarElemento(".botao-iniciar-jogo", true);
         ocultarElemento(".campo-navios-arrastaveis", true);
 
@@ -116,8 +115,7 @@ export function terminarJogo(vencedor = 0) {
     });
 
     ocultarElemento(".guia-jogo", true);
-    ocultarElemento(".botao-mute", true);
-    ocultarElemento(".botao-gif-stop", true);
+    ocultarElemento(".botoes-preferencia", true);
     ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", false);
 
