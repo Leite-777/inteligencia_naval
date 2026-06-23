@@ -6,6 +6,7 @@ let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
 let btnTerminarJogo = document.querySelector(".botao-terminar-jogo");
 let btnReiniciarJogo = document.querySelector(".botao-reiniciar-jogo");
 let btnMute = document.querySelector(".botao-mute");
+let btnGifStop = document.querySelector(".botao-gif-stop");
 let btnJogarGemini = document.querySelector(".jogar-gemini");
 let btnJogarPiloto = document.querySelector(".jogar-piloto-automatico");
 
@@ -36,3 +37,6 @@ let quantiaNavios = [1, 1, 1, 1, 1];
 let naviosCriados = [];
 let naviosIA = [];
 let contNaviosCriados=0;//Index para saber quantos navios ja foram criados em tempo de execução.
+
+// Identifica se os gifs estão ativados ou não
+let gifAtivado = true;

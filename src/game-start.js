@@ -43,6 +43,7 @@ function iniciarJogo() {
     ocultarElemento(".botao-reiniciar-jogo", true);
     ocultarElemento(".guia-jogo", true);
     ocultarElemento(".botao-mute", true);
+    ocultarElemento(".botao-gif-stop", true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Iniciar Jogo!");
 
@@ -51,6 +52,7 @@ function iniciarJogo() {
 
     btnIniciarJogo.addEventListener("click", posicionarNavios);
     btnMute.addEventListener("click", muteMusica);
+    btnGifStop.addEventListener("click", pausaReproduzGifs);
 }
 
 function posicionarNavios() {
@@ -65,6 +67,7 @@ function posicionarNavios() {
         marcarPosicoesDosNavios();
         bloquearArrasteDosNavios();
         atualizarGifTabuleiro(tabuleiroJogador);
+        if(!gifAtivado) pausarGifs();
 
         btnIniciarJogo.disabled = true;
         btnIniciarJogo.removeEventListener("click", posicionarNavios);
@@ -78,6 +81,7 @@ function posicionarNavios() {
         ocultarElemento(".modal-terminar-jogo", false);
         ocultarElemento(".guia-jogo", false);
         ocultarElemento(".botao-mute", false);
+        ocultarElemento(".botao-gif-stop", false);
         ocultarElemento(".botao-iniciar-jogo", true);
         ocultarElemento(".campo-navios-arrastaveis", true);
 
@@ -113,6 +117,7 @@ export function terminarJogo(vencedor = 0) {
 
     ocultarElemento(".guia-jogo", true);
     ocultarElemento(".botao-mute", true);
+    ocultarElemento(".botao-gif-stop", true);
     ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", false);
 
@@ -127,13 +132,29 @@ function reiniciarJogo(){
 
 function muteMusica(){
     if(musicaAtivada === true){
-        btnMute.innerHTML = "Ativar Música"
+        btnMute.innerHTML = `<span class="material-symbols-outlined" style="color: #e74c3c;">no_sound</span>`;
+        btnMute.style.boxShadow = '0 0 15px rgba(231, 76, 60, 0.6)';
         musicaAtivada = false;
         audio.stopBackground();
     }else{
-        btnMute.innerHTML = "Desativar Música"
+        btnMute.innerHTML = `<span class="material-symbols-outlined" style="color: #2ecc71;">brand_awareness</span>`;
+        btnMute.style.boxShadow = '0 0 15px rgba(46, 204, 113, 0.6)';
         musicaAtivada = true;
         audio.playBackground();
+    }
+}
+
+function pausaReproduzGifs(){
+    if(gifAtivado === true){
+        btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #e74c3c;">gif_box</span>`;
+        btnGifStop.style.boxShadow = '0 0 15px rgba(231, 76, 60, 0.6)';
+        gifAtivado = false;
+        pausarGifs();
+    }else{
+        btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #2ecc71;">gif_box</span>`;
+        btnGifStop.style.boxShadow = '0 0 15px rgba(46, 204, 113, 0.6)';
+        gifAtivado = true;
+        reproduzirGifs();
     }
 }
 

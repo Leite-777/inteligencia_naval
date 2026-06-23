@@ -70,6 +70,7 @@ export function tabuleiroJSONparaHTML(matriz, seletorTabuleiro) {
         };
     }
     atualizarGifTabuleiro(tabuleiro);
+    if(!gifAtivado) pausarGifs();
 }
 
 /**

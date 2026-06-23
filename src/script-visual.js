@@ -126,7 +126,7 @@ function addGifFogo(celula){
     gifFogo.style.width = '40px';
     gifFogo.style.height = '40px';
     gifFogo.style.borderRadius = '5px';
-    gifFogo.src = 'assets/gifs/fogo.gif';
+    gifFogo.src = gifFogo.dataset.gif;
     gifFogo.alt = 'Atingido';
     // Faz o gif aparecer sobre o navio
     gifFogo.style.zIndex = 100;
@@ -150,7 +150,7 @@ function addGifCaveira(celula){
     gifCaveira.style.width = '40px';
     gifCaveira.style.height = '40px';
     gifCaveira.style.borderRadius = '5px';
-    gifCaveira.src = 'assets/gifs/caveira.gif';
+    gifCaveira.src = gifCaveira.dataset.gif;
     gifCaveira.alt = 'Afundado';
     // Faz o gif aparecer sobre o navio
     gifCaveira.style.zIndex = 100;
@@ -238,14 +238,14 @@ function atualizarGifTabuleiro(tabuleiro){
 // Funções para pausa e reproduzir os gifs
 
 function pausarGifs(){
-    const gifs = document.querySelectorALL('gif-animado');
+    const gifs = document.querySelectorAll('.gif-animado');
     gifs.forEach(gif =>{
         gif.src = gif.dataset.img;
     });
 }
 
 function reproduzirGifs(){
-    const gifs = document.querySelectorALL('gif-animado');
+    const gifs = document.querySelectorAll('.gif-animado');
     gifs.forEach(gif =>{
         gif.src = gif.dataset.gif;
     });

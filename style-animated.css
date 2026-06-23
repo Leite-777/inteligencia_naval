@@ -24,6 +24,11 @@
   filter: brightness(1.1);
 }
 
+.botoes-preferencia {
+  display: flex;
+  justify-content: space-between;
+}
+
 /* -    -   -   -   -   -   -   -   -   -   - */
 /* Células da grade de batalha naval com animação ao passar o mouse em cima*/
 
