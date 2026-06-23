@@ -42,8 +42,8 @@ function iniciarJogo() {
     ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", true);
     ocultarElemento(".guia-jogo", true);
-    ocultarElemento(".botao-mute", true);
-    ocultarElemento(".botao-gif-stop", true);
+    // ocultarElemento(".botao-mute", true);
+    // ocultarElemento(".botao-gif-stop", true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Iniciar Jogo!");
 

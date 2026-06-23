@@ -393,6 +393,28 @@ header{
     cursor: pointer;
 }
 
+.botoes-preferencia {
+  display: flex;
+  justify-content: space-between;
+}
+
+.botoes-preferencia > button{
+    padding: 10px 10px;
+    margin: 20px 10px;
+
+    height: 45px;
+    width: 45px;
+
+    border-radius: 100%;
+
+    background-color: #014177;
+
+    border: none;
+
+    cursor: pointer;
+}
+
+
 .inimigo{
     grid-column-start: 3;
     grid-column-end: 4;
