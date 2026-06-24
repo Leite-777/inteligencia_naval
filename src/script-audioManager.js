@@ -21,14 +21,12 @@ export class AudioManager {
 
     //função para iniciar a música de fundo
     playBackground() {
-        this.sons.background.currentTime = 0;
         this.sons.background.play();
     }
 
     //função para parar a música de fundo
     stopBackground() {
         this.sons.background.pause();
-        this.sons.background.currentTime = 0;
     }
 
     //função para reproduzir o som de tiro perdido(errou o navio)
