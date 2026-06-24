@@ -1,3 +1,7 @@
+import { AudioManager } from "./script-audioManager.js";
+
+const audio = new AudioManager();
+
 //Constantes para serem passadas no parametro da função "criarTabuleiro()".
 
 
@@ -265,8 +269,15 @@ export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                         objNavioSendoArrastado.atribuiPosicaoAtual = celula.id;
                         objNavioSendoArrastado.posicionado = true;
                         celula.appendChild(navioSendoArrastado);
+
+                        //Efeito sonoro do navio sendo posicionado corretamente
+                        audio.playDrop();
+                        
                     } else {
                         campoDosNavios.appendChild(navioSendoArrastado);
+
+                        //Efeito sonoro do navio sendo posicionado incorretamente
+                        audio.playError();
                     }
                 });
 
@@ -332,6 +343,9 @@ function inicializaONavio(tamanho) {
         event.dataTransfer.setDragImage(event.target, 0, 0);
         // Passa o id do navio para o elemento arrastado, para diferenciá-lo de outros elementos arrastáveis
         e.dataTransfer.setData("id", e.target.id);
+
+        //Efeito sonoro de navio começando a ser arrastado
+        audio.playTake();
 
         navioSendoArrastado = e.target;
         objNavioSendoArrastado = buscaNavio(Number(e.target.id));

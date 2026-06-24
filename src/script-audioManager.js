@@ -8,6 +8,9 @@ export class AudioManager {
             hit: new Audio("assets/audio/ship_hit.mp3"),
             miss: new Audio("assets/audio/ship_miss.mp3"),
             shoot: new Audio("assets/audio/ship_shoot.mp3"),
+            take: new Audio("assets/audio/ship_take.mp3"),
+            drop: new Audio("assets/audio/ship_drop.mp3"),
+            error: new Audio("assets/audio/ship_error.mp3")
         };//vetor de sons
 
 
@@ -75,5 +78,23 @@ export class AudioManager {
         this.stopBackground();
         this.sons.lose.currentTime = 0;
         this.sons.lose.play();
+    }
+
+    //função pra disparar efeito de pegar o navio
+    playTake(){
+        this.sons.take.currentTime=0;
+        this.sons.take.play();
+    }
+
+    //função pra disparar efeito de soltar o navio
+    playDrop(){
+        this.sons.drop.currentTime=0;
+        this.sons.drop.play();
+    }
+
+    //função pra disparar efeito de posicionar o navio em uma posição inválida
+    playError(){
+        this.sons.error.currentTime=0;
+        this.sons.error.play();
     }
 }
