@@ -101,12 +101,17 @@ export function terminarJogo(vencedor = 0) {
     switch(vencedor){
         case 1:
             statusAnuncio("MISSÃO CUMPRIDA! A frota da Inteligência Naval foi completamente eliminada.");
+            declararVitoria();
+            audio.playWin();
             break;
         case -1:
             statusAnuncio("DERROTA! A Inteligência Naval dominou o campo de combate.");
+            declararDerrota();
+            audio.playLose();
             break;
         default:
             statusAnuncio("CESSAR FOGO! Foi combinado um empate entre as duas equipes.");
+            declararEmpate();
     }
 
     // Scrolla a página de volta para a seção do jogo
@@ -187,6 +192,84 @@ function jogarComPilotoAutomatico(){
 
 function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//efeito de vitória na tela
+function declararVitoria() {
+  const victoryScreen = document.getElementById('victory-screen');
+  victoryScreen.classList.remove('hidden');
+
+  confetti({
+    particleCount: 150,
+    spread: 80,
+    origin: { y: 0.6 }
+  });
+
+  let duration = 3 * 1000;
+  let end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 } 
+    });
+    confetti({
+      particleCount: 3,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 } 
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+
+  setTimeout(() => {
+    victoryScreen.classList.add('hidden');
+  }, 3500);
+}
+
+//efeito de derrota na tela
+function declararDerrota() {
+  const defeatScreen = document.getElementById('defeat-screen');
+  defeatScreen.classList.remove('hidden');
+
+  
+  let duration = 3 * 1000;
+  let end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 90, 
+      spread: 30,
+      colors: ['#ffffff',  '#e0e0e0',  '#aaaaaa',  '#ffffff'],
+      scalar: 1.2, 
+      gravity: 1.5, 
+      drift: 0,
+      origin: { x: Math.random(), y: 0 } 
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+
+  setTimeout(() => {
+    defeatScreen.classList.add('hidden');
+  }, 3000);
+}
+
+function declararEmpate() {
+  const drawScreen = document.getElementById('draw-screen');
+  drawScreen.classList.remove('hidden');
+
+  setTimeout(() => {
+    drawScreen.classList.add('hidden');
+  }, 3000);
 }
 
 window.addEventListener('DOMContentLoaded', () => {

@@ -282,6 +282,21 @@
 
     </section> <!-- jogo -->
 
+    <section id="efeitos-vitoria-derrota">
+        <!--Tela de Vitória-->
+        <div id="victory-screen" class="hidden">
+            <h1 class="victory-text">VITÓRIA!</h1>
+        </div>
+        <!-- Tela de Derrota -->
+        <div id="defeat-screen" class="hidden">
+            <h1 class="defeat-text">DERROTA!</h1>
+        </div>
+        <!--Tela de Empate-->
+        <div id="draw-screen" class="hidden">
+            <h1 class="draw-text">EMPATE</h1>
+        </div>
+    </section><!-- efeitos-vitoria-derrota-->
+
     <footer id="footer">
         <div>
             <h2>Desenvolvedores</h2>
@@ -335,6 +350,7 @@
         </div>
     </footer> <!-- footer -->
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="src/HTMLElements.js"></script>
     <script src="src/script-visual.js"></script>
     <script src="src/script-colapsavel.js"></script>

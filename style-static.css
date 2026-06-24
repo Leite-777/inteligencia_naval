@@ -546,6 +546,101 @@ header {
     box-shadow: 0 0 15px rgba(231, 76, 60, 0.6);
 }
 
+/*Efeitos de vitória e derrota no jogo*/
+/*Tela de vitória*/
+#victory-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; 
+}
+
+.victory-text {
+  font-family: 'Arial Black', sans-serif;
+  font-size: 5rem;
+  color: #fff;
+  text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc;
+  animation: popIn 0.5s ease-out forwards;
+}
+
+/* Efeito do texto surgindo */
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Classe para esconder a tela */
+.hidden {
+  display: none !important;
+}
+
+/* Tela de derrota */
+#defeat-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 15, 15, 0.85); /* Fundo mais escuro/pesado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.defeat-text {
+  font-family: 'Arial Black', sans-serif;
+  font-size: 5rem;
+  color: #ff3333; /* Vermelho alerta/derrota */
+  text-shadow: 0 0 20px #8b0000, 0 0 30px #000;
+  animation: shakeAndFade 0.6s ease-in-out forwards;
+}
+
+/* Efeito do texto tremendo (impacto da derrota) */
+@keyframes shakeAndFade {
+  0% { transform: translateY(-50px); opacity: 0; }
+  20% { transform: translateY(0) translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Tela de Empate */
+#draw-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(30, 41, 59, 0.85); /* Azul ardósia (cor neutra, clima de neblina) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.draw-text {
+  font-family: 'Arial Black', sans-serif;
+  font-size: 5rem;
+  color: #e2e8f0; /* Branco acinzentado fosco */
+  text-shadow: 0 0 20px #64748b, 0 0 30px #000;
+  animation: fadeInExpanse 0.5s ease-out forwards;
+}
+
+/* Efeito do texto abrindo horizontalmente (ideia de divisão/meio a meio) */
+@keyframes fadeInExpanse {
+  0% { transform: scaleX(0); opacity: 0; letter-spacing: -10px; }
+  100% { transform: scaleX(1); opacity: 1; letter-spacing: 5px; }
+}
+
 /* Rodapé */
 
 #footer-sobre {
