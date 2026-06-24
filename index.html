@@ -6,37 +6,38 @@
     <meta name="description" content="Batalha Naval contra a IA do Gemini">
     <meta name="keywords" content="batalha, naval, ia, gemini, ai, naval, battle">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel="stylesheet" href="style-static.css">
     <link rel="stylesheet" href="style-external.css">
     <link rel="stylesheet" href="style-animated.css">
     <link rel="stylesheet" href="style-navios.css">
-    
+
     <!-- Fonte Montserrat-->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <!-- Fonte Bruno Ace-->
     <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap" rel="stylesheet">
     <!-- Biblioteca de ícones-->
-     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
     <title>Inteligência Naval - TSI</title>
 </head>
 
 <body>
-    
+
     <header id="header">
         <div class="titulo">
             <h1 class="bruno-ace-regular">Inteligência Naval</h1>
         </div>
-        
+
         <div class="titulo-2">
             <h2>Participe de um jogo de Batalha Naval contra a IA do Gemini, desenvolvida pelo Google.</h2>
-            
-            
+
+
             <p>Instituto Federal de Educação, Ciência e Tecnologia - Campus Barbacena</p>
             <p>Tecnologia em Sistemas para Internet</p>
         </div>
-        
+
     </header> <!-- header -->
 
     <section id="modo-de-jogo">
@@ -44,7 +45,8 @@
         <div>
             <button class="botao jogar-gemini">Jogar contra o Gemini!</button>
             <button class="botao jogar-piloto-automatico">Jogar contra o Piloto Automático!</button>
-            <p>Utilize uma Chave API para jogar com uma Inteligência Artificial, que planeja metodicamente cada uma de suas jogadas.</p>
+            <p>Utilize uma Chave API para jogar com uma Inteligência Artificial, que planeja metodicamente cada uma de
+                suas jogadas.</p>
             <p>Jogue uma partida de Batalha Naval contra o Piloto Automático, um algoritmo automático e eficiente.</p>
         </div>
     </section> <!-- modo-de-jogo -->
@@ -53,11 +55,12 @@
         <h3>Guia do Usuário</h3>
         <p>
             Antes de começar, insira uma
-            <a href="https://aistudio.google.com/api-keys?hl=pt-br" target="_blank" rel="noopener noreferrer">Chave API</a>
+            <a href="https://aistudio.google.com/api-keys?hl=pt-br" target="_blank" rel="noopener noreferrer">Chave
+                API</a>
             do Gemini para a IA poder participar do jogo:
         </p>
         <p>Possui dúvidas? Clique nos botões abaixo pra ver as explicações que precisa para participar de um jogo:</p>
-        
+
         <div class="grid-guia-usuario">
             <div class="modal">
                 <button class="modal-expandir">Onde consigo uma chave API?</button>
@@ -66,24 +69,28 @@
 
                     <div class="modal-conteudo">
                         <button class="modal-fechar">&times;</button>
-                        
+
                         <h2>Como conseguir uma chave API?</h2>
                         <ul>
                             <li>
                                 Acesse o
-                                <a href="https://aistudio.google.com/?hl=pt-br" target="_blank" rel="noopener noreferrer">
+                                <a href="https://aistudio.google.com/?hl=pt-br" target="_blank"
+                                    rel="noopener noreferrer">
                                     Google AI Studio
                                 </a>
                             </li>
                             <li>Faça login com sua conta do Google, no canto superior direito da página.</li>
                             <li>
                                 Depois de fazer o login, visite a página de
-                                <a href="https://aistudio.google.com/api-keys?hl=pt-br" target="_blank" rel="noopener noreferrer">
+                                <a href="https://aistudio.google.com/api-keys?hl=pt-br" target="_blank"
+                                    rel="noopener noreferrer">
                                     Chaves API
                                 </a>
                             </li>
-                            <li>No canto superior direito da página, clique em <u>Criar chave de API</u>, e então pode apenas clicar em <u>Criar Chave</u>.</li>
-                            <li>Na nova janela copie a chave de API, que se parece com uma sequência de caracteres aleatórios.</li>
+                            <li>No canto superior direito da página, clique em <u>Criar chave de API</u>, e então pode
+                                apenas clicar em <u>Criar Chave</u>.</li>
+                            <li>Na nova janela copie a chave de API, que se parece com uma sequência de caracteres
+                                aleatórios.</li>
                         </ul>
                     </div>
 
@@ -100,10 +107,14 @@
                     <div class="modal-conteudo">
                         <button class="modal-fechar">&times;</button>
                         <h2>O que é uma chave API?</h2>
-                        <p>Uma chave de API é um código que permite você conversar e receber respostas de um serviço de IA, da mesma forma como faria no site do ChatGPT ou do Gemini.</p>
-                        <p>A diferença é que você pode enviar mensagens de forma automatizada utilizando código, ao invés de escrever manualmente.</p>
-                        <p>A chave será utilizada para o Gemini receber as posições do jogo de batalha naval, e enviar suas jogadas para o site.</p>
-                        <p>Atualmente o Google disponibiliza o uso gratuito do Gemini, mas com um limite de usos que reinicia diariamente.</p>
+                        <p>Uma chave de API é um código que permite você conversar e receber respostas de um serviço de
+                            IA, da mesma forma como faria no site do ChatGPT ou do Gemini.</p>
+                        <p>A diferença é que você pode enviar mensagens de forma automatizada utilizando código, ao
+                            invés de escrever manualmente.</p>
+                        <p>A chave será utilizada para o Gemini receber as posições do jogo de batalha naval, e enviar
+                            suas jogadas para o site.</p>
+                        <p>Atualmente o Google disponibiliza o uso gratuito do Gemini, mas com um limite de usos que
+                            reinicia diariamente.</p>
                     </div>
 
                 </div>
@@ -117,7 +128,8 @@
                     <div class="modal-conteudo">
                         <button class="modal-fechar">&times;</button>
                         <h2>O que acontece com erros na Chave API?</h2>
-                        <p>O Jogo da Batalha Naval consegue funcionar mesmo quando o Gemini estiver indisponível, tanto por erros temporários quanto por utilizar a capacidade máxima diária.</p>
+                        <p>O Jogo da Batalha Naval consegue funcionar mesmo quando o Gemini estiver indisponível, tanto
+                            por erros temporários quanto por utilizar a capacidade máxima diária.</p>
                         <p>Quando isso acontecer, o Piloto Automático realizará jogadas no seu lugar.</p>
                     </div>
 
@@ -136,8 +148,10 @@
                         <button class="modal-fechar">&times;</button>
                         <h2>Não consegui a chave API, e agora?</h2>
                         <p>A Inteligência Naval pode ser jogada sem uma Chave API, com o modo do Piloto Automático.</p>
-                        <p>Note que o Piloto Automático é apenas um algoritmo, e não representa uma inteligência artificial verdadeira.</p>
-                        <p>Se não foi possível obter sua Chave API no Google AI Studio, pressione o botão Jogar com Piloto Automático</p>
+                        <p>Note que o Piloto Automático é apenas um algoritmo, e não representa uma inteligência
+                            artificial verdadeira.</p>
+                        <p>Se não foi possível obter sua Chave API no Google AI Studio, pressione o botão Jogar com
+                            Piloto Automático</p>
                     </div>
 
                 </div>
@@ -154,7 +168,8 @@
         <div class="caixa-input">
             <p>Siga os passos da Guia do Usuário acima, para criar e copiar a sua Chave API.</p>
             <label for="api-key">Chave API:</label>
-            <input id="api-key" type="text" placeholder="Cole sua chave API aqui: AIzaSyC4SKnWv..." class="input-api-key">
+            <input id="api-key" type="text" placeholder="Cole sua chave API aqui: AIzaSyC4SKnWv..."
+                class="input-api-key">
             <button class="botao">Clique para colar a chave API</button>
             <button class="botao">Validar a Chave API</button>
         </div>
@@ -162,7 +177,7 @@
 
     <section id="jogo">
         <h3>Jogo da Batalha Naval</h3>
-        
+
         <div class="grid-botoes">
             <div class="modal guia-jogo">
                 <button class="modal-expandir">Como jogar?</button>
@@ -171,9 +186,12 @@
                         <button class="modal-fechar">&times;</button>
                         <h2>Regras do Jogo</h2>
                         <ul>
-                            <li>Cada jogador começa arrastando 5 navios para posições estratégicas do seu tabuleiro.</li>
-                            <li>Na vez de cada jogador, ele deve escolher uma posição para atacar o tabuleiro do inimigo.</li>
-                            <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições até errar uma.</li>
+                            <li>Cada jogador começa arrastando 5 navios para posições estratégicas do seu tabuleiro.
+                            </li>
+                            <li>Na vez de cada jogador, ele deve escolher uma posição para atacar o tabuleiro do
+                                inimigo.</li>
+                            <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições
+                                até errar uma.</li>
                             <li>Quando todas as partes de um navio são acertadas, ele é afundado.</li>
                             <li>Vence quem afundar os 5 navios do oponente.</li>
                         </ul>
@@ -190,7 +208,7 @@
                     <div class="modal-conteudo">
                         <button class="modal-fechar">&times;</button>
                         <h2>Tem certeza que deseja terminar o jogo?</h1>
-                        <button class="botao botao-terminar-jogo">Confirmar</button>
+                            <button class="botao botao-terminar-jogo">Confirmar</button>
                     </div>
                 </div>
             </div>
@@ -198,12 +216,15 @@
             <button class="botao botao-reiniciar-jogo">Reiniciar Jogo!</button>
 
             <div class="botoes-preferencia">
-                <button class="botao-mute" style="color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);"><span class="material-symbols-outlined">brand_awareness</span></button>
+                <button class="botao-mute" style="color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);"><span
+                        class="material-symbols-outlined">brand_awareness</span></button>
 
-                <button class="botao-gif-stop" style="color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);"><span class="material-symbols-outlined">gif_box</span></button>
+                <button class="botao-gif-stop"
+                    style="color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);"><span
+                        class="material-symbols-outlined">gif_box</span></button>
             </div>
         </div>
-        
+
         <div class="status-jogo">
             <p></p>
             <p></p>
@@ -224,7 +245,7 @@
 
                 </div>
 
-            </div>            
+            </div>
 
             <!-- Grade do inimigo -->
             <div class="tabuleiro-container inimigo">
@@ -242,19 +263,20 @@
                 <div class="colapsavel colapsavel-raciocinio-ia">
                     <button class="colapsavel-expandir botao-raciocinio-ia">Visualizar Raciocínio da IA</button>
                     <div class="colapsavel-conteudo raciocinio-ia">
-                        <p>Aqui você verá a linha de raciocínio escrita pelo Gemini, como as justificativas para a posição escolhida em suas jogadas.</p>
+                        <p>Aqui você verá a linha de raciocínio escrita pelo Gemini, como as justificativas para a
+                            posição escolhida em suas jogadas.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Navios arrastáveis -->
-             <div class="campo-navios-arrastaveis">
+            <div class="campo-navios-arrastaveis">
                 <p>Clique e arraste os seus navios até o tabuleiro!</p>
                 <div class="navios-arrastaveis">
-                        
+
                 </div>
-             </div>
-            
+            </div>
+
         </div>
 
 
@@ -272,7 +294,7 @@
                 <li>Evandro Rodrigues</li>
             </ul>
         </div>
-        
+
         <div>
             <p>2026 Inteligência Naval. Todos os direitos reservados.</p>
         </div>
@@ -281,6 +303,34 @@
             <p>Link do repositório:</p>
             <ul>
                 <li><a href="https://github.com/Leite-777/Batalha_naval_Tsi">GitHub</a></li>
+            </ul>
+            <p id="informacao-sobre">Sobre o projeto:</p>
+            <ul>
+                <li>
+                    <div class="modal">
+                        <a class="modal-expandir" id="footer-sobre">Sobre o jogo</a>
+
+                        <div class="modal-container">
+
+                            <div class="modal-conteudo">
+                                <button class="modal-fechar">&times;</button>
+                                <h2>Sobre o jogo:</h2>
+                                <p>A Inteligência Naval é um projeto que demonstra, na prática, como uma inteligência
+                                    artificial pode ser integrada a um jogo complexo, como a Batalha Naval, utilizando a
+                                    API do Gemini. Como modelos de linguagem não conseguem interagir diretamente com
+                                    interfaces visuais, o sistema transforma o estado do jogo em dados estruturados no
+                                    formato JSON e envia instruções detalhadas para que a IA analise o cenário e tome
+                                    decisões a cada rodada.</p>
+                                <p>Com base nessas informações, a IA escolhe onde atacar e justifica sua decisão de
+                                    forma estratégica, permitindo que suas ações sejam interpretadas e exibidas no site.
+                                    O projeto também considera limitações técnicas, como possíveis falhas na API,
+                                    implementando um sistema alternativo de jogadas automáticas para garantir a
+                                    continuidade do jogo mesmo quando a IA estiver indisponível.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </footer> <!-- footer -->
@@ -295,4 +345,5 @@
     <script type="module" src="src/game-loop.js"></script>
     <script type="module" src="src/game-start.js"></script>
 </body>
+
 </html>

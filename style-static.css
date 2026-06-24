@@ -1,6 +1,6 @@
 /* Importação das fontes */
 
-*{
+* {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -17,22 +17,25 @@
 
 /* Reset do CSS*/
 
-body{
+body {
     margin: 0;
     padding: 0;
 }
 
-h1, h2, p, li{
+h1,
+h2,
+p,
+li {
     margin: 0;
     margin-left: 5px;
     color: #002c50
 }
 
-ul{
+ul {
     margin-bottom: 0;
 }
 
-p{
+p {
     margin-left: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
@@ -40,25 +43,25 @@ p{
     line-height: 1.8;
 }
 
-h3{
+h3 {
     margin-left: 25px;
     margin-top: 0px;
     padding-left: 25px;
-    
+
     border-left: 3px solid #014177;
     border-radius: 5px;
     color: #145f8d;
-    
+
     font-size: 30px;
 }
 
 /* Header */
 
-header{
+header {
     background-color: #14CFDB;
 }
 
-.titulo{
+.titulo {
     color: white;
     font-size: 24px;
     font-weight: bold;
@@ -73,13 +76,11 @@ header{
     align-items: center;
 }
 
-.titulo h1{
-    background: linear-gradient(
-        90deg,
-        white,
-        #7ce9ff,
-        white
-    );
+.titulo h1 {
+    background: linear-gradient(90deg,
+            white,
+            #7ce9ff,
+            white);
 
     background-size: 200% auto;
 
@@ -90,17 +91,17 @@ header{
     animation: brilho 3s linear infinite;
 }
 
-@keyframes brilho{
-    from{
+@keyframes brilho {
+    from {
         background-position: -200% center;
     }
 
-    to{
+    to {
         background-position: 200% center;
     }
 }
 
-.titulo-2{
+.titulo-2 {
     height: 350px;
 
     display: flex;
@@ -109,17 +110,17 @@ header{
     align-items: center;
 }
 
-.titulo-2 h2{
+.titulo-2 h2 {
     margin-top: 50px;
 }
 
-.botao-header{
+.botao-header {
     padding: 10px 30px;
     margin: 20px 0;
 
     background-color: #014177;
     color: white;
-    
+
     font-size: 16px;
     font-weight: bold;
 
@@ -130,12 +131,12 @@ header{
 }
 
 /* Seleção de modo de jogo */
-#modo-de-jogo{
+#modo-de-jogo {
     background-color: #79ECED;
     padding: 30px 0;
 }
 
-#modo-de-jogo > div{
+#modo-de-jogo>div {
     width: 50%;
     padding: 30px;
     margin: auto;
@@ -146,27 +147,27 @@ header{
     gap: 20px;
 }
 
-#modo-de-jogo p{
+#modo-de-jogo p {
     text-align: center;
 }
 
-#modo-de-jogo .botao{
+#modo-de-jogo .botao {
     padding: 20px;
     font-size: 20px;
 }
 
 /* Chave de API */
 
-#chave-api{
+#chave-api {
     background-color: #3EE5DF;
     padding: 30px 0;
 }
 
-#chave-api p{
+#chave-api p {
     color: white;
 }
 
-.caixa-input{
+.caixa-input {
     margin: 20px 10px;
 
     background-color: #002c50;
@@ -176,10 +177,10 @@ header{
     border-radius: 20px;
     width: 70%;
     border: none;
-    
+
 }
 
-.input-api-key{
+.input-api-key {
     background-color: #014177;
     color: white;
 
@@ -192,25 +193,25 @@ header{
 
 /* Guia do Usuário */
 
-#guia-do-usuario{
+#guia-do-usuario {
     background-color: #B4F2FB;
     padding: 30px 0;
 }
 
-.grid-guia-usuario{
+.grid-guia-usuario {
     width: 80%;
     margin: auto;
     display: flex;
     justify-content: space-evenly;
 }
 
-.colapsavel-expandir{
+.colapsavel-expandir {
     padding: 10px 30px;
     margin: 20px 10px;
 
     background-color: #014177;
     color: white;
-    
+
     font-size: 16px;
     font-weight: bold;
 
@@ -220,7 +221,7 @@ header{
     cursor: pointer;
 }
 
-.colapsavel-conteudo{
+.colapsavel-conteudo {
     padding: 10px 30px;
     margin: 10px;
     width: 30%;
@@ -231,7 +232,8 @@ header{
     border-radius: 10px;
 }
 
-.colapsavel-conteudo li, .colapsavel-conteudo p{
+.colapsavel-conteudo li,
+.colapsavel-conteudo p {
     margin: 10px 0;
 }
 
@@ -250,7 +252,7 @@ header{
 
 /* Container do Modal (Escondido por padrão) */
 .modal-container {
-    display: none; 
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -258,7 +260,7 @@ header{
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    
+
     /* Centralização estrutural */
     justify-content: center;
     align-items: center;
@@ -275,24 +277,33 @@ header{
     padding: 30px;
     margin: 10px;
     width: 90%;
-    max-width: 600px; /* Evita que fique gigante em telas grandes */
+    max-width: 600px;
+    /* Evita que fique gigante em telas grandes */
     background-color: #3EE5DF;
     border: none;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.modal-conteudo > h2 {
+.modal-conteudo>h2 {
     border-bottom: 2px solid #002c50;
     margin-bottom: 15px;
 }
 
-.modal-conteudo li{
+.modal-conteudo li {
     line-height: 1.8;
 }
 
-.modal-conteudo button{
+.modal-conteudo button {
     margin: auto;
+}
+
+.modal-conteudo p {
+    color: #002c50;
+}
+
+.modal-conteudo h2 {
+    color: #002c50;
 }
 
 /* Botão de fechar (X) */
@@ -322,32 +333,32 @@ header{
 
 /* Tabuleiros da Batalha Naval */
 
-#jogo{
+#jogo {
     padding: 20px;
     background-color: #002c50;
 }
 
-#jogo-batalha-naval{
+#jogo-batalha-naval {
     display: grid;
     grid-template-columns: 1fr 3fr 3fr 1fr;
     gap: 10px;
 
     margin: 50px 0;
-    
+
     justify-content: space-around;
 }
 
-#jogo > h3{
+#jogo>h3 {
     color: white;
     border-left: white solid 2px;
 }
 
-.grid-botoes{
+.grid-botoes {
     display: flex;
     justify-content: space-evenly;
 }
 
-.status-jogo{
+.status-jogo {
     background-color: #121722;
     padding: 15px;
     margin: 15px auto;
@@ -355,7 +366,7 @@ header{
     border-radius: 10px;
 }
 
-.status-jogo p{
+.status-jogo p {
     text-align: center;
     color: white;
     font-size: 15px;
@@ -377,13 +388,13 @@ header{
     font-size: 15px;
 }
 
-.botao{
+.botao {
     padding: 10px 30px;
     margin: 20px 10px;
 
     background-color: #014177;
     color: white;
-    
+
     font-size: 16px;
     font-weight: bold;
 
@@ -394,11 +405,11 @@ header{
 }
 
 .botoes-preferencia {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
-.botoes-preferencia > button{
+.botoes-preferencia>button {
     padding: 10px 10px;
     margin: 20px 10px;
 
@@ -415,12 +426,12 @@ header{
 }
 
 
-.inimigo{
+.inimigo {
     grid-column-start: 3;
     grid-column-end: 4;
 }
 
-.campo-navios-arrastaveis{
+.campo-navios-arrastaveis {
     grid-row-start: 2;
     grid-row-end: 3;
 
@@ -428,13 +439,13 @@ header{
     grid-column-end: 3;
 }
 
-.campo-navios-arrastaveis > p{
+.campo-navios-arrastaveis>p {
     text-align: center;
     color: white;
     font-size: 20px;
 }
 
-.navios-arrastaveis{
+.navios-arrastaveis {
     background-color: #014177;
     border-radius: 10px;
 
@@ -448,33 +459,33 @@ header{
     padding: 10px;
 }
 
-.jogo-batalha-naval .colapsavel{
+.jogo-batalha-naval .colapsavel {
     width: 100%;
 }
 
-.info-container{
+.info-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content:start;
+    justify-content: start;
     gap: 50px;
-    
+
     border-radius: 10px;
 }
 
-.info{
+.info {
     color: white;
     background-color: #014177;
     padding: 15px;
     border-radius: 10px;
 }
 
-.botao-raciocinio-ia{
+.botao-raciocinio-ia {
     font-size: 12px;
     margin: 0;
 }
 
-.raciocinio-ia{
+.raciocinio-ia {
     font-size: 12px;
     width: auto;
 }
@@ -485,40 +496,42 @@ header{
     align-items: center;
 }
 
-.status{
+.status {
     color: white;
 }
 
 .tabuleiro {
-  display: grid;
-  grid-template-columns: repeat(10, 40px);
-  grid-template-rows: repeat(10, 40px);
-  gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 5px;
 }
 
 .celula {
-  width: 40px;
-  height: 40px;
-  
-  border-radius: 5px;
-  background-color: #014177;
-  color: white;
+    width: 40px;
+    height: 40px;
 
-  cursor: pointer;
-  display: flex;
-  
-  align-items: center;
-  justify-content: center;
+    border-radius: 5px;
+    background-color: #014177;
+    color: white;
 
-  user-select: none;
-  position: relative; 
+    cursor: pointer;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    user-select: none;
+    position: relative;
 }
 
 /* Transição suave para a borda não mudar bruscamente */
-.tabuleiro-jogador, .tabuleiro-inimigo {
+.tabuleiro-jogador,
+.tabuleiro-inimigo {
     border: 3px solid transparent;
     transition: border-color 0.4s ease, box-shadow 0.4s ease;
-    border-radius: 8px; /* Opcional: deixa os cantos arredondados */
+    border-radius: 8px;
+    /* Opcional: deixa os cantos arredondados */
 }
 
 /* Borda Verde Neon para a vez do Jogador */
@@ -535,9 +548,23 @@ header{
 
 /* Rodapé */
 
-footer{
+#footer-sobre {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+
+    color: white;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+#informacao-sobre {
+    margin-top: 5px;
+}
+
+footer {
     background-color: #014177;
-    
+
 
     display: grid;
     grid-template-columns: 25% 25% 25%;
@@ -547,10 +574,13 @@ footer{
     padding: 30px 0;
 }
 
-footer li, footer h2, footer p, footer a{
+footer li,
+footer h2,
+footer p,
+footer a {
     color: white;
 }
 
-footer > div{
+footer>div {
     border-left: white solid 2px;
 }
