@@ -11,14 +11,14 @@
   transform: scale(0.9); /* Shrinks slightly to look "pressed" */
 }
 
-.botao-header, .botao, .modal-expandir {
+.botao-header, .botao, .modal-expandir, .botao-gif-stop, .botao-mute{
   transition: 
     transform 0.4s ease,
     box-shadow 0.4s ease,
     filter 0.4s ease;
 }
 
-.botao-header:hover, .botao:hover, .modal-expandir:hover{
+.botao-header:hover, .botao:hover, .modal-expandir:hover, .botao-gif-stop:hover, .botao-mute:hover{
   transform: scale(1.05) translateY(-4px);
   box-shadow: 0 25px 30px rgba(16, 6, 100, 0.3);
   filter: brightness(1.1);

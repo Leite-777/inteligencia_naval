@@ -165,9 +165,9 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
                 // Faz com que o alerta só apareça para navios atingidos recentemente
                 navio.marcarComoAfundado = true;
                 if(tipoTabuleiro === 1){
-                    statusAlerta("[ !! ] ALERTA CRÍTICO! Um navio da sua frota foi destruído. [ !! ]");
+                    statusAlerta("ALERTA CRÍTICO! Um navio da sua frota foi destruído.");
                 }else{
-                    statusMensagem("[XX] DESTRUIÇÃO TOTAL! O navio inimigo não resistiu aos danos. [XX]");
+                    statusMensagem("DESTRUIÇÃO TOTAL! O navio inimigo não resistiu aos danos.");
                 }
             }
             naviosAfundados++;

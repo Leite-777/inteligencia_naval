@@ -234,7 +234,7 @@ Não use markdown.
                 // Mostra a alteração do tabuleiro na página para o usuário ver
                 tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
 
-                statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque}) [ ! ]`);
+                statusAlerta(`IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
                 return { acerto: Acerto.Acertou };
             } else if (posicaoAtacada === 0) {
                 // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
@@ -245,16 +245,16 @@ Não use markdown.
                 // Mostra a alteração do tabuleiro na página para o usuário ver
                 tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
 
-                statusAlerta(`[~] O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado. [~]`)
+                statusAlerta(`O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado.`)
                 return { acerto: Acerto.Errou };
             } else {
-                statusAlerta(`[?] O Gemini marcou uma posição repetida em (${linhaAtaque}, ${colunaAtaque})! Recalculando... [?]`)
+                statusAlerta(`O Gemini marcou uma posição repetida em (${linhaAtaque}, ${colunaAtaque})! Recalculando...`)
                 // Permite à IA tentar novamente
                 return { acerto: Acerto.Acertou };
             }
 
         } else {
-            statusAlerta(`[?] O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando... [?]`)
+            statusAlerta(`O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando...`)
             return { acerto: Acerto.Errou };
         }
 
@@ -386,7 +386,7 @@ async function realizarJogadaFallback(tabuleiroJogadorRevelado: number[][], tabu
             //Som de tiro Acertado
             audio.playHitShot();
 
-            statusAlerta(`[ ! ] IMPACTO RECEBIDO! O Piloto Automático acertou um navio em (${posFall.linha}, ${posFall.coluna}) [ ! ]`);
+            statusAlerta(`IMPACTO RECEBIDO! O Piloto Automático acertou um navio em (${posFall.linha}, ${posFall.coluna})`);
 
             // Mostra a alteração do tabuleiro na página para o usuário ver
             tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
@@ -400,7 +400,7 @@ async function realizarJogadaFallback(tabuleiroJogadorRevelado: number[][], tabu
             //Som de tiro Acertado
             audio.playMissShot();
 
-            statusAlerta(`[~] O Piloto Automático errou o alvo em (${posFall.linha}, ${posFall.coluna})!... Nenhum dano registrado. [~]`)
+            statusAlerta(`O Piloto Automático errou o alvo em (${posFall.linha}, ${posFall.coluna})!... Nenhum dano registrado.`)
             
             // Mostra a alteração do tabuleiro na página para o usuário ver
             tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
@@ -427,7 +427,7 @@ function verificarNaviosInimigosAtingidos(filho: HTMLElement): boolean {
             //Som de tiro Acertado
             audio.playHitShot();
 
-            statusMensagem(`[+] IMPACTO CONFIRMADO! Uma embarcação inimiga foi atingida em(${posLinha}, ${posColuna}). [+]`);
+            statusMensagem(`IMPACTO CONFIRMADO! Uma embarcação inimiga foi atingida em(${posLinha}, ${posColuna}).`);
             tabuleiroJSONparaHTML(tabuleiroInimigoRevelado, ".tabuleiro-inimigo");
             
             return true;
@@ -440,7 +440,7 @@ function verificarNaviosInimigosAtingidos(filho: HTMLElement): boolean {
             //Som de tiro Errado
             audio.playMissShot();
 
-            statusMensagem(`[~] ÁGUA! O projétil caiu no mar. Nada atingido em (${posLinha}, ${posColuna}). [~]`);
+            statusMensagem(`ÁGUA! O projétil caiu no mar. Nada atingido em (${posLinha}, ${posColuna}).`);
             tabuleiroJSONparaHTML(tabuleiroInimigoRevelado, ".tabuleiro-inimigo");
 
             return false;

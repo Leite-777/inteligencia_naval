@@ -1,7 +1,7 @@
 :root {
     --larguraNavio: 35px;
     --alturaNavio: 35px;
-    --bordaDosnavios: 10px;
+    --bordaDosnavios: 35%;
 
     --corNavio2: rgb(203, 230, 255);
     --corNavio3: rgb(157, 208, 255);
@@ -9,6 +9,10 @@
     --corNavio5: rgb(28, 123, 255);
 
     --tamanhoCelula: 40px;
+}
+
+.navio{
+    cursor: grab;
 }
 
 .navioTamanho2-horizontal {

@@ -42,8 +42,7 @@ function iniciarJogo() {
     ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", true);
     ocultarElemento(".guia-jogo", true);
-    // ocultarElemento(".botao-mute", true);
-    // ocultarElemento(".botao-gif-stop", true);
+    ocultarElemento(".botao-mute", true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Iniciar Jogo!");
 
@@ -81,6 +80,7 @@ function posicionarNavios() {
         ocultarElemento(".modal-terminar-jogo", false);
         ocultarElemento(".guia-jogo", false);
         ocultarElemento(".botoes-preferencia", false);
+        ocultarElemento(".botao-mute", false);
         ocultarElemento(".botao-iniciar-jogo", true);
         ocultarElemento(".campo-navios-arrastaveis", true);
 
@@ -136,12 +136,10 @@ function reiniciarJogo(){
 function muteMusica(){
     if(musicaAtivada === true){
         btnMute.innerHTML = `<span class="material-symbols-outlined" style="color: #e74c3c;">no_sound</span>`;
-        btnMute.style.boxShadow = '0 0 15px rgba(231, 76, 60, 0.6)';
         musicaAtivada = false;
         audio.stopBackground();
     }else{
         btnMute.innerHTML = `<span class="material-symbols-outlined" style="color: #2ecc71;">brand_awareness</span>`;
-        btnMute.style.boxShadow = '0 0 15px rgba(46, 204, 113, 0.6)';
         musicaAtivada = true;
         audio.playBackground();
     }
@@ -150,12 +148,10 @@ function muteMusica(){
 function pausaReproduzGifs(){
     if(gifAtivado === true){
         btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #e74c3c;">gif_box</span>`;
-        btnGifStop.style.boxShadow = '0 0 15px rgba(231, 76, 60, 0.6)';
         gifAtivado = false;
         pausarGifs();
     }else{
         btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #2ecc71;">gif_box</span>`;
-        btnGifStop.style.boxShadow = '0 0 15px rgba(46, 204, 113, 0.6)';
         gifAtivado = true;
         reproduzirGifs();
     }
