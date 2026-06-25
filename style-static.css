@@ -516,9 +516,11 @@ header {
 
 .tabuleiro {
     display: grid;
-    grid-template-columns: repeat(10, 40px);
-    grid-template-rows: repeat(10, 40px);
+    grid-template-columns: 15px repeat(10, 40px);;
+    grid-template-rows: 15px repeat(10, 40px);;
+    padding: 5px;
     gap: 4px;
+    
 }
 
 .celula {
@@ -537,6 +539,15 @@ header {
 
     user-select: none;
     position: relative;
+}
+
+.celula-coordenada {
+    font-family: "Bruno Ace", sans-serif;
+    color: white;
+
+    display: flex;
+    justify-content: center; /* horizontal */
+    align-items: center;     /* vertical */
 }
 
 /* Transição suave para a borda não mudar bruscamente */

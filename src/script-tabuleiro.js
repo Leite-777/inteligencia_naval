@@ -185,11 +185,17 @@ let transparenciaJogador = false;
 let transparenciaInimigo = false;
 
 export function alternarTransparenciaTabuleiro(tipo) {
+    const statusJogador = document.querySelector('.status-jogador');
+    const statusInimigo = document.querySelector('.status-inimigo');
 
     if (tipo === "jogador") {
         transparenciaJogador = !transparenciaJogador;
 
         tabuleiroJogador.classList.toggle(
+            "transparente",
+            transparenciaJogador
+        );
+        statusJogador.classList.toggle(
             "transparente",
             transparenciaJogador
         );
@@ -199,6 +205,10 @@ export function alternarTransparenciaTabuleiro(tipo) {
         transparenciaInimigo = !transparenciaInimigo;
 
         tabuleiroInimigo.classList.toggle(
+            "transparente",
+            transparenciaInimigo
+        );
+        statusInimigo.classList.toggle(
             "transparente",
             transparenciaInimigo
         );

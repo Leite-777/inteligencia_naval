@@ -223,69 +223,89 @@ function verificaOcupacaoCelula(celulaId) {
  */
 export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
     tabuleiro.innerHTML = "";
-    //campoDosNavios.innerHTML = "Clique e segure os navios para posicioná-los no tabuleiro!";
 
-    for (let linha = 0; linha < TAMANHO_MATRIZ; linha++) {
-        for (let coluna = 0; coluna < TAMANHO_MATRIZ; coluna++) {
+    const TAMANHO_VISUAL = TAMANHO_MATRIZ + 1; // 11
+
+    for (let linha = 0; linha < TAMANHO_VISUAL; linha++) {
+        for (let coluna = 0; coluna < TAMANHO_VISUAL; coluna++) {
+
+            // Célula vazia do canto superior esquerdo
+            if (linha === 0 && coluna === 0) {
+                const canto = document.createElement("div");
+                canto.classList.add("celula-coordenada");
+                tabuleiro.appendChild(canto);
+                continue;
+            }
+
+            // Cabeçalho das colunas
+            if (linha === 0) {
+                const coordenada = document.createElement("div");
+                coordenada.classList.add("celula-coordenada");
+                coordenada.textContent = coluna - 1;
+                tabuleiro.appendChild(coordenada);
+                continue;
+            }
+
+            // Cabeçalho das linhas
+            if (coluna === 0) {
+                const coordenada = document.createElement("div");
+                coordenada.classList.add("celula-coordenada");
+                coordenada.textContent = linha - 1;
+                tabuleiro.appendChild(coordenada);
+                continue;
+            }
+
+            // Coordenadas reais do tabuleiro (0-9)
+            const linhaReal = linha - 1;
+            const colunaReal = coluna - 1;
+
             const celula = document.createElement("div");
 
             celula.classList.add("celula");
 
-            celula.dataset.linha = linha;
-            celula.dataset.coluna = coluna;
+            celula.dataset.linha = linhaReal;
+            celula.dataset.coluna = colunaReal;
             celula.dataset.status = "0";
 
-            // celula.id = `${coluna}x${linha}`;    // ERRO: Desta forma os ids das celulas ficam duplicados pois tanto o campo inimigo quanto do jogador possuem o mesmo número de linhas e colunas
-            celula.id = `${tipoDoTabuleiro}_${coluna}x${linha}`; // Melhor opção, deste jeito cada celula possui um id único
+            celula.id = `${tipoDoTabuleiro}_${colunaReal}x${linhaReal}`;
 
-            //Cria tabuleiro pra o Jogador poder colocar os seus navios.
             if (tipoDoTabuleiro == 1) {
 
-                //Retira configuração padrão do navegador para poder arrastar os navios
                 celula.addEventListener("dragover", (e) => {
                     e.preventDefault();
                 });
 
-                /**
-                 * Permite que cada celula possa receber o arraste de um navio.
-                 * A celula recebe o navio arrastado e se torna pai da tag do navio.
-                 * 
-                 * Atribui a posição e marca como posicionado APÓS as validações
-                 */
                 celula.addEventListener("drop", (e) => {
                     e.preventDefault();
 
-                    // Navios arrastados passam seu id no dataTransfer. Se o elemento arrastado não é um navio, encerra a execução.
                     const id = e.dataTransfer.getData("id");
                     if (!id) {
                         return;
                     }
-                    
-                    const cabeNaMatriz = verificaEspacoMatriz(navioSendoArrastado, celula.id);
+
+                    const cabeNaMatriz = verificaEspacoMatriz(
+                        navioSendoArrastado,
+                        celula.id
+                    );
+
                     const semColisao = verificaOcupacaoCelula(celula.id);
 
-                    if (cabeNaMatriz === true && semColisao === true) {
-                        // ✅ Só agora grava a posição real no objeto
+                    if (cabeNaMatriz && semColisao) {
                         objNavioSendoArrastado.atribuiPosicaoAtual = celula.id;
                         objNavioSendoArrastado.posicionado = true;
-                        celula.appendChild(navioSendoArrastado);
 
-                        //Efeito sonoro do navio sendo posicionado corretamente
+                        celula.appendChild(navioSendoArrastado);
                         audio.playDrop();
-                        
+
                     } else {
                         campoDosNavios.appendChild(navioSendoArrastado);
-
-                        //Efeito sonoro do navio sendo posicionado incorretamente
                         audio.playError();
                     }
                 });
 
-                // Adiciona os Gifs de Ondas aos campos do jogador.
                 addGifOndas(celula);
-            }
-            else {
-                // Adiciona os Gifs de Nuvens aos campos da IA.
+
+            } else {
                 addGifNuvens(celula);
             }
 

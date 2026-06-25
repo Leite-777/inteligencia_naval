@@ -160,6 +160,7 @@ Não use markdown.
         raciocinioIA.textContent = "O Piloto automático está jogando...";
         return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     }
+    mensagemVezInimigo("Gemini está pensando...");
     if (respostaFunc.status) {
         const sucesso = respostaFunc;
         const coordenadasIa = sucesso.dados;
@@ -233,6 +234,7 @@ if (botaoIniciarJogo) {
         }
         // Desativa o botão para o usuário não gerar vários eventos de clique
         let podeJogar = true;
+        mensagemVezJogador("É a sua vez!");
         // Adiciona os navios no tabuleiro da IA
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
         tabuleiroInimigoCompleto = posicionaNaviosTabuleiroInimigo(tabuleiroInimigoCompleto, totalNaviosIA);
@@ -248,12 +250,15 @@ if (botaoIniciarJogo) {
                     podeJogar = false;
                     // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
                     if (verificarNaviosInimigosAtingidos(filho)) {
+                        mensagemVezJogador("Ainda é sua vez!");
                         podeJogar = true;
                         // verificarTerminoDeJogo()
                     }
                     // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
                     else {
                         // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
+                        mensagemVezInimigo("Vez do inimigo!");
+                        mensagemVezJogador("Esperando o inimigo...");
                         await wait(intervaloRodadas);
                         atualizarIndicadorTurno('ia');
                         alternarTransparenciaTabuleiro("jogador");
@@ -277,6 +282,8 @@ if (botaoIniciarJogo) {
                         podeJogar = true;
                         //Volta o turno para o jogador (Borda Verde) ---
                         atualizarIndicadorTurno('jogador');
+                        mensagemVezJogador("É a sua vez!");
+                        mensagemVezInimigo("Esperando o jogador...");
                         // verificarTerminoDeJogo()
                     }
                 });
@@ -307,6 +314,7 @@ export function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 async function realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto) {
+    mensagemVezInimigo("Piloto Automático jogando...");
     await wait(intervaloJogadasAutomaticas);
     if (verificarTerminoDeJogo() == true) {
         return { acerto: Acerto.Errou };
@@ -461,6 +469,20 @@ function atualizarIndicadorTurno(turno) {
         // Remove destaques do tabuleiro inimigo
         painelInimigo.classList.remove('borda-turno-jogador', 'borda-turno-ia');
     }
+}
+function mensagemVezJogador(mensagem) {
+    const status = document.querySelector('.status-inimigo');
+    if (!status)
+        return;
+    status.style.color = "#3EE5DF";
+    status.textContent = mensagem;
+}
+function mensagemVezInimigo(mensagem) {
+    const status = document.querySelector('.status-jogador');
+    if (!status)
+        return;
+    status.style.color = "#ff4040";
+    status.textContent = mensagem;
 }
 //Tipos de erro
 /*
