@@ -66,7 +66,6 @@ let tabuleiroJogadorRevelado = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
-let posicaoChavesApi = 0;
 var Acerto;
 (function (Acerto) {
     Acerto[Acerto["Errou"] = 40] = "Errou";
@@ -249,10 +248,12 @@ if (botaoIniciarJogo) {
         if (campoIa) {
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
-                    numeroJogadas++;
-                    numeroJogadasHtml.innerText = numeroJogadas.toString();
                     if (!podeJogar) {
                         return;
+                    }
+                    else {
+                        numeroJogadas++;
+                        numeroJogadasHtml.innerText = numeroJogadas.toString();
                     }
                     podeJogar = false;
                     // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
