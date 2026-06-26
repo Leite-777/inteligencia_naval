@@ -12,6 +12,9 @@ import { verificarChaveAPI } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
 const audio = new AudioManager();
+let numeroJogadasHtml = document.getElementById('rodadaJogador');
+let numeroJogadas = 0;
+numeroJogadasHtml.innerText = numeroJogadas.toString();
 /**
  * Intervalo de tempo entre jogadas consecutivas do Fallback (Piloto Automático), em milissegundos.
  * Default: 1500
@@ -63,6 +66,7 @@ let tabuleiroJogadorRevelado = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
+let posicaoChavesApi = 0;
 var Acerto;
 (function (Acerto) {
     Acerto[Acerto["Errou"] = 40] = "Errou";
@@ -152,7 +156,8 @@ Sua resposta deverá ser escrita estritamente como um JSON no formato exato abai
     "coluna": número
 }
 Responda APENAS em JSON válido.
-Não use markdown.    
+Não use markdown.  
+Responda de forma curta.  
 `;
     let raciocinioIA = document.querySelector(".raciocinio-ia");
     let respostaFunc = await chamadaApi(prompt);
@@ -244,6 +249,8 @@ if (botaoIniciarJogo) {
         if (campoIa) {
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
+                    numeroJogadas++;
+                    numeroJogadasHtml.innerText = numeroJogadas.toString();
                     if (!podeJogar) {
                         return;
                     }
