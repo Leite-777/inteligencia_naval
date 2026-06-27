@@ -71,7 +71,9 @@
 
 
 .tela-cheia{
-    height: 100vh;
+    min-height: 100vh;
+    width: max-content;
+    min-width: 100%;
     box-sizing: border-box;
 
     background: linear-gradient(

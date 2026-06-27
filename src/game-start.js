@@ -42,7 +42,7 @@ function iniciarJogo() {
     ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", true);
     ocultarElemento(".guia-jogo", true);
-    ocultarElemento(".botao-mute", true);
+    ocultarElemento(".botoes-preferencia", true);
     ocultarElemento(".info", true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Iniciar Jogo!");
@@ -81,7 +81,6 @@ function posicionarNavios() {
         ocultarElemento(".modal-terminar-jogo", false);
         ocultarElemento(".guia-jogo", false);
         ocultarElemento(".botoes-preferencia", false);
-        ocultarElemento(".botao-mute", false);
         ocultarElemento(".info", false);
         ocultarElemento(".botao-iniciar-jogo", true);
         ocultarElemento(".iniciar-jogo", true);
