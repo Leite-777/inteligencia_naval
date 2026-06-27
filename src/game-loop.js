@@ -79,10 +79,10 @@ var Acerto;
     Acerto[Acerto["Acertou"] = 50] = "Acertou";
 })(Acerto || (Acerto = {}));
 let totalNaviosIA = inicializaOsNaviosIA();
+let contadorChaves = 0;
 //                              Função principal para a Chamada de API, com o retorno dos dados
-async function chamadaApi(prompt) {
-    const apiKey = document.getElementById('api-key').value;
-    let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+async function chamadaApi(prompt, chaveApi) {
+    let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chaveApi}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -135,6 +135,7 @@ async function chamadaApi(prompt) {
 async function realizarJogadaGemini(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto) {
     // Pega o valor exato no momento que a função é ativada
     let apiKey = chaveHtml.value;
+    let totalChavesApi = chaveHtml.value.split(/\s+/);
     if (!apiKey) {
         console.error("A chave da API não foi informada.");
         return { acerto: undefined };
@@ -166,7 +167,7 @@ Não use markdown.
 Responda de forma curta.  
 `;
     let raciocinioIA = document.querySelector(".raciocinio-ia");
-    let respostaFunc = await chamadaApi(prompt);
+    let respostaFunc = await chamadaApi(prompt, totalChavesApi[contadorChaves]);
     if (respostaFunc == undefined) {
         raciocinioIA.textContent = "O Piloto automático está jogando...";
         return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
@@ -174,53 +175,28 @@ Responda de forma curta.
     mensagemVezInimigo("O inimigo está pensando...");
     infoJogandoAgora.innerText = "Gemini";
     if (respostaFunc.status) {
-        const sucesso = respostaFunc;
-        const coordenadasIa = sucesso.dados;
-        const linhaAtaque = sucesso.dados.linha;
-        const colunaAtaque = sucesso.dados.coluna;
-        ocultarElemento(".colapsavel-raciocinio-ia", false);
-        // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
-        if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
-            raciocinioIA.textContent = `${sucesso.dados.debug}`;
-            // Verifica o que tinha na matriz do jogador naquela coordenada
-            let posicaoAtacada = tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque];
-            if (posicaoAtacada === 2) {
-                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
-                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
-                //Som de tiro Acertado
-                audio.playHitShot();
-                // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
-                statusAlerta(`IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
-                return { acerto: Acerto.Acertou };
-            }
-            else if (posicaoAtacada === 0) {
-                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
-                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
-                //Som de tiro errado
-                audio.playMissShot();
-                // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
-                statusAlerta(`O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado.`);
-                return { acerto: Acerto.Errou };
-            }
-            else {
-                statusAlerta(`O Gemini marcou uma posição repetida em (${linhaAtaque}, ${colunaAtaque})! Recalculando...`);
-                // Permite à IA tentar novamente
-                return { acerto: Acerto.Acertou };
-            }
-        }
-        else {
-            statusAlerta(`O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando...`);
-            return { acerto: Acerto.Errou };
-        }
+        return ataque(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA);
     }
     else {
         const erro = respostaFunc;
+        console.log(contadorChaves);
         if (erro.CodigoErro === 403 || erro.CodigoErro === 429) {
             statusAlerta("[X] Não é possível fazer contato com o Gemini! O Piloto Automático assumirá o controle. [X]");
+            let stopBusca = true;
+            while (stopBusca && contadorChaves < totalChavesApi.length) {
+                contadorChaves++;
+                let respostaLoop = await chamadaApi(prompt, totalChavesApi[contadorChaves]);
+                if (respostaLoop == undefined) {
+                }
+                else {
+                    if (respostaLoop.status) {
+                        stopBusca = false;
+                        let acertoLoop = await ataque(respostaLoop, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA);
+                        return acertoLoop;
+                    }
+                }
+            }
+            contadorChaves = 0;
         }
         else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
             statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
@@ -498,6 +474,50 @@ function mensagemVezInimigo(mensagem) {
         return;
     status.style.color = "#ff4040";
     status.textContent = mensagem;
+}
+async function ataque(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA) {
+    const sucesso = respostaFunc;
+    const coordenadasIa = sucesso.dados;
+    const linhaAtaque = sucesso.dados.linha;
+    const colunaAtaque = sucesso.dados.coluna;
+    ocultarElemento(".colapsavel-raciocinio-ia", false);
+    // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
+    if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
+        raciocinioIA.textContent = `${sucesso.dados.debug}`;
+        // Verifica o que tinha na matriz do jogador naquela coordenada
+        let posicaoAtacada = tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque];
+        if (posicaoAtacada === 2) {
+            // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+            tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
+            tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
+            //Som de tiro Acertado
+            audio.playHitShot();
+            // Mostra a alteração do tabuleiro na página para o usuário ver
+            tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
+            statusAlerta(`IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
+            return { acerto: Acerto.Acertou };
+        }
+        else if (posicaoAtacada === 0) {
+            // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+            tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
+            tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
+            //Som de tiro errado
+            audio.playMissShot();
+            // Mostra a alteração do tabuleiro na página para o usuário ver
+            tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
+            statusAlerta(`O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado.`);
+            return { acerto: Acerto.Errou };
+        }
+        else {
+            statusAlerta(`O Gemini marcou uma posição repetida em (${linhaAtaque}, ${colunaAtaque})! Recalculando...`);
+            // Permite à IA tentar novamente
+            return { acerto: Acerto.Acertou };
+        }
+    }
+    else {
+        statusAlerta(`O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando...`);
+        return { acerto: Acerto.Errou };
+    }
 }
 //Tipos de erro
 /*
