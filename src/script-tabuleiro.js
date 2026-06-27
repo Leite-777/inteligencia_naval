@@ -119,6 +119,9 @@ export function atualizarTabuleiroReveladoJogador(matrizRevelado){
     }
 }
 
+let infoNaviosJogador = document.getElementById('info-navios-jogador');
+let infoNaviosInimigo = document.getElementById('info-navios-inimigo');
+
 export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
     let naviosAfundados = 0;
     let posicoesAfundadas = 0;
@@ -173,6 +176,18 @@ export function verificarSeNaviosForamAfundados(tipoTabuleiro) {
             naviosAfundados++;
         }
     }
+
+    /**
+     * Atualiza as estatísticas de quantidade de navios restantes pra cada time
+     */
+    if(tipoTabuleiro === 1){
+        // infoNaviosJogador.innerText = 5 - naviosAfundados;
+        atualizarNumeroNavios(infoNaviosJogador, 5 - naviosAfundados);
+    }else{
+        // infoNaviosInimigo.innerText = 5 - naviosAfundados;
+        atualizarNumeroNavios(infoNaviosInimigo, 5 - naviosAfundados);
+    }
+
     if(naviosAfundados === 5){
         return true;
     }else{
@@ -215,21 +230,39 @@ export function alternarTransparenciaTabuleiro(tipo) {
     }
 }
 
-export function alternarTransparencia(seletorElemento){
-    const elemento = document.querySelector(seletorElemento);
+function atualizarNumeroNavios(elemento, numeroNavios) {
+    if (elemento.textContent === String(numeroNavios)) return;
 
-    elemento.classList.toggle(
-        "transparente"
-    );
+    const container = elemento.parentElement;
+    
+    elemento.textContent = numeroNavios;
+
+    // Reinicia a animação
+    elemento.classList.remove("flash-dano");
+    container.classList.remove("flash-dano-container");
+
+    // Força o navegador a reconhecer a remoção
+    void elemento.offsetWidth;
+
+    // Adiciona novamente a classe
+    elemento.classList.add("flash-dano");
+    container.classList.add("flash-dano-container");
+}
+
+export function alternarTransparencia(seletorElemento){
+    const elemento = document.querySelectorAll(seletorElemento);
+
+    elemento.forEach(elemento => {
+        elemento.classList.toggle("transparente");
+    });
 }
 
 export function ocultarElemento(seletorElemento, estado) {
-    const elemento = document.querySelector(seletorElemento);
+    const elementos = document.querySelectorAll(seletorElemento);
 
-    // O "if" garante que o código só roda se o elemento realmente existir
-    if (elemento) {
+    elementos.forEach(elemento => {
         elemento.classList.toggle("oculto", estado);
-    }
+    });
 }
 
 export function desativarTabuleiros(){

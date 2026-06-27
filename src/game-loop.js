@@ -12,14 +12,21 @@ import { verificarChaveAPI } from "./script-tabuleiro.js";
 import { AudioManager } from "./script-audioManager.js";
 //Instancia do AudioManager pra controlar o audio
 const audio = new AudioManager();
-let numeroJogadasHtml = document.getElementById('rodadaJogador');
+/**
+ * Indica no jogo quantas jogadas o jogador realizou durante a partida
+ */
+let infoNumeroJogadas = document.getElementById('info-numero-jogadas');
 let numeroJogadas = 0;
-numeroJogadasHtml.innerText = numeroJogadas.toString();
+/**
+ * Indica no jogo quem está jogando como inimigo: Gemini ou Piloto Automático
+ * Modificado com: infoNumeroJogadas.innerText = (string)
+*/
+let infoJogandoAgora = document.getElementById('info-jogando-agora');
 /**
  * Intervalo de tempo entre jogadas consecutivas do Fallback (Piloto Automático), em milissegundos.
- * Default: 1500
+ * Default: 1000
  */
-const intervaloJogadasAutomaticas = 1500;
+const intervaloJogadasAutomaticas = 1000;
 /**
  * Intervalo de tempo entre a vez do jogador ou inimigo, quando um deles errar uma jogada, em milissegundos.
  * Default: 1500
@@ -66,7 +73,6 @@ let tabuleiroJogadorRevelado = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
-let posicaoChavesApi = 0;
 var Acerto;
 (function (Acerto) {
     Acerto[Acerto["Errou"] = 40] = "Errou";
@@ -165,7 +171,8 @@ Responda de forma curta.
         raciocinioIA.textContent = "O Piloto automático está jogando...";
         return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     }
-    mensagemVezInimigo("Gemini está pensando...");
+    mensagemVezInimigo("O inimigo está pensando...");
+    infoJogandoAgora.innerText = "Gemini";
     if (respostaFunc.status) {
         const sucesso = respostaFunc;
         const coordenadasIa = sucesso.dados;
@@ -240,6 +247,7 @@ if (botaoIniciarJogo) {
         // Desativa o botão para o usuário não gerar vários eventos de clique
         let podeJogar = true;
         mensagemVezJogador("É a sua vez!");
+        mensagemVezInimigo("Esperando o jogador...");
         // Adiciona os navios no tabuleiro da IA
         tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
         tabuleiroInimigoCompleto = posicionaNaviosTabuleiroInimigo(tabuleiroInimigoCompleto, totalNaviosIA);
@@ -249,12 +257,12 @@ if (botaoIniciarJogo) {
         if (campoIa) {
             Array.from(campoIa.children).forEach((filho) => {
                 filho.addEventListener("click", async () => {
-                    numeroJogadas++;
-                    numeroJogadasHtml.innerText = numeroJogadas.toString();
                     if (!podeJogar) {
                         return;
                     }
                     podeJogar = false;
+                    numeroJogadas++;
+                    infoNumeroJogadas.innerText = numeroJogadas.toString();
                     // Se a posição que o usuário clicou possui um navio, a IA não irá jogar e o jogador pode só clicar em outra posição
                     if (verificarNaviosInimigosAtingidos(filho)) {
                         mensagemVezJogador("Ainda é sua vez!");
@@ -264,7 +272,6 @@ if (botaoIniciarJogo) {
                     // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
                     else {
                         // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
-                        mensagemVezInimigo("Vez do inimigo!");
                         mensagemVezJogador("Esperando o inimigo...");
                         await wait(intervaloRodadas);
                         atualizarIndicadorTurno('ia');
@@ -321,7 +328,8 @@ export function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 async function realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto) {
-    mensagemVezInimigo("Piloto Automático jogando...");
+    mensagemVezInimigo("O inimigo está jogando...");
+    infoJogandoAgora.innerText = "Piloto Automático";
     await wait(intervaloJogadasAutomaticas);
     if (verificarTerminoDeJogo() == true) {
         return { acerto: Acerto.Errou };

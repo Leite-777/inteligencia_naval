@@ -425,7 +425,6 @@ header {
     cursor: pointer;
 }
 
-
 .inimigo {
     grid-column-start: 3;
     grid-column-end: 4;
@@ -474,10 +473,21 @@ header {
 }
 
 .info {
-    color: white;
-    background-color: #014177;
+    background-color: #060d1c;
     padding: 15px;
     border-radius: 10px;
+}
+
+.info-jogador{
+    color: #3EE5DF;
+}
+
+.info-inimigo{
+    color: #ff4040;
+}
+
+.info span{
+    color: white;
 }
 
 .botao-raciocinio-ia {

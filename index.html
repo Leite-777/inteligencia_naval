@@ -170,11 +170,11 @@
 
         <div class="caixa-input">
             <p>Siga os passos da Guia do Usuário acima, para criar e copiar a sua Chave API.</p>
-            <label for="api-key">Chave API:</label>
-            <input id="api-key" type="text" placeholder="Cole sua chave API aqui: AIzaSyC4SKnWv..."
-                class="input-api-key">
+            <textarea id="api-key" class="input-api-key" rows="3" placeholder="Cole sua chave API aqui: AIzaSyC4SKnWv..."></textarea>
             <button class="botao">Clique para colar a chave API</button>
             <button class="botao">Validar a Chave API</button>
+            <p>Cada conta Google tem um limite diário de uso gratuito das Chaves API.</p>
+            <p>Para deixar o Gemini jogar por mais tempo, você pode inserir múltiplas Chaves API de contas diferentes do Google no campo.</p>
         </div>
 
         <button class="botao botao-preencher-api">Jogar com Piloto Automático</button>
@@ -236,8 +236,8 @@
         <div id="jogo-batalha-naval">
 
             <div class="info-container info-jogador">
-                <div class="info navios-restantes-jogador">Navios restantes:</div>
-                <div class="info numero-jogadas-jogador">Número de jogadas:<p id="rodadaJogador">Pao</p></div>
+                <div class="info">Navios restantes: <span id="info-navios-jogador">5</span></div>
+                <div class="info">Número de jogadas: <span id="info-numero-jogadas">0</span></div>
             </div>
 
             <div class="tabuleiro-container jogador">
@@ -260,8 +260,8 @@
             </div>
 
             <div class="info-container info-inimigo">
-                <div class="info navios-restantes-inimigo">Navios restantes:</div>
-                <div class="info jogando-agora">Jogando agora:</div>
+                <div class="info">Navios restantes: <span id="info-navios-inimigo">5</span></div>
+                <div class="info">Jogando agora: <br><span id="info-jogando-agora">Escolhendo...</span></div>
                 <div class="colapsavel colapsavel-raciocinio-ia">
                     <button class="colapsavel-expandir botao-raciocinio-ia">Visualizar Raciocínio da IA</button>
                     <div class="colapsavel-conteudo raciocinio-ia">
