@@ -184,46 +184,48 @@
         <h3>Jogo da Batalha Naval</h3>
 
         <div class="grid-botoes">
-            <div class="modal guia-jogo">
-                <button class="modal-expandir">Como jogar?</button>
-                <div class="modal-container">
-                    <div class="modal-conteudo">
-                        <button class="modal-fechar">&times;</button>
-                        <h2>Regras do Jogo</h2>
-                        <ul>
-                            <li>Cada jogador começa arrastando 5 navios para posições estratégicas do seu tabuleiro.
-                            </li>
-                            <li>Na vez de cada jogador, ele deve escolher uma posição para atacar o tabuleiro do
-                                inimigo.</li>
-                            <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições
-                                até errar uma.</li>
-                            <li>Quando todas as partes de um navio são acertadas, ele é afundado.</li>
-                            <li>Vence quem afundar os 5 navios do oponente.</li>
-                        </ul>
+            <div class="botoes-padrao">
+                <div class="modal guia-jogo">
+                    <button class="modal-expandir">Como jogar?</button>
+                    <div class="modal-container">
+                        <div class="modal-conteudo">
+                            <button class="modal-fechar">&times;</button>
+                            <h2>Regras do Jogo</h2>
+                            <ul>
+                                <li>Cada jogador começa arrastando 5 navios para posições estratégicas do seu tabuleiro.
+                                </li>
+                                <li>Na vez de cada jogador, ele deve escolher uma posição para atacar o tabuleiro do
+                                    inimigo.</li>
+                                <li>Caso essa posição acerte um navio, o mesmo jogador pode continuar atacando mais posições
+                                    até errar uma.</li>
+                                <li>Quando todas as partes de um navio são acertadas, ele é afundado.</li>
+                                <li>Vence quem afundar os 5 navios do oponente.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!--<button class="botao botao-iniciar-jogo">Iniciar Jogo!</button>-->
-            <button class="botao botao-iniciar-jogo">Iniciar Jogo!</button>
+                <!--<button class="botao botao-iniciar-jogo">Iniciar Jogo!</button>-->
+                <!-- <button class="botao botao-iniciar-jogo">Iniciar Jogo!</button> -->
 
-            <div class="modal modal-terminar-jogo">
-                <button class="modal-expandir">Terminar Jogo!</button>
+                <div class="modal modal-terminar-jogo">
+                    <button class="modal-expandir">Terminar Jogo!</button>
 
-                <div class="modal-container">
-                    <div class="modal-conteudo">
-                        <button class="modal-fechar">&times;</button>
-                        <h2>Tem certeza que deseja terminar o jogo?</h1>
-                            <button class="botao botao-terminar-jogo">Confirmar</button>
+                    <div class="modal-container">
+                        <div class="modal-conteudo">
+                            <button class="modal-fechar">&times;</button>
+                            <h2>Tem certeza que deseja terminar o jogo?</h1>
+                                <button class="botao botao-terminar-jogo">Confirmar</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <button class="botao botao-reiniciar-jogo">Reiniciar Jogo!</button>
+                <button class="botao botao-reiniciar-jogo">Reiniciar Jogo!</button>
+            </div>
 
             <div class="botoes-preferencia">
-                <button class="botao-mute" style="color: #2ecc71;"><span class="material-symbols-outlined">brand_awareness</span></button>
+                <button class="botao-mute"><span class="material-symbols-outlined">brand_awareness</span></button>
 
-                <button class="botao-gif-stop" style="color: #2ecc71;"><span class="material-symbols-outlined">gif_box</span></button>
+                <button class="botao-gif-stop"><span class="material-symbols-outlined">gif_box</span></button>
             </div>
         </div>
 
@@ -231,6 +233,16 @@
             <p></p>
             <p></p>
             <p>Aguardando início de jogo...</p>
+        </div>
+
+        <div class="iniciar-jogo">
+
+            <canvas id="battle-canvas" width="700" height="120"></canvas>
+
+            <button class="botao-iniciar-jogo">
+                Iniciar Jogo
+            </button>
+
         </div>
 
         <div id="jogo-batalha-naval">

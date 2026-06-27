@@ -250,3 +250,183 @@ function reproduzirGifs(){
         gif.src = gif.dataset.gif;
     });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const canvas = document.getElementById("battle-canvas");
+    const ctx = canvas.getContext("2d");
+
+    const W = canvas.width;
+    const H = canvas.height;
+
+    const boats = [
+        {
+            x: 90,
+            dir: 1,
+            color: "#4a90e2",
+            cooldown: 0
+        },
+        {
+            x: W - 90,
+            dir: -1,
+            color: "#e24a4a",
+            cooldown: 0
+        }
+    ];
+
+    function desenhaBarco(boat) {
+        const x = boat.x;
+        const y = H / 2;
+
+        ctx.save();
+
+        ctx.translate(x, y);
+
+        ctx.scale(boat.dir, 1);
+
+        // casco
+        ctx.fillStyle = "#444";
+
+        ctx.beginPath();
+
+        ctx.moveTo(-30, 5);
+        ctx.lineTo(30, 5);
+        ctx.lineTo(20, 18);
+        ctx.lineTo(-20, 18);
+
+        ctx.closePath();
+
+        ctx.fill();
+
+        // mastro
+        ctx.strokeStyle = "#222";
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(0, 5);
+        ctx.lineTo(0, -18);
+
+        ctx.stroke();
+
+        const flagWave = Math.sin(Date.now() / 200 + boat.x) * 2;
+
+        ctx.fillStyle = boat.color;
+
+        ctx.beginPath();
+
+        ctx.moveTo(0, -18);
+        ctx.lineTo(22, -12 + flagWave);
+        ctx.lineTo(0, -6 + flagWave);
+
+        ctx.closePath();
+
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    function desenhaOnda(boat) {
+
+        ctx.strokeStyle = "#4aa3ff88";
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+
+        const baseY = H / 2 + 20;
+
+        for (let i = 0; i < 60; i++) {
+
+            const x =
+                boat.x - 30 + i;
+
+            const y =
+                baseY +
+                Math.sin(i / 5 + Date.now() / 200) * 2;
+
+            if (i === 0) {
+
+                ctx.moveTo(x, y);
+
+            } else {
+
+                ctx.lineTo(x, y);
+            }
+        }
+
+        ctx.stroke();
+    }
+
+    function desenhaBolaCanhao(from) {
+
+        const y = H / 2 + 5;
+
+        ctx.fillStyle = "#ffeb3b";
+
+        ctx.beginPath();
+
+        ctx.arc(from.x, y, 3, 0, Math.PI * 2);
+
+        ctx.fill();
+
+        return {
+            x: from.x + from.dir * 14,
+            y,
+            dir: from.dir
+        };
+    }
+
+    let bullets = [];
+
+    function animar() {
+
+        ctx.clearRect(0, 0, W, H);
+
+        bullets =
+            bullets.filter(
+                b => b.x > -20 && b.x < W + 20
+            );
+
+        boats.forEach((b, i) => {
+
+            desenhaBarco(b);
+
+            desenhaOnda(b);
+
+            if (b.cooldown <= 0) {
+
+                bullets.push(
+                    desenhaBolaCanhao(b)
+                );
+
+                b.cooldown =
+                    90 + Math.random() * 60;
+            }
+
+            b.cooldown--;
+        });
+
+        bullets.forEach(b => {
+
+            b.x += b.dir * 4;
+
+            ctx.fillStyle = "#ffeb3b";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                b.x,
+                b.y,
+                3,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+        });
+
+        requestAnimationFrame(animar);
+    }
+
+    animar();
+});

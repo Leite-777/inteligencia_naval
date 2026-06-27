@@ -84,6 +84,8 @@ function posicionarNavios() {
         ocultarElemento(".botao-mute", false);
         ocultarElemento(".info", false);
         ocultarElemento(".botao-iniciar-jogo", true);
+        ocultarElemento(".iniciar-jogo", true);
+        ocultarElemento(".battle-canvas", true);
         ocultarElemento(".campo-navios-arrastaveis", true);
 
         // Permite o usuário encerrar o jogo com um empate quando quiser
