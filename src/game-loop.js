@@ -260,10 +260,6 @@ if (botaoIniciarJogo) {
                     if (!podeJogar) {
                         return;
                     }
-                    else {
-                        numeroJogadas++;
-                        numeroJogadasHtml.innerText = numeroJogadas.toString();
-                    }
                     podeJogar = false;
                     numeroJogadas++;
                     infoNumeroJogadas.innerText = numeroJogadas.toString();
