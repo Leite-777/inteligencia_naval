@@ -44,6 +44,9 @@ function iniciarJogo() {
     ocultarElemento(".guia-jogo", true);
     ocultarElemento(".botoes-preferencia", true);
     ocultarElemento(".info", true);
+    
+    ocultarElemento(".tabuleiro-container-inimigo", true);
+    campoNaviosArrastaveis.classList.toggle("foco-posicionar-navios",true);
 
     statusMensagem("Arraste os navios pro seu tabuleiro, e clique em Iniciar Jogo!");
 
@@ -59,10 +62,12 @@ function posicionarNavios() {
     if(!verificarChaveAPI()){return;}
 
     if (verificaIniciarJogo() === true) {
+        ocultarElemento(".tabuleiro-container-inimigo", false);
+        campoNaviosArrastaveis.classList.toggle("foco-posicionar-navios",false);
+        wait(1500);
+
         jogoTelaCheia(true);
         audio.playBackground();
-        
-        statusAnuncio("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
 
         marcarPosicoesDosNavios();
         bloquearArrasteDosNavios();
@@ -72,7 +77,7 @@ function posicionarNavios() {
         btnIniciarJogo.disabled = true;
         btnIniciarJogo.removeEventListener("click", posicionarNavios);
 
-        alternarTransparenciaTabuleiro("jogador");
+        // alternarTransparenciaTabuleiro("jogador");
         alternarTransparenciaTabuleiro("inimigo");
 
         alternarTransparencia(".botao-iniciar-jogo")
@@ -81,11 +86,12 @@ function posicionarNavios() {
         ocultarElemento(".modal-terminar-jogo", false);
         ocultarElemento(".guia-jogo", false);
         ocultarElemento(".botoes-preferencia", false);
-        ocultarElemento(".info", false);
         ocultarElemento(".botao-iniciar-jogo", true);
         ocultarElemento(".iniciar-jogo", true);
         ocultarElemento(".battle-canvas", true);
         ocultarElemento(".campo-navios-arrastaveis", true);
+
+        
 
         // Permite o usuário encerrar o jogo com um empate quando quiser
         btnTerminarJogo.addEventListener("click", terminarJogo);
@@ -176,10 +182,25 @@ function jogarComGemini(){
 
     ocultarElemento("#guia-do-usuario", false);
     ocultarElemento("#chave-api", false);
-    ocultarElemento("#jogo", false);
+    ocultarElemento("#jogo", true);
+
+    let btnJogarComGemini = document.querySelector(".botao-jogar-gemini");
+    btnJogarComGemini.addEventListener("click", confirmarJogoComGemini);
 }
 
-function jogarComPilotoAutomatico(){
+function confirmarJogoComGemini(){
+    if(!verificarChaveAPI()){return;}
+    
+    ocultarElemento("#modo-de-jogo", true);
+    ocultarElemento("#guia-do-usuario", true);
+    ocultarElemento("#chave-api", true);
+
+    ocultarElemento("#jogo", false);
+
+    btnJogarComGemini.removeEventListener("click", confirmarJogoComGemini);
+}
+
+export function jogarComPilotoAutomatico(){
     ocultarElemento("#modo-de-jogo", true);
     ocultarElemento("#guia-do-usuario", true);
     ocultarElemento("#chave-api", true);

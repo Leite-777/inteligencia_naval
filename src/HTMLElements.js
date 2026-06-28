@@ -1,6 +1,7 @@
 // Para preenchimento dos tabuleiros com divs
 let tabuleiroJogador = document.querySelector(".tabuleiro-jogador");
 let tabuleiroInimigo = document.querySelector(".tabuleiro-inimigo");
+let campoNaviosArrastaveis = document.querySelector(".campo-navios-arrastaveis");
 let campoDosNavios = document.querySelector(".navios-arrastaveis");
 let btnIniciarJogo = document.querySelector(".botao-iniciar-jogo");
 let btnTerminarJogo = document.querySelector(".botao-terminar-jogo");

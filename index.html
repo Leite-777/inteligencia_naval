@@ -169,14 +169,16 @@
         <h3>Chave API</h3>
 
         <div class="caixa-input">
-            <p>Siga os passos da Guia do Usuário acima, para criar e copiar a sua Chave API.</p>
+            <p class="info-input">Siga os passos da Guia do Usuário acima, para criar e copiar a sua Chave API.</p>
             <textarea id="api-key" class="input-api-key" rows="3" placeholder="Cole sua chave API aqui: AIzaSyC4SKnWv..."></textarea>
-            <button class="botao">Clique para colar a chave API</button>
-            <button class="botao">Validar a Chave API</button>
+            <button class="botao botao-colar">Colar Chave API</button>
+            <button class="botao botao-jogar-gemini">Jogar com Gemini</button>
             <p>Cada conta Google tem um limite diário de uso gratuito das Chaves API.</p>
             <p>Para deixar o Gemini jogar por mais tempo, você pode inserir múltiplas Chaves API de contas diferentes do Google no campo.</p>
         </div>
 
+        <p>Se não foi possível conseguir uma chave API, clique aqui para jogar com o Piloto Automático.</p>
+        <p>Note que o Piloto Automático é apenas um algoritmo, e não representa uma inteligência artificial verdadeira.</p>
         <button class="botao botao-preencher-api">Jogar com Piloto Automático</button>
     </section> <!-- chave-api -->
 
@@ -248,7 +250,7 @@
                 <div class="info">Número de jogadas: <span id="info-numero-jogadas">0</span></div>
             </div>
 
-            <div class="tabuleiro-container jogador">
+            <div class="tabuleiro-container tabuleiro-container-jogador">
                 <h2 class="status status-jogador">Seu Tabuleiro</h2>
 
                 <div class="tabuleiro tabuleiro-jogador">
@@ -258,7 +260,7 @@
             </div>
 
             <!-- Grade do inimigo -->
-            <div class="tabuleiro-container inimigo">
+            <div class="tabuleiro-container tabuleiro-container-inimigo">
                 <h2 class="status status-inimigo">Tabuleiro Inimigo</h2>
 
                 <div class="tabuleiro tabuleiro-inimigo">
@@ -363,6 +365,7 @@
     <script src="src/HTMLElements.js"></script>
     <script src="src/script-visual.js"></script>
     <script src="src/script-colapsavel.js"></script>
+    <script src="src/script-funcoes.js"></script>
     <script type="module" src="src/script-tabuleiro.js"></script>
     <script type="module" src="src/script-audioManager.js"></script>
     <script type="module" src="src/script-fallback.js"></script>

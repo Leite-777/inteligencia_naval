@@ -163,7 +163,7 @@ header {
     padding: 30px 0;
 }
 
-#chave-api p {
+.caixa-input p {
     color: white;
 }
 
@@ -224,7 +224,7 @@ header {
 .colapsavel-conteudo {
     padding: 10px 30px;
     margin: 10px;
-    width: 30%;
+    max-width: 100px;
 
     background-color: #3EE5DF;
 
@@ -461,6 +461,14 @@ header {
     grid-column-end: 3;
 }
 
+.foco-posicionar-navios{
+    grid-row-start: 1;
+    grid-row-end: 2;
+
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
 .campo-navios-arrastaveis>p {
     text-align: center;
     color: white;
@@ -468,7 +476,7 @@ header {
 }
 
 .navios-arrastaveis {
-    background-color: #014177;
+    /*background-color: #014177;*/
     border-radius: 10px;
 
     display: flex;

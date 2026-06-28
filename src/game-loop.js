@@ -2,6 +2,7 @@ import { tabuleiroHTMLparaJSON } from "./script-tabuleiro.js";
 import { tabuleiroJSONparaHTML } from "./script-tabuleiro.js";
 import { statusMensagem } from "./script-tabuleiro.js";
 import { statusAlerta } from "./script-tabuleiro.js";
+import { statusAnuncio } from "./script-tabuleiro.js";
 import { atualizarTabuleiroReveladoJogador } from "./script-tabuleiro.js";
 import { escolherJogadaFallback } from "./script-fallback.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
@@ -166,22 +167,21 @@ Responda APENAS em JSON válido.
 Não use markdown.  
 Responda de forma curta.  
 `;
+    mensagemVezInimigo("O inimigo está pensando...");
     let raciocinioIA = document.querySelector(".raciocinio-ia");
     let respostaFunc = await chamadaApi(prompt, totalChavesApi[contadorChaves]);
     if (respostaFunc == undefined) {
         raciocinioIA.textContent = "O Piloto automático está jogando...";
         return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     }
-    mensagemVezInimigo("O inimigo está pensando...");
     infoJogandoAgora.innerText = "Gemini";
     if (respostaFunc.status) {
         return ataque(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA);
     }
     else {
         const erro = respostaFunc;
-        console.log(contadorChaves);
         if (erro.CodigoErro === 403 || erro.CodigoErro === 429) {
-            statusAlerta("[X] Não é possível fazer contato com o Gemini! O Piloto Automático assumirá o controle. [X]");
+            // statusAlerta("[X] Não é possível fazer contato com o Gemini! O Piloto Automático assumirá o controle. [X]");
             let stopBusca = true;
             while (stopBusca && contadorChaves < totalChavesApi.length) {
                 contadorChaves++;
@@ -199,7 +199,7 @@ Responda de forma curta.
             contadorChaves = 0;
         }
         else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
-            statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
+            // statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
         }
         raciocinioIA.textContent = "O Piloto automático está jogando...";
         return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
@@ -213,7 +213,18 @@ Responda de forma curta.
 const botaoIniciarJogo = document.querySelector('.botao-iniciar-jogo');
 // Garante que o botão realmente existe na página antes de adicionar o evento
 if (botaoIniciarJogo) {
+    const tabuleiroJogadorHTML = document.querySelector(".tabuleiro-container-jogador");
+    const tabuleiroInimigoHTML = document.querySelector(".tabuleiro-container-inimigo");
     botaoIniciarJogo.addEventListener('click', async () => {
+        // Espera um tempo antes do jogo realmente começar
+        ocultarElemento(".info", true);
+        tabuleiroJogadorHTML?.classList.toggle("no-pointer", true);
+        tabuleiroInimigoHTML?.classList.toggle("no-pointer", true);
+        statusAnuncio("Preparado? O jogo irá começar!");
+        await wait(3000);
+        ocultarElemento(".info", false);
+        tabuleiroInimigoHTML?.classList.toggle("no-pointer", false);
+        statusAnuncio("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
         if (verificarChaveAPI() === false) {
             return;
         }
@@ -222,6 +233,7 @@ if (botaoIniciarJogo) {
         }
         // Desativa o botão para o usuário não gerar vários eventos de clique
         let podeJogar = true;
+        alternarTransparenciaTabuleiro("jogador");
         mensagemVezJogador("É a sua vez!");
         mensagemVezInimigo("Esperando o jogador...");
         // Adiciona os navios no tabuleiro da IA

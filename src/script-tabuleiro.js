@@ -1,6 +1,7 @@
 import { terminarJogo } from "./game-start.js";
 import { inicializaOsNaviosIA } from "./script-jogador.js";
 import { AudioManager } from "./script-audioManager.js";
+import { jogarComPilotoAutomatico } from "./game-start.js";
 
 //Instancia do AudioManager pra controlar o audio
 const audio = new AudioManager();
@@ -310,6 +311,7 @@ export function preencherChaveAPI(valor){
 botaoPreencherAPI.addEventListener("click", () => {
     preencherChaveAPI("piloto-automatico");
     alternarTransparencia(".botao-preencher-api");
+    jogarComPilotoAutomatico();
 });
 
 /**
