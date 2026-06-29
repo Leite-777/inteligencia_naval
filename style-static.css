@@ -224,7 +224,7 @@ header {
 .colapsavel-conteudo {
     padding: 10px 30px;
     margin: 10px;
-    max-width: 100px;
+    max-width: 350px;
 
     background-color: #3EE5DF;
 
@@ -430,6 +430,11 @@ header {
     border-radius: 10px;
 
     cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 .botoes-preferencia>button {
@@ -525,14 +530,222 @@ header {
     color: white;
 }
 
-.botao-raciocinio-ia {
-    font-size: 12px;
-    margin: 0;
+.colapsavel-raciocinio-ia{
+    width: 100%;
+    max-width: 340px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
 }
 
-.raciocinio-ia {
-    font-size: 12px;
-    width: auto;
+.botao-raciocinio-ia{
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 14px 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #081826,
+            #014177
+        );
+
+    color: white;
+
+    border: 1px solid rgba(62,229,223,0.25);
+    border-radius: 14px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    position: relative;
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    box-shadow:
+        0 0 10px rgba(62,229,223,0.08);
+}
+
+.botao-raciocinio-ia::before{
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.12),
+            transparent
+        );
+
+    transition: 0.7s;
+}
+
+.botao-raciocinio-ia:hover::before{
+    left: 120%;
+}
+
+.botao-raciocinio-ia:hover{
+    transform: translateY(-2px);
+
+    border-color: rgba(62,229,223,0.45);
+
+    box-shadow:
+        0 0 15px rgba(62,229,223,0.18),
+        0 0 25px rgba(62,229,223,0.08);
+}
+
+.botao-raciocinio-ia:active{
+    transform: scale(0.97);
+}
+
+.botao-raciocinio-ia .material-symbols-outlined{
+    font-size: 20px;
+
+    color: #3EE5DF;
+}
+
+.raciocinio-ia{
+    position: relative;
+
+    background: #08131f;
+
+    border: 1px solid rgba(62,229,223,0.15);
+
+    border-radius: 18px 18px 18px 6px;
+
+    padding: 40px 16px 16px 16px;
+
+    color: #d8f8ff;
+
+    font-size: 13px;
+    line-height: 1.7;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 0 15px rgba(0,0,0,0.35),
+        0 0 10px rgba(62,229,223,0.05);
+
+    backdrop-filter: blur(6px);
+}
+
+.raciocinio-ia::before{
+    content: "IA";
+
+    position: absolute;
+
+    top: 10px;
+    right: 12px;
+
+    background: #3EE5DF;
+
+    color: #002c50;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    padding: 4px 8px;
+
+    border-radius: 999px;
+
+    letter-spacing: 1px;
+
+    box-shadow:
+        0 0 10px rgba(62,229,223,0.35);
+}
+
+.raciocinio-ia p{
+    margin: 0;
+    padding: 0;
+
+    color: #d8f8ff;
+}
+
+.raciocinio-ia::-webkit-scrollbar{
+    width: 8px;
+}
+
+.raciocinio-ia::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+.raciocinio-ia::-webkit-scrollbar-thumb{
+    background: rgba(62,229,223,0.25);
+
+    border-radius: 999px;
+
+    transition: background 0.2s ease;
+}
+
+.raciocinio-ia::-webkit-scrollbar-thumb:hover{
+    background: rgba(62,229,223,0.5);
+}
+
+.raciocinio-ia{
+    animation: surgirRaciocinio 0.25s ease;
+}
+
+@keyframes surgirRaciocinio{
+    from{
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.raciocinio-scroll{
+    max-height: 90px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 8px;
+}
+
+.raciocinio-scroll::-webkit-scrollbar{
+    width: 8px;
+}
+
+.raciocinio-scroll::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+.raciocinio-scroll::-webkit-scrollbar-thumb{
+    background: rgba(62,229,223,0.25);
+
+    border-radius: 999px;
+}
+
+.raciocinio-scroll::-webkit-scrollbar-thumb:hover{
+    background: rgba(62,229,223,0.5);
 }
 
 .tabuleiro-container {
@@ -790,6 +1003,11 @@ footer>div {
     box-shadow:0 0 10px rgba(0,255,255,.4);
     transition: all .2s ease;
     z-index: 2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 .botao-iniciar-jogo:hover {
