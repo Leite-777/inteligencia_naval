@@ -91,8 +91,6 @@ function posicionarNavios() {
         ocultarElemento(".battle-canvas", true);
         ocultarElemento(".campo-navios-arrastaveis", true);
 
-        
-
         // Permite o usuário encerrar o jogo com um empate quando quiser
         btnTerminarJogo.addEventListener("click", terminarJogo);
     } else {
@@ -132,6 +130,10 @@ export function terminarJogo(vencedor = 0) {
     ocultarElemento(".botoes-preferencia", true);
     ocultarElemento(".modal-terminar-jogo", true);
     ocultarElemento(".botao-reiniciar-jogo", false);
+
+    ocultarElemento(".status", true);
+    tabuleiroJogador.classList.remove('borda-turno-ia');
+    tabuleiroInimigo.classList.remove('borda-turno-jogador');
 
     btnTerminarJogo.removeEventListener("click", terminarJogo);
     btnReiniciarJogo.addEventListener("click", reiniciarJogo);
@@ -296,14 +298,11 @@ window.addEventListener('DOMContentLoaded', () => {
     iniciarJogo();    
 });
 
-
 window.addEventListener('load', () => {
-    if (sessionStorage.getItem('scrollParaJogo') === 'true') {
-        sessionStorage.removeItem('scrollParaJogo');
+    // Carrega o valor salvo no campo da Chave API ao abrir/recarregar a página
+    const valorCampoAPI = sessionStorage.getItem("apiKey");
 
-        document.getElementById('jogo').scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
+    if (valorCampoAPI !== null) {
+        textarea.value = valorCampoAPI;
     }
 });

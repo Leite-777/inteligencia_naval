@@ -216,6 +216,12 @@ if (botaoIniciarJogo) {
     const tabuleiroJogadorHTML = document.querySelector(".tabuleiro-container-jogador");
     const tabuleiroInimigoHTML = document.querySelector(".tabuleiro-container-inimigo");
     botaoIniciarJogo.addEventListener('click', async () => {
+        if (verificarChaveAPI() === false) {
+            return;
+        }
+        if (verificaIniciarJogo() === false) {
+            return;
+        }
         // Espera um tempo antes do jogo realmente começar
         ocultarElemento(".info", true);
         tabuleiroJogadorHTML?.classList.toggle("no-pointer", true);
@@ -225,13 +231,6 @@ if (botaoIniciarJogo) {
         ocultarElemento(".info", false);
         tabuleiroInimigoHTML?.classList.toggle("no-pointer", false);
         statusAnuncio("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
-        if (verificarChaveAPI() === false) {
-            return;
-        }
-        if (verificaIniciarJogo() === false) {
-            return;
-        }
-        // Desativa o botão para o usuário não gerar vários eventos de clique
         let podeJogar = true;
         alternarTransparenciaTabuleiro("jogador");
         mensagemVezJogador("É a sua vez!");
@@ -261,6 +260,7 @@ if (botaoIniciarJogo) {
                     else {
                         // Permite que a IA faça a sua jogada, e caso ela acerte um navio, ela pode continuar jogando até errar
                         mensagemVezJogador("Esperando o inimigo...");
+                        tabuleiroInimigoHTML?.classList.toggle("no-pointer", true);
                         await wait(intervaloRodadas);
                         atualizarIndicadorTurno('ia');
                         alternarTransparenciaTabuleiro("jogador");
@@ -286,6 +286,7 @@ if (botaoIniciarJogo) {
                         atualizarIndicadorTurno('jogador');
                         mensagemVezJogador("É a sua vez!");
                         mensagemVezInimigo("Esperando o jogador...");
+                        tabuleiroInimigoHTML?.classList.toggle("no-pointer", false);
                         // verificarTerminoDeJogo()
                     }
                 });

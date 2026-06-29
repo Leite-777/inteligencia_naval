@@ -97,4 +97,7 @@ function validarCampoApi() {
             `${quantidadeValidas} chave(s) válida(s) e ${quantidadeInvalidas} chave(s) inválida(s).`;
         infoInput.style.color = "#ffd040";
     }
+
+    // Salva o conteúdo do input para continuar na pagina após ser recarregado.
+    sessionStorage.setItem("apiKey", textarea.value);
 }
