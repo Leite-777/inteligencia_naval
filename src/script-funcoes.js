@@ -101,3 +101,103 @@ function validarCampoApi() {
     // Salva o conteúdo do input para continuar na pagina após ser recarregado.
     sessionStorage.setItem("apiKey", textarea.value);
 }
+
+/**
+ * Funções para exibir a tela de Vitória, Derrota ou Empate no fim do jogo
+ */
+
+//efeito de vitória na tela
+function declararVitoria() {
+  const victoryScreen = document.getElementById('victory-screen');
+  victoryScreen.classList.remove('hidden');
+
+  confetti({
+    particleCount: 150,
+    spread: 80,
+    origin: { y: 0.6 }
+  });
+
+  let duration = 3 * 1000;
+  let end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 } 
+    });
+    confetti({
+      particleCount: 3,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 } 
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+
+  setTimeout(() => {
+    victoryScreen.classList.add('hidden');
+  }, 3500);
+}
+
+//efeito de derrota na tela
+function declararDerrota() {
+  const defeatScreen = document.getElementById('defeat-screen');
+  defeatScreen.classList.remove('hidden');
+
+  
+  let duration = 3 * 1000;
+  let end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 90, 
+      spread: 30,
+      colors: ['#ffffff',  '#e0e0e0',  '#aaaaaa',  '#ffffff'],
+      scalar: 1.2, 
+      gravity: 1.5, 
+      drift: 0,
+      origin: { x: Math.random(), y: 0 } 
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  }());
+
+  setTimeout(() => {
+    defeatScreen.classList.add('hidden');
+  }, 3000);
+}
+
+function declararEmpate() {
+  const drawScreen = document.getElementById('draw-screen');
+  drawScreen.classList.remove('hidden');
+
+  setTimeout(() => {
+    drawScreen.classList.add('hidden');
+  }, 3000);
+}
+
+/**
+ * Funções para desativar animações usando os botões da tela de jogo
+ */
+
+function pausaReproduzGifs(){
+    if(gifAtivado === true){
+        btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #e74c3c;">gif_box</span>`;
+        gifAtivado = false;
+        jogo.classList.toggle("gradiente",false);
+        pausarGifs();
+    }else{
+        btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #2ecc71;">gif_box</span>`;
+        gifAtivado = true;
+        jogo.classList.toggle("gradiente",true);
+        reproduzirGifs();
+    }
+}

@@ -32,7 +32,7 @@ let infoJogandoAgora = document.getElementById('info-jogando-agora') as HTMLPara
  * Intervalo de tempo entre jogadas consecutivas do Fallback (Piloto Automático), em milissegundos.
  * Default: 1000
  */
-const intervaloJogadasAutomaticas = 1000;
+const intervaloJogadasAutomaticas = 1500;
 /**
  * Intervalo de tempo entre a vez do jogador ou inimigo, quando um deles errar uma jogada, em milissegundos.
  * Default: 1500
@@ -115,156 +115,6 @@ type acertoAPI = { acerto: Acerto | undefined; };
 
 let totalNaviosIA = inicializaOsNaviosIA();
 let contadorChaves = 0;
-
-//                              Função principal para a Chamada de API, com o retorno dos dados
-
-async function chamadaApi(prompt: string,chaveApi : string): Promise<resultadoApi> {
-
-    let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chaveApi}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            contents: [
-                {
-                    parts: [
-                        {
-                            text: prompt
-                        }
-                    ]
-                }
-            ]
-        })
-    });
-    if (!resposta.ok) {
-        return {
-            CodigoErro: resposta.status,
-            status: false,
-            mensagemErro: resposta.statusText
-        };
-    }
-    try {
-
-        let dados = await resposta.json();
-
-        let respostaApi = dados?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (!respostaApi) {
-            return {
-                CodigoErro: resposta.status,
-                mensagemErro: resposta.statusText,
-                status: false
-            };
-        }
-
-        let respostaFormatada = respostaApi.replace(/```json|```/g, "").trim();
-
-        let jsonResposta = JSON.parse(respostaFormatada);
-
-        return {
-            dados: jsonResposta,
-            status: true
-        };
-
-    } catch (erro: any) {
-
-        return {
-            CodigoErro: resposta.status,
-            mensagemErro: resposta.statusText,
-            status: false
-        };
-    }
-}
-
-//                              Função da passagem dos tabuleiros para, Chamada de API, junto com o prompt
-
-async function realizarJogadaGemini(tabuleiroJogadorRevelado: number[][], tabuleiroJogadorCompleto: number[][]): Promise<acertoAPI> {
-    // Pega o valor exato no momento que a função é ativada
-    let apiKey = chaveHtml.value;
-    let totalChavesApi =chaveHtml.value.split(/\s+/);
-
-    if (!apiKey) {
-        console.error("A chave da API não foi informada.");
-        return { acerto: undefined };
-    }
-
-    // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
-    atualizarTabuleiroReveladoJogador(tabuleiroJogadorRevelado);
-    let matrizFormatada = tabuleiroJogadorRevelado.map(linha => `[${linha.join(', ')}]`).join('\n');
-
-    let prompt: string = `
-Você está jogando batalha naval contra um oponente humano, as regras são as seguintes:
-Você receberá uma matriz 10x10 onde:
-    - Posicões demarcadas com 0 significa local desconhecido.
-    - Posições com o numero 1 significa agua (não jogue nelas).
-    - Posições com o numero 3 significa navio atingido (Ataque em uma posição adjacente a essa).
-    - Posições com o numero 4 significa navio completamente afundado (não jogue nelas).
-
-Faça suas jogadas escolhendo posições aleatórias, distante de posições já escolhidas anteriormente, para encontrar navios. Sempre que encontrar navios atingidos (3), continue atacando em posições adjacentes até afundá-lo por completo.
-Seu objetivo é afundar todos os navios do oponente.
-As posições do tabuleiro do oponente estão nesta matriz:
-${matrizFormatada}
-
-Sua resposta deverá ser escrita estritamente como um JSON no formato exato abaixo. A propriedade "debug" deve conter sua linha de raciocínio escrita em português, justificando a coordenada escolhida. Note que as linhas e colunas devem ser de 0 a 9.
-{
-    "debug": "string",
-    "linha": número,
-    "coluna": número
-}
-Responda APENAS em JSON válido.
-Não use markdown.  
-Responda de forma curta.  
-`;
-    
-    let raciocinioIA = document.querySelector(".raciocinio-ia") as HTMLDivElement;
-
-    if(apiKey == "piloto-automatico"){
-        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
-        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
-    }
-    
-    mensagemVezInimigo("O inimigo está pensando...");
-
-    let respostaFunc = await chamadaApi(prompt,totalChavesApi[contadorChaves]);
-    if (respostaFunc == undefined) {
-        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
-        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
-    }
-
-    infoJogandoAgora.innerText = "Gemini";
-
-    if (respostaFunc.status) {
-        return ataqueGemini(respostaFunc,tabuleiroJogadorRevelado,tabuleiroJogadorCompleto,raciocinioIA);
-
-    } else {
-        const erro = respostaFunc as Erro;
-        if (erro.CodigoErro === 403 || erro.CodigoErro === 429) {
-            // statusAlerta("[X] Não é possível fazer contato com o Gemini! O Piloto Automático assumirá o controle. [X]");
-            let stopBusca = true;
-            while(stopBusca && contadorChaves < totalChavesApi.length){
-                contadorChaves++;
-                let respostaLoop = await chamadaApi(prompt,totalChavesApi[contadorChaves]);
-                if(respostaLoop == undefined){
-
-                }else{
-                    if(respostaLoop.status){
-                        stopBusca = false;
-                        let acertoLoop = await ataqueGemini(respostaLoop,tabuleiroJogadorRevelado,tabuleiroJogadorCompleto,raciocinioIA);
-                        return acertoLoop;
-                    }
-                }
-            }
-            contadorChaves = 0;
-        }
-        else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
-            // statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
-        }
-        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
-        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
-    }
-    return { acerto: undefined };
-}
 
 /**
  * O botão Posicionar Navios adiciona os eventos de clique para o tabuleiro inimigo,
@@ -368,6 +218,67 @@ if (botaoIniciarJogo) {
     });
 }
 
+//                              Função principal para a Chamada de API, com o retorno dos dados
+
+async function chamadaApi(prompt: string,chaveApi : string): Promise<resultadoApi> {
+
+    let resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chaveApi}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            contents: [
+                {
+                    parts: [
+                        {
+                            text: prompt
+                        }
+                    ]
+                }
+            ]
+        })
+    });
+    if (!resposta.ok) {
+        return {
+            CodigoErro: resposta.status,
+            status: false,
+            mensagemErro: resposta.statusText
+        };
+    }
+    try {
+
+        let dados = await resposta.json();
+
+        let respostaApi = dados?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!respostaApi) {
+            return {
+                CodigoErro: resposta.status,
+                mensagemErro: resposta.statusText,
+                status: false
+            };
+        }
+
+        let respostaFormatada = respostaApi.replace(/```json|```/g, "").trim();
+
+        let jsonResposta = JSON.parse(respostaFormatada);
+
+        return {
+            dados: jsonResposta,
+            status: true
+        };
+
+    } catch (erro: any) {
+
+        return {
+            CodigoErro: resposta.status,
+            mensagemErro: resposta.statusText,
+            status: false
+        };
+    }
+}
+
 async function resultadoJogadaGemini(): Promise<acertoAPI> {
     let tabuleiroJogadorCompleto = tabuleiroHTMLparaJSON(".tabuleiro-jogador");
     let alvo = await realizarJogadaGemini(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
@@ -384,12 +295,140 @@ async function resultadoJogadaGemini(): Promise<acertoAPI> {
     }
 }
 
-/**
- * Função utilitária para ser utilizada no algoritmo de fallback, que executa de forma instantânea.
- */
+//                              Função da passagem dos tabuleiros para, Chamada de API, junto com o prompt
 
-export function wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+async function realizarJogadaGemini(tabuleiroJogadorRevelado: number[][], tabuleiroJogadorCompleto: number[][]): Promise<acertoAPI> {
+    // Pega o valor exato no momento que a função é ativada
+    let apiKey = chaveHtml.value;
+    let totalChavesApi =chaveHtml.value.split(/\s+/);
+
+    if (!apiKey) {
+        console.error("A chave da API não foi informada.");
+        return { acerto: undefined };
+    }
+
+    // Formata a matriz para que ela tenha quebras de linha, mantendo o aspecto de "grade" para a IA visualizar melhor
+    atualizarTabuleiroReveladoJogador(tabuleiroJogadorRevelado);
+    let matrizFormatada = tabuleiroJogadorRevelado.map(linha => `[${linha.join(', ')}]`).join('\n');
+
+    let prompt: string = `
+Você está jogando batalha naval contra um oponente humano, as regras são as seguintes:
+Você receberá uma matriz 10x10 onde:
+    - Posicões demarcadas com 0 significa local desconhecido.
+    - Posições com o numero 1 significa agua (não jogue nelas).
+    - Posições com o numero 3 significa navio atingido (Ataque em uma posição adjacente a essa).
+    - Posições com o numero 4 significa navio completamente afundado (não jogue nelas).
+
+Faça suas jogadas escolhendo posições aleatórias, distante de posições já escolhidas anteriormente, para encontrar navios. Sempre que encontrar navios atingidos (3), continue atacando em posições adjacentes até afundá-lo por completo.
+Seu objetivo é afundar todos os navios do oponente.
+As posições do tabuleiro do oponente estão nesta matriz:
+${matrizFormatada}
+
+Sua resposta deverá ser escrita estritamente como um JSON no formato exato abaixo. A propriedade "debug" deve conter sua linha de raciocínio escrita em português, justificando a coordenada escolhida. Note que as linhas e colunas devem ser de 0 a 9.
+{
+    "debug": "string",
+    "linha": número,
+    "coluna": número
+}
+Responda APENAS em JSON válido.
+Não use markdown.  
+Responda de forma curta.  
+`;
+    
+    let raciocinioIA = document.querySelector(".raciocinio-ia") as HTMLDivElement;
+
+    if(apiKey == "piloto-automatico"){
+        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
+        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
+    }
+    
+    mensagemVezInimigo("O inimigo está pensando...");
+
+    let respostaFunc = await chamadaApi(prompt,totalChavesApi[contadorChaves]);
+    if (respostaFunc == undefined) {
+        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
+        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
+    }
+
+    infoJogandoAgora.innerText = "Gemini";
+
+    if (respostaFunc.status) {
+        return ataqueGemini(respostaFunc,tabuleiroJogadorRevelado,tabuleiroJogadorCompleto,raciocinioIA);
+
+    } else {
+        const erro = respostaFunc as Erro;
+        if (erro.CodigoErro === 403 || erro.CodigoErro === 429) {
+            let stopBusca = true;
+            while(stopBusca && contadorChaves < totalChavesApi.length){
+                contadorChaves++;
+                let respostaLoop = await chamadaApi(prompt,totalChavesApi[contadorChaves]);
+                if(respostaLoop == undefined){
+
+                }else{
+                    if(respostaLoop.status){
+                        stopBusca = false;
+                        let acertoLoop = await ataqueGemini(respostaLoop,tabuleiroJogadorRevelado,tabuleiroJogadorCompleto,raciocinioIA);
+                        return acertoLoop;
+                    }
+                }
+            }
+            contadorChaves = 0;
+        }
+        else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
+
+        }
+        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
+        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
+    }
+    return { acerto: undefined };
+}
+
+async function ataqueGemini(respostaFunc : resultadoApi,tabuleiroJogadorRevelado: number[][], tabuleiroJogadorCompleto: number[][],raciocinioIA : HTMLDivElement) : Promise<acertoAPI>{
+    const sucesso = respostaFunc as Sucesso;
+        const coordenadasIa = sucesso.dados;
+        const linhaAtaque = sucesso.dados.linha;
+        const colunaAtaque = sucesso.dados.coluna;
+
+
+        // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
+        if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
+            raciocinioIA.textContent = `${sucesso.dados.debug}`
+
+            // Verifica o que tinha na matriz do jogador naquela coordenada
+            let posicaoAtacada = tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque];
+
+            if (posicaoAtacada === 2) {
+                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
+                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
+                //Som de tiro Acertado
+                audio.playHitShot();
+                // Mostra a alteração do tabuleiro na página para o usuário ver
+                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
+
+                statusAlerta(`IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
+                return { acerto: Acerto.Acertou };
+            } else if (posicaoAtacada === 0) {
+                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
+                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
+                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
+                //Som de tiro errado
+                audio.playMissShot();
+                // Mostra a alteração do tabuleiro na página para o usuário ver
+                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
+
+                statusAlerta(`O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado.`)
+                return { acerto: Acerto.Errou };
+            } else {
+                statusAlerta(`O Gemini marcou uma posição repetida em (${linhaAtaque}, ${colunaAtaque})! Recalculando...`)
+                // Permite à IA tentar novamente
+                return { acerto: Acerto.Acertou };
+            }
+
+        } else {
+            statusAlerta(`O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando...`)
+            return { acerto: Acerto.Errou };
+        }
 }
 
 async function realizarJogadaFallback(tabuleiroJogadorRevelado: number[][], tabuleiroJogadorCompleto: number[][]): Promise<acertoAPI> {
@@ -398,9 +437,6 @@ async function realizarJogadaFallback(tabuleiroJogadorRevelado: number[][], tabu
 
     await wait(intervaloJogadasAutomaticas);
     if(verificarTerminoDeJogo() == true){return {acerto: Acerto.Errou}}
-    
-    // Oculta o elemento que mostra o raciocínio do Gemini para sua jogada
-    // ocultarElemento(".colapsavel-raciocinio-ia", true);
 
     let posFall = escolherJogadaFallback(tabuleiroJogadorRevelado);
     if (posFall != undefined) {
@@ -543,14 +579,17 @@ function posicionaNaviosTabuleiroInimigo(campoIA: number[][], totalNaviosIA: Nav
     return campoIA;
 }
 
-function verificarTerminoDeJogo() {
-    let tabuleiroJogador = document.querySelector('.tabuleiro-inimigo');
-    if(tabuleiroJogador?.classList.contains("encerrado")){
-        return true;
-    }else{
-        return false;
+export function revelarNaviosInimigos() {
+    for (let i = 0; i < tabuleiroInimigoCompleto.length; i++) {
+        for (let j = 0; j < tabuleiroInimigoCompleto[i].length; j++) {
+            // Troca navios escondidos (2) por navios revelados (5)
+            if (tabuleiroInimigoCompleto[i][j] === 2) {
+                tabuleiroInimigoCompleto[i][j] = 5;
+            }
+        }
     }
-}  
+    tabuleiroJSONparaHTML(tabuleiroInimigoCompleto, ".tabuleiro-inimigo");
+} 
 
 /**
  * Altera visualmente as bordas dos tabuleiros para indicar quem deve jogar.
@@ -597,66 +636,25 @@ function mensagemVezInimigo(mensagem: string){
     status.textContent = mensagem;
 }
 
-async function ataqueGemini(respostaFunc : resultadoApi,tabuleiroJogadorRevelado: number[][], tabuleiroJogadorCompleto: number[][],raciocinioIA : HTMLDivElement) : Promise<acertoAPI>{
-    const sucesso = respostaFunc as Sucesso;
-        const coordenadasIa = sucesso.dados;
-        const linhaAtaque = sucesso.dados.linha;
-        const colunaAtaque = sucesso.dados.coluna;
+/**
+ * Função utilitária para ser utilizada no algoritmo de fallback, que executa de forma instantânea.
+ */
 
-        // ocultarElemento(".colapsavel-raciocinio-ia", false);
-
-        // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
-        if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
-            raciocinioIA.textContent = `${sucesso.dados.debug}`
-
-            // Verifica o que tinha na matriz do jogador naquela coordenada
-            let posicaoAtacada = tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque];
-
-            if (posicaoAtacada === 2) {
-                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 3;
-                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 3;
-                //Som de tiro Acertado
-                audio.playHitShot();
-                // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
-
-                statusAlerta(`IMPACTO RECEBIDO! O Gemini acertou um navio em (${linhaAtaque}, ${colunaAtaque})`);
-                return { acerto: Acerto.Acertou };
-            } else if (posicaoAtacada === 0) {
-                // Altera a posição nas duas matrizes pra marcar que um navio foi parcialmente atingido
-                tabuleiroJogadorRevelado[linhaAtaque][colunaAtaque] = 1;
-                tabuleiroJogadorCompleto[linhaAtaque][colunaAtaque] = 1;
-                //Som de tiro errado
-                audio.playMissShot();
-                // Mostra a alteração do tabuleiro na página para o usuário ver
-                tabuleiroJSONparaHTML(tabuleiroJogadorCompleto, ".tabuleiro-jogador");
-
-                statusAlerta(`O Gemini errou o alvo em (${linhaAtaque}, ${colunaAtaque})!... Nenhum dano registrado.`)
-                return { acerto: Acerto.Errou };
-            } else {
-                statusAlerta(`O Gemini marcou uma posição repetida em (${linhaAtaque}, ${colunaAtaque})! Recalculando...`)
-                // Permite à IA tentar novamente
-                return { acerto: Acerto.Acertou };
-            }
-
-        } else {
-            statusAlerta(`O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando...`)
-            return { acerto: Acerto.Errou };
-        }
+export function wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export function revelarNaviosInimigos() {
-    for (let i = 0; i < tabuleiroInimigoCompleto.length; i++) {
-        for (let j = 0; j < tabuleiroInimigoCompleto[i].length; j++) {
-            // Troca navios escondidos (2) por navios revelados (5)
-            if (tabuleiroInimigoCompleto[i][j] === 2) {
-                tabuleiroInimigoCompleto[i][j] = 5;
-            }
-        }
+/**
+ * Função utilitária para verificar se o jogo encerrou, para impedir a IA de efetuar jogadas depois do jogo ter encerrado
+ */
+function verificarTerminoDeJogo() {
+    let tabuleiroJogador = document.querySelector('.tabuleiro-inimigo');
+    if(tabuleiroJogador?.classList.contains("encerrado")){
+        return true;
+    }else{
+        return false;
     }
-    tabuleiroJSONparaHTML(tabuleiroInimigoCompleto, ".tabuleiro-inimigo");
-}
+} 
 
 //Tipos de erro
 /*
