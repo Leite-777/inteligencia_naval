@@ -215,8 +215,8 @@ function estadoCampo(celula){
             celula.style.backgroundColor = "rgb(46, 19, 19)"
             addGifCaveira(celula);
             break;
-        case "5":
-            celula.style.backgroundColor = "rgb(110, 40, 40)"
+        case "5": // Navio inimigo revelado ao fim da partida
+            celula.style.backgroundColor = "#001320"
             addGifAviso(celula);
             break;
     }

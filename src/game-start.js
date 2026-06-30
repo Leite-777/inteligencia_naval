@@ -193,7 +193,6 @@ function jogarComGemini(){
     ocultarElemento("#chave-api", false);
     ocultarElemento("#jogo", true);
 
-    let btnJogarComGemini = document.querySelector(".botao-jogar-gemini");
     btnJogarComGemini.addEventListener("click", confirmarJogoComGemini);
 }
 

@@ -9,6 +9,7 @@ let btnReiniciarJogo = document.querySelector(".botao-reiniciar-jogo");
 let btnMute = document.querySelector(".botao-mute");
 let btnGifStop = document.querySelector(".botao-gif-stop");
 let btnJogarGemini = document.querySelector(".jogar-gemini");
+let btnJogarComGemini = document.querySelector(".botao-jogar-gemini");
 let btnJogarPiloto = document.querySelector(".jogar-piloto-automatico");
 
 const MATRIZ_JOGADOR = 1; //Cria a matriz com as opções disponinveis de arrastar navios para o jogador.
