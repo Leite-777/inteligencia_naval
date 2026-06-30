@@ -6,6 +6,8 @@
   Projeto desenvolvido para demonstrar como um modelo de linguagem pode participar de um jogo estratégico utilizando apenas troca de mensagens em formato JSON.
 </p>
 
+![Banner do Projeto](assets/readme/banner.gif)
+
 <p align="center">
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
@@ -25,6 +27,7 @@ O projeto foi desenvolvido como trabalho de conclusão da disciplina **Linguagem
 O principal objetivo é demonstrar, na prática, como a API gratuita do Gemini pode ser utilizada para permitir que uma inteligência artificial participe de um jogo relativamente complexo, mesmo sem possuir acesso direto à interface da aplicação.
 
 Todo o funcionamento do jogo acontece **inteiramente no front-end**.
+![Demonstração da Gameplay](assets/readme/gameplay.gif)
 
 ---
 
@@ -37,6 +40,20 @@ Todo o funcionamento do jogo acontece **inteiramente no front-end**.
 - Modo **Jogar contra o Piloto Automático** para iniciar partidas sem depender da API do Gemini.
 - Possibilidade de jogar utilizando sua própria chave gratuita do Gemini.
 - Interface com instruções para usuários iniciantes.
+
+---
+
+# Design
+
+O design da Inteligência Naval utiliza uma paleta de cores azuis e ciano, para dar uma temática marítima adequada para um jogo de Batalha Naval.
+
+Os materiais que criamos e utilizamos como inspiração para guiar o nosso desenvolvimento estão disponíveis abaixo:
+[![Moodboard](https://img.shields.io/badge/Moodboard-2196F3?style=for-the-badge&logo=cloudera&logoColor=white)](https://github.com/Leite-777/inteligencia_naval/blob/main/docs/Moodboard.png)
+[![Wireframe](https://img.shields.io/badge/Wireframe-9C27B0?style=for-the-badge&logo=figma&logoColor=white)](https://github.com/Leite-777/inteligencia_naval/blob/main/docs/Wireframe.png)
+[![Mockup](https://img.shields.io/badge/Mockup-4CAF50?style=for-the-badge&logo=figma&logoColor=white)](https://github.com/Leite-777/inteligencia_naval/blob/main/docs/Mockup.png)
+
+O convite para avaliação do website, utilizado para coletar feedbacks e desenvolver melhorias para o projeto, está disponível abaixo:
+[![Convite para avaliação](https://img.shields.io/badge/Convite_para_Avaliação-FF5722?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Leite-777/inteligencia_naval/blob/main/docs/Convite%20para%20Avalia%C3%A7%C3%A3o%20de%20Jogo.pdf)
 
 ---
 
@@ -86,6 +103,7 @@ A aplicação explica de maneira simples:
 
 - como funciona uma chave de API,
 - como criar gratuitamente uma chave do Google Gemini,
+- como o jogo consegue continuar com erros na chave API ou até mesmo sem uma chave,
 - como jogar Batalha Naval,
 - como utilizar todos os recursos disponíveis.
 
@@ -143,14 +161,14 @@ Além disso, procura apresentar de forma didática conceitos como:
 
 # Equipe
 
-| Integrante |
-|------------|
-| Matheus Leite |
-| Gabriel Alvaro |
-| Breno Emanuel |
-| Pamela de Andrade |
-| Matheus José |
-| Evandro Rodrigues |
+| Integrante | GitHub |
+| :--- | :---: |
+| Gabriel Alvaro | [![GitHub-GABRIEL](https://img.shields.io/badge/g--alvaro--ti-000?style=for-the-badge&logo=github&logoColor=30A3DC)](https://github.com/g-alvaro-ti) |
+| Matheus Leite | [![GitHub-MATHEUS](https://img.shields.io/badge/Leite--777-000?style=for-the-badge&logo=github&logoColor=30A3DC)](https://github.com/Leite-777) |
+| Breno Emanuel | [![GitHub-BRENO](https://img.shields.io/badge/Oliveira--breno-000?style=for-the-badge&logo=github&logoColor=30A3DC)](https://github.com/Oliveira-breno) |
+| Pamela de Andrade | [![GitHub-PAMELA](https://img.shields.io/badge/pamela--simoes-000?style=for-the-badge&logo=github&logoColor=30A3DC)](https://github.com/pamelasimoes) |
+| Matheus José | [![GitHub-MATHEUS_J](https://img.shields.io/badge/ma7heus--carvalho-000?style=for-the-badge&logo=github&logoColor=30A3DC)](https://github.com/ma7heus-carvalho) |
+| Evandro Rodrigues | [![GitHub-EVANDRO](https://img.shields.io/badge/Evandro0981-000?style=for-the-badge&logo=github&logoColor=30A3DC)](https://github.com/Evandro0981) |
 
 ---
 
