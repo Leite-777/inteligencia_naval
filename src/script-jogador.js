@@ -298,6 +298,7 @@ export function criarTabuleiro(tabuleiro, tipoDoTabuleiro) {
                         audio.playDrop();
 
                     } else {
+                        objNavioSendoArrastado.posicionado = false;
                         campoDosNavios.appendChild(navioSendoArrastado);
                         audio.playError();
                     }
