@@ -15,6 +15,8 @@ import { desativarTabuleiros } from "./script-tabuleiro.js";
 import { verificarChaveAPI } from "./script-tabuleiro.js";
 import { preencherChaveAPI } from "./script-tabuleiro.js";
 
+import { revelarNaviosInimigos } from "./game-loop.js";
+
 import { AudioManager } from "./script-audioManager.js";
 
 const audio = new AudioManager();
@@ -121,6 +123,8 @@ export function terminarJogo(vencedor = 0) {
             declararEmpate();
     }
 
+    revelarNaviosInimigos();
+
     // Scrolla a página de volta para a seção do jogo
     document.getElementById('jogo').scrollIntoView({
         block: 'start'
@@ -160,10 +164,12 @@ function pausaReproduzGifs(){
     if(gifAtivado === true){
         btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #e74c3c;">gif_box</span>`;
         gifAtivado = false;
+        jogo.classList.toggle("gradiente",false);
         pausarGifs();
     }else{
         btnGifStop.innerHTML = `<span class="material-symbols-outlined" style="color: #2ecc71;">gif_box</span>`;
         gifAtivado = true;
+        jogo.classList.toggle("gradiente",true);
         reproduzirGifs();
     }
 }
@@ -171,6 +177,7 @@ function pausaReproduzGifs(){
 function jogoTelaCheia(estado){
     let jogo = document.querySelector("#jogo");
     jogo.classList.toggle("tela-cheia",estado);
+    jogo.classList.toggle("gradiente",estado);
 
     ocultarElemento("#header", estado);
     ocultarElemento("#modo-de-jogo", estado);

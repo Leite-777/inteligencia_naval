@@ -159,6 +159,30 @@ function addGifCaveira(celula){
     celula.appendChild(gifCaveira);
 }
 
+/**
+ *  Função responsável por adicionar o gif de aviso em um lugar onde havia um navio não afundado, para ser exibido no fim do jogo
+ * 
+ * @param celula referente ao campo a receber o gif de aviso.
+ */
+function addGifAviso(celula){
+    const gifAviso = document.createElement('img');
+    
+    gifAviso.classList.add('gif-animado');
+
+    gifAviso.dataset.gif ='assets/gifs/aviso-navio.gif';
+    gifAviso.dataset.img ='assets/img/aviso-navio.png';
+
+    gifAviso.style.width = '40px';
+    gifAviso.style.height = '40px';
+    gifAviso.style.borderRadius = '5px';
+    gifAviso.src = gifAviso.dataset.gif;
+    gifAviso.alt = 'Navio';
+    // Faz o gif aparecer sobre o navio
+    gifAviso.style.zIndex = 100;
+    celula.style.boxShadow = ""; // Remove qualquer brilho anterior
+    celula.appendChild(gifAviso);
+}
+
 // /**
 //  *  Função responsável por adicionar um gif específico ao campo de acordo com o status da celula.
 //  *  Status disponíveis: 
@@ -190,6 +214,10 @@ function estadoCampo(celula){
         case "4": // Navio completamente afundado
             celula.style.backgroundColor = "rgb(46, 19, 19)"
             addGifCaveira(celula);
+            break;
+        case "5":
+            celula.style.backgroundColor = "rgb(110, 40, 40)"
+            addGifAviso(celula);
             break;
     }
 }

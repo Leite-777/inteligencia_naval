@@ -387,6 +387,7 @@ header {
 
 .status-jogo {
     background-color: #060d1c;
+    border: 1px solid rgba(62,229,223,0.25);
     padding: 15px;
     margin: 15px auto;
     width: 50%;
@@ -510,6 +511,7 @@ header {
 
 .info {
     background-color: #060d1c;
+    border: 1px solid rgba(62,229,223,0.25);
     padding: 15px;
     border-radius: 10px;
 }
@@ -554,8 +556,8 @@ header {
     background:
         linear-gradient(
             135deg,
-            #081826,
-            #014177
+            #060d1c,
+            #091831
         );
 
     color: white;
@@ -631,7 +633,7 @@ header {
 .raciocinio-ia{
     position: relative;
 
-    background: #08131f;
+    background: #060d1c;
 
     border: 1px solid rgba(62,229,223,0.15);
 
@@ -756,6 +758,7 @@ header {
 
 .status {
     background-color: #060d1c;
+    border: 1px solid rgba(62,229,223,0.25);
     
     border-radius: 10px;
     padding: 8px;
@@ -815,6 +818,10 @@ header {
     transition: border-color 0.4s ease, box-shadow 0.4s ease;
     border-radius: 8px;
     /* Opcional: deixa os cantos arredondados */
+}
+
+.tabuleiro-jogador > .celula{
+    cursor: default;
 }
 
 /* Borda Verde Neon para a vez do Jogador */

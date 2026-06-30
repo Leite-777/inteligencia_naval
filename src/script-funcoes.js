@@ -79,12 +79,12 @@ function validarCampoApi() {
 
     if (quantidadeInvalidas === 0 && quantidadeValidas === 1) {
         infoInput.textContent =
-            "Sua chave API possui um formato válido.";
+            "Sua chave API possui um formato válido. Tentaremos nos conectar ao Gemini.";
         infoInput.style.color = "#40ff40";
     }
     else if (quantidadeInvalidas === 0 && quantidadeValidas > 1) {
         infoInput.textContent =
-            "Todas as chaves API possuem um formato válido.";
+            "Todas as chaves API possuem um formato válido. Tentaremos nos conectar ao Gemini.";
         infoInput.style.color = "#40ff40";
     }
     else if (quantidadeValidas === 0) {

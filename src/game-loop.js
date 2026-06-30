@@ -167,16 +167,20 @@ Responda APENAS em JSON válido.
 Não use markdown.  
 Responda de forma curta.  
 `;
-    mensagemVezInimigo("O inimigo está pensando...");
     let raciocinioIA = document.querySelector(".raciocinio-ia");
+    if (apiKey == "piloto-automatico") {
+        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
+        return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
+    }
+    mensagemVezInimigo("O inimigo está pensando...");
     let respostaFunc = await chamadaApi(prompt, totalChavesApi[contadorChaves]);
     if (respostaFunc == undefined) {
-        raciocinioIA.textContent = "O Piloto automático está jogando...";
+        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
         return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     }
     infoJogandoAgora.innerText = "Gemini";
     if (respostaFunc.status) {
-        return ataque(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA);
+        return ataqueGemini(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA);
     }
     else {
         const erro = respostaFunc;
@@ -191,7 +195,7 @@ Responda de forma curta.
                 else {
                     if (respostaLoop.status) {
                         stopBusca = false;
-                        let acertoLoop = await ataque(respostaLoop, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA);
+                        let acertoLoop = await ataqueGemini(respostaLoop, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA);
                         return acertoLoop;
                     }
                 }
@@ -201,7 +205,7 @@ Responda de forma curta.
         else if (erro.CodigoErro === 503 || erro.CodigoErro === 500 || erro.CodigoErro === 503) {
             // statusAlerta("[X] O Gemini está temporariamente indisponível! O Piloto Automático assumirá o controle. [X]");
         }
-        raciocinioIA.textContent = "O Piloto automático está jogando...";
+        raciocinioIA.textContent = "O Piloto Automático está jogando no lugar do Gemini...";
         return realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogadorCompleto);
     }
     return { acerto: undefined };
@@ -222,6 +226,9 @@ if (botaoIniciarJogo) {
         if (verificaIniciarJogo() === false) {
             return;
         }
+        // Adiciona os navios no tabuleiro da IA
+        tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
+        tabuleiroInimigoCompleto = posicionaNaviosTabuleiroInimigo(tabuleiroInimigoCompleto, totalNaviosIA);
         // Espera um tempo antes do jogo realmente começar
         ocultarElemento(".info", true);
         tabuleiroJogadorHTML?.classList.toggle("no-pointer", true);
@@ -229,15 +236,15 @@ if (botaoIniciarJogo) {
         statusAnuncio("Preparado? O jogo irá começar!");
         await wait(3000);
         ocultarElemento(".info", false);
+        if (chaveHtml.value != "piloto-automatico") {
+            ocultarElemento(".colapsavel-raciocinio-ia", false);
+        }
         tabuleiroInimigoHTML?.classList.toggle("no-pointer", false);
         statusAnuncio("Pronto! É a sua vez! Clique em uma posição do tabuleiro inimigo pra atacar! Quando você errar, será a vez da IA!");
         let podeJogar = true;
         alternarTransparenciaTabuleiro("jogador");
         mensagemVezJogador("É a sua vez!");
         mensagemVezInimigo("Esperando o jogador...");
-        // Adiciona os navios no tabuleiro da IA
-        tabuleiroInimigoCompleto = tabuleiroHTMLparaJSON(".tabuleiro-inimigo");
-        tabuleiroInimigoCompleto = posicionaNaviosTabuleiroInimigo(tabuleiroInimigoCompleto, totalNaviosIA);
         //É a vez do jogador()
         atualizarIndicadorTurno('jogador');
         const campoIa = document.querySelector('.tabuleiro-inimigo');
@@ -254,7 +261,6 @@ if (botaoIniciarJogo) {
                     if (verificarNaviosInimigosAtingidos(filho)) {
                         mensagemVezJogador("Ainda é sua vez!");
                         podeJogar = true;
-                        // verificarTerminoDeJogo()
                     }
                     // Se a posição que o usuário clicou é água, a IA irá jogar logo em seguida
                     else {
@@ -287,7 +293,6 @@ if (botaoIniciarJogo) {
                         mensagemVezJogador("É a sua vez!");
                         mensagemVezInimigo("Esperando o jogador...");
                         tabuleiroInimigoHTML?.classList.toggle("no-pointer", false);
-                        // verificarTerminoDeJogo()
                     }
                 });
             });
@@ -324,7 +329,7 @@ async function realizarJogadaFallback(tabuleiroJogadorRevelado, tabuleiroJogador
         return { acerto: Acerto.Errou };
     }
     // Oculta o elemento que mostra o raciocínio do Gemini para sua jogada
-    ocultarElemento(".colapsavel-raciocinio-ia", true);
+    // ocultarElemento(".colapsavel-raciocinio-ia", true);
     let posFall = escolherJogadaFallback(tabuleiroJogadorRevelado);
     if (posFall != undefined) {
         let posicaoAtacada = tabuleiroJogadorCompleto[posFall.linha][posFall.coluna];
@@ -488,12 +493,12 @@ function mensagemVezInimigo(mensagem) {
     status.style.color = "#ff4040";
     status.textContent = mensagem;
 }
-async function ataque(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA) {
+async function ataqueGemini(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCompleto, raciocinioIA) {
     const sucesso = respostaFunc;
     const coordenadasIa = sucesso.dados;
     const linhaAtaque = sucesso.dados.linha;
     const colunaAtaque = sucesso.dados.coluna;
-    ocultarElemento(".colapsavel-raciocinio-ia", false);
+    // ocultarElemento(".colapsavel-raciocinio-ia", false);
     // Verifica se a IA retornou valores fora do tabuleiro (ex: 10 ou -1)
     if (linhaAtaque >= 0 && linhaAtaque < 10 && colunaAtaque >= 0 && colunaAtaque < 10) {
         raciocinioIA.textContent = `${sucesso.dados.debug}`;
@@ -531,6 +536,17 @@ async function ataque(respostaFunc, tabuleiroJogadorRevelado, tabuleiroJogadorCo
         statusAlerta(`O Gemini atacou coordenadas inválidas fora do tabuleiro! (${linhaAtaque}, ${colunaAtaque})! Recalculando...`);
         return { acerto: Acerto.Errou };
     }
+}
+export function revelarNaviosInimigos() {
+    for (let i = 0; i < tabuleiroInimigoCompleto.length; i++) {
+        for (let j = 0; j < tabuleiroInimigoCompleto[i].length; j++) {
+            // Troca navios escondidos (2) por navios revelados (5)
+            if (tabuleiroInimigoCompleto[i][j] === 2) {
+                tabuleiroInimigoCompleto[i][j] = 5;
+            }
+        }
+    }
+    tabuleiroJSONparaHTML(tabuleiroInimigoCompleto, ".tabuleiro-inimigo");
 }
 //Tipos de erro
 /*
